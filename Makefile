@@ -1,7 +1,8 @@
 THEMES := $(notdir $(wildcard themes/*))
 RUNTIME := runtime/Bento_Slides.bento.html
+BUILD := .build
 
-.PHONY: all build check runtime clean $(THEMES)
+.PHONY: all build check runtime clean help $(THEMES)
 
 all: build
 
@@ -19,16 +20,19 @@ check: build
 		node scripts/render_check.mjs "$$deck" --out themes/$$t/preview || exit 1; \
 	done
 
-## runtime: fetch the latest signed Bento release (the app every theme is spliced into)
+## runtime: fetch the latest signed Bento release and record its version in runtime/VERSION
 runtime:
 	curl -fsSL https://bento.page/releases/slides/Bento_Slides.bento.html -o $(RUNTIME)
-	@grep -q 'id="bento-doc"' $(RUNTIME) && echo "runtime ok"
+	@grep -q 'id="bento-doc"' $(RUNTIME) || { echo "no #bento-doc block in the download" >&2; exit 1; }
+	@node scripts/inflate_runtime.mjs $(RUNTIME) --out $(BUILD)/runtime >/dev/null
+	@grep -o '__bentoRuntime",{value:"[^"]*"' $(BUILD)/runtime/*.js | grep -o '[0-9][0-9.]*' | head -1 > runtime/VERSION
+	@echo "runtime $$(cat runtime/VERSION)"
 
 $(RUNTIME):
 	$(MAKE) runtime
 
 clean:
-	rm -rf .build themes/*/preview themes/*/*.bento.html themes/*/*.doc.json
+	rm -rf $(BUILD) themes/*/preview themes/*/*.bento.html themes/*/*.doc.json
 
 help:
 	@grep -E '^## ' $(MAKEFILE_LIST) | sed 's/^## //'

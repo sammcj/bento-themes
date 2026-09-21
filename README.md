@@ -6,7 +6,7 @@ Open source themes for [Bento](https://bento.page) slide decks. Each theme is a 
 
 ### Swiss
 
-International Typographic Style. One grotesque (Archivo), flush-left ragged-right type, a 2px rule and running head on every slide, warm-white paper and one red. A single red square recurs through the deck: a 400px block on the cover, a 16px dot beside the page number, a bar on section dividers, full-bleed on the closing slide.
+International Typographic Style. One grotesque (Archivo), flush-left ragged-right type, a 2px rule and running head on every slide, warm-white paper and one red. A single red square recurs through the deck: a 400px block on the cover, a 16px square beside the page number, a bar on section dividers, full-bleed on the closing slide.
 
 ![Swiss cover](themes/swiss/preview/slide-01.png)
 ![Swiss numbers](themes/swiss/preview/slide-08.png)
@@ -34,10 +34,12 @@ Every layout carries speaker notes on its demo slide explaining what it is for. 
 Themes are generated, not hand-written. `themes/<name>/theme.mjs` returns the full document; `scripts/build.mjs` checks it and splices it into the Bento runtime.
 
 ```
-make runtime      # fetch the latest Bento release into runtime/
+make runtime      # fetch the latest Bento release into runtime/ and record its version in runtime/VERSION
 make build        # write themes/*/<Name>.doc.json and <Name>.bento.html
 make check        # headless render: validate() findings + preview PNGs
 ```
+
+The committed runtime is the version in `runtime/VERSION`. `make check` prints the version each deck booted with, so a re-fetch that changes rendering shows up in the log and the preview diff.
 
 `make check` needs Node 22+ and a Chromium-based browser (Brave, Chrome or Chromium). It refuses to run inside a sandbox that blocks the browser profile directory.
 
@@ -65,4 +67,4 @@ Archivo and Jost are embedded as Latin-subset variable woff2 files (35KB and 26K
 
 ## Licence
 
-Theme sources and generated decks are MIT. The Bento runtime inside each `.bento.html` is Bento's and is redistributed as released at bento.page.
+Theme sources (`scripts/`, `themes/*/theme.mjs`, this README) are MIT. Each generated `.bento.html` also contains the Bento runtime (MIT, (c) The Bento authors, redistributed as released at bento.page) and the embedded fonts (SIL OFL 1.1, see `fonts/`).

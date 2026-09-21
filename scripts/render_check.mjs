@@ -221,12 +221,14 @@ const info = await evaluate(`(() => {
   // The arrow-key walk covers slides that are neither states nor hidden (model.ts inLinearFlow).
   const walk = d.slides.filter(s => !s.stateOf && !s.hidden);
   return { title: d.title, slides: d.slides.length, pages: walk.length,
-    // Step reveals consume arrow presses before the walk advances; capture each page after its last step.
-    steps: walk.map(s => Math.max(0, ...s.elements.map(e => (e.fx && e.fx.step) || 0))),
+    // Step reveals consume one arrow press per distinct step value (gaps allowed) before the walk advances;
+    // capture each page after its last step.
+    steps: walk.map(s => new Set(s.elements.map(e => e.fx && e.fx.step).filter(n => Number.isFinite(n) && n > 0)).size),
+    runtime: window.__bentoRuntime || null,
     states: d.slides.filter(s => s.stateOf).map(s => s.id), hidden: d.slides.filter(s => s.hidden && !s.stateOf).map(s => s.id),
     size: d.size };
 })()`);
-console.log(`Deck: ${info.title} | ${info.slides} slides (${info.pages} pages, ${info.states.length} state slides, ${info.hidden.length} hidden)`);
+console.log(`Deck: ${info.title} | ${info.slides} slides (${info.pages} pages, ${info.states.length} state slides, ${info.hidden.length} hidden) | runtime ${info.runtime || "unknown"}`);
 // Non-canonical canvases would otherwise letterbox inside the 1280x720 viewport.
 if (info.size.width !== 1280 || info.size.height !== 720) {
   await cdp("Emulation.setDeviceMetricsOverride", { width: info.size.width, height: info.size.height, deviceScaleFactor: 1, mobile: false });
@@ -272,8 +274,17 @@ const readability = await evaluate(`((minFont, minCover) => {
     // title + subtitle + accent bar, and counting the bar would flag every cover.
     const dense = content.filter((e) => e.type !== "shape" && (e.type !== "text" || hasText(e)));
     if (dense.length <= 2) continue;
+    // A tall text box with three lines in it is mostly empty; measure the text and take the smaller height.
+    const eh = (e) => {
+      if (e.type !== "text" || !hasText(e) || typeof window.bento.measure !== "function") return e.h;
+      try {
+        const m = window.bento.measure({ html: e.html, w: e.w, fontSize: e.fontSize, fontFamily: e.fontFamily, fontWeight: e.fontWeight, lineHeight: e.lineHeight });
+        const h = m && typeof m.h === "number" ? m.h : m && typeof m.height === "number" ? m.height : e.h;
+        return e.valign === "bottom" ? e.h : Math.min(e.h, h);
+      } catch { return e.h; }
+    };
     const x0 = Math.min(...content.map((e) => e.x)), y0 = Math.min(...content.map((e) => e.y));
-    const x1 = Math.max(...content.map((e) => e.x + e.w)), y1 = Math.max(...content.map((e) => e.y + e.h));
+    const x1 = Math.max(...content.map((e) => e.x + e.w)), y1 = Math.max(...content.map((e) => e.y + eh(e)));
     const ch = (y1 - y0) / H, cw = (x1 - x0) / W;
     if (ch < minCover) out.push({ code: "low-coverage", slide: s.id, message: "content spans " + Math.round(ch * 100) + "% of the height and " + Math.round(cw * 100) + "% of the width (y " + Math.round(y0) + ".." + Math.round(y1) + "); tighten the band or grow the type" });
   }

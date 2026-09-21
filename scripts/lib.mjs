@@ -54,19 +54,30 @@ export function factory(t) {
   };
 }
 
+// Layout text that may keep literal html: numerals and glyphs that are not user copy.
+// Everything else in a layout is either a {{token}} or an empty html with a placeholder.
+const LAYOUT_LITERALS = /^(q-mark|ag-n\d+|pr-n\d+)$/;
+
 // Sanity checks that the runtime would otherwise fail silently on.
 export function assertDoc(doc) {
   const problems = [];
-  const checkSlide = (s, label) => {
+  const slideIds = new Set(doc.slides.map((s) => s.id));
+  const checkSlide = (s, label, isLayout) => {
     const ids = new Set();
     for (const e of s.elements) {
       if (!e.id) problems.push(`${label}: element without id`);
       if (ids.has(e.id)) problems.push(`${label}: duplicate id ${e.id}`);
       ids.add(e.id);
-      if (e.x + e.w > W + 0.01 || e.y + e.h > H + 0.01) problems.push(`${label}/${e.id}: off canvas (${e.x}+${e.w}, ${e.y}+${e.h})`);
-      if (e.type === "text" && !("html" in e) && !("placeholder" in e)) problems.push(`${label}/${e.id}: text without html`);
-      if (e.type === "text" && e.fontSize < 14) problems.push(`${label}/${e.id}: fontSize ${e.fontSize} below 14px floor`);
+      if (e.x < 0 || e.y < 0 || e.x + e.w > W + 0.01 || e.y + e.h > H + 0.01) problems.push(`${label}/${e.id}: off canvas (${e.x}+${e.w}, ${e.y}+${e.h})`);
+      if (e.type === "text") {
+        if (!("html" in e)) problems.push(`${label}/${e.id}: text without html`);
+        if (e.html === "" && !e.placeholder) problems.push(`${label}/${e.id}: empty html needs a placeholder`);
+        if (typeof e.fontSize !== "number") problems.push(`${label}/${e.id}: text without fontSize (the runtime would pick its own)`);
+        else if (e.fontSize < 14) problems.push(`${label}/${e.id}: fontSize ${e.fontSize} below 14px floor`);
+        if (isLayout && e.html && !e.html.includes("{{") && !LAYOUT_LITERALS.test(e.id)) problems.push(`${label}/${e.id}: layout copy must be a placeholder, not html "${e.html.slice(0, 30)}"`);
+      }
       if (e.fontFamily && !e.fontFamily.includes(",")) problems.push(`${label}/${e.id}: fontFamily needs a fallback stack`);
+      if (e.link && !slideIds.has(e.link) && !/^https?:/.test(e.link)) problems.push(`${label}/${e.id}: link target ${e.link} does not exist`);
       // Themes here are static by design: no entrances, loops, step reveals or count-ups.
       if (e.fx) problems.push(`${label}/${e.id}: carries fx (templates are animation-free)`);
     }
@@ -74,11 +85,12 @@ export function assertDoc(doc) {
   };
   for (const s of doc.slides) {
     if (!s.notes) problems.push(`${s.id}: missing notes`);
-    checkSlide(s, s.id);
+    if (s.stateOf && !slideIds.has(s.stateOf)) problems.push(`${s.id}: stateOf ${s.stateOf} does not exist`);
+    checkSlide(s, s.id, false);
   }
   for (const l of doc.layouts ?? []) {
     if (!l.name) problems.push("layout without name");
-    checkSlide(l, `layout ${l.name}`);
+    checkSlide(l, `layout ${l.name}`, true);
     for (const e of l.elements) if (e.link) problems.push(`layout ${l.name}/${e.id}: layouts must not carry link`);
   }
   if (problems.length) throw new Error("document check failed:\n  " + problems.join("\n  "));

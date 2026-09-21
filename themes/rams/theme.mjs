@@ -9,7 +9,7 @@ import { COLS, dataUri, factory } from "../../scripts/lib.mjs";
 
 const GROUND = "#E4E1DA";
 const INK = "#262624";
-const GREY = "#6B6862";
+const GREY = "#57554F";
 const HAIR = "#BDB9AF";
 const BLACK = "#1E1E1C";
 const BLACK_TX = "#E4E1DA";
@@ -33,7 +33,7 @@ const ring = (o) => f.ellipse({ fill: "transparent", stroke: INK, strokeWidth: 2
 // Process knobs sit on the track, so they take the ground colour to mask it.
 const knob = (o) => ring({ fill: GROUND, ...o });
 
-// Footer chrome on every content slide; stable ids keep it morphing in place.
+// Footer chrome on every content slide; the ids stay stable across slides.
 const chrome = ({ dark = false, dot = true } = {}) => [
   hair({ id: "foot-rule", x: 96, y: 640, w: 1088, fill: dark ? BLACK_HAIR : HAIR }),
   ...(dot ? [f.ellipse({ id: "dot", x: 96, y: 654, w: 12, h: 12 })] : []),
@@ -41,8 +41,8 @@ const chrome = ({ dark = false, dot = true } = {}) => [
   label({ id: "run-page", html: "{{page:2}}", color: dark ? BLACK_TX : INK, align: "right", x: 984, y: 650, w: 200, h: 20 }),
 ];
 
-const slideHead = (html) => [
-  heading({ id: "slide-head", html, x: 96, y: 92, w: 1088, h: 52 }),
+const slideHead = (demo, html, placeholder = "Slide title") => [
+  heading({ id: "slide-head", ...ph(demo, html, placeholder), x: 96, y: 92, w: 1088, h: 52 }),
   hair({ id: "head-rule", x: 96, y: 160, w: 1088, fill: INK }),
 ];
 
@@ -72,7 +72,7 @@ const cover = (demo) => ({
   elements: [
     hair({ id: "foot-rule", x: 96, y: 640, w: 1088 }),
     label({ id: "run-title", html: "{{company}}", x: 96, y: 650, w: 600, h: 20 }),
-    label({ id: "run-page", html: "2026-09-22", color: INK, align: "right", x: 984, y: 650, w: 200, h: 20 }),
+    label({ id: "run-page", ...ph(demo, "2026-09-22", "Date"), color: INK, align: "right", x: 984, y: 650, w: 200, h: 20 }),
     ring({ id: "dial", x: 736, y: 96, w: 448, h: 448 }),
     f.path({ id: "dial-ticks", d: dialTicks(), pathBox: [0, 0, 448, 448], fill: "transparent", stroke: INK, strokeWidth: 2, x: 736, y: 96, w: 448, h: 448 }),
     ring({ id: "dial-inner", x: 736 + 64, y: 96 + 64, w: 320, h: 320, strokeWidth: 1, stroke: HAIR }),
@@ -93,11 +93,11 @@ const agenda = (demo) => {
     ? ["Where we are", "What changed", "What we propose", "What we need from you"]
     : ["Item one", "Item two", "Item three", "Item four"];
   const rows = items.flatMap((it, i) => {
-    const y = 192 + i * 108;
+    const y = 192 + i * 120;
     return [
       f.text({ id: `ag-n${i}`, html: String(i + 1).padStart(2, "0"), fontSize: 22, fontWeight: 500, color: GREY, x: 96, y: y + 4, w: 60, h: 32 }),
       f.text({ id: `ag-t${i}`, ...(demo ? { html: it } : { html: "", placeholder: it }), fontSize: 28, lineHeight: 1.2, x: 176, y, w: 1008, h: 40 }),
-      hair({ id: `ag-r${i}`, x: 96, y: y + 76, w: 1088 }),
+      ...(i < items.length - 1 ? [hair({ id: `ag-r${i}`, x: 96, y: y + 76, w: 1088 })] : []),
     ];
   });
   return {
@@ -106,7 +106,7 @@ const agenda = (demo) => {
     background: GROUND,
     transition: "none",
     notes: "Agenda. The footer carries the indicator, the deck title and the page number. Four rows fit; delete rows rather than shrinking the type.",
-    elements: [...chrome(), ...slideHead("Agenda"), ...rows],
+    elements: [...chrome(), ...slideHead(demo, "Agenda", "Agenda"), ...rows],
   };
 };
 
@@ -145,7 +145,7 @@ const titleBody = (demo) => ({
   notes: "Title and body. The body column is 816px so lines stay readable. Use <ul> for bullets. Body stays at 24px; if it does not fit, cut words or split the slide.",
   elements: [
     ...chrome(),
-    ...slideHead(demo ? "Less, but better" : "Slide title"),
+    ...slideHead(demo, "Less, but better"),
     body({
       id: "body-copy",
       ...ph(
@@ -174,11 +174,11 @@ const points = (demo) => {
         ["Point three", "Supporting sentence"],
       ];
   const rows = items.flatMap(([h, d], i) => {
-    const y = 192 + i * 144;
+    const y = 192 + i * 150;
     return [
-      hair({ id: `pt-r${i}`, x: 96, y, w: 1088 }),
-      f.text({ id: `pt-h${i}`, html: h, fontSize: 26, fontWeight: 500, lineHeight: 1.2, x: 96, y: y + 20, w: 340, h: 70 }),
-      body({ id: `pt-d${i}`, html: d, x: 470, y: y + 22, w: 714, h: 104 }),
+      ...(i > 0 ? [hair({ id: `pt-r${i}`, x: 96, y, w: 1088 })] : []),
+      f.text({ id: `pt-h${i}`, ...ph(demo, h, h), fontSize: 26, fontWeight: 500, lineHeight: 1.2, x: 96, y: y + 20, w: 340, h: 70 }),
+      body({ id: `pt-d${i}`, ...ph(demo, d, d), x: 470, y: y + 22, w: 714, h: 104 }),
     ];
   });
   return {
@@ -187,7 +187,7 @@ const points = (demo) => {
     background: GROUND,
     transition: "none",
     notes: "Points. Three rows, each a hairline, a medium lead and a sentence. Three fill the band; for more, split the slide.",
-    elements: [...chrome(), ...slideHead(demo ? "Three of the ten principles" : "Slide title"), ...rows],
+    elements: [...chrome(), ...slideHead(demo, "Three of the ten principles"), ...rows],
   };
 };
 
@@ -196,16 +196,16 @@ const twoCol = (demo) => ({
   name: "Two columns",
   background: GROUND,
   transition: "none",
-  notes: "Two columns, 528px each with a 32px gutter. Each has a 26px lead line and a hairline before 22px body. Suits before/after or problem/response.",
+  notes: "Two columns, 528px each with a 32px gutter. Each has a 26px lead line and a hairline before 24px body. Suits before/after or problem/response.",
   elements: [
     ...chrome(),
-    ...slideHead(demo ? "Then and now" : "Slide title"),
+    ...slideHead(demo, "Then and now"),
     f.text({ id: "col-l-head", ...ph(demo, "1961", "Left heading"), fontSize: 26, fontWeight: 500, lineHeight: 1.2, x: COLS[2].x[0], y: 192, w: COLS[2].w, h: 36 }),
     hair({ id: "col-l-rule", x: COLS[2].x[0], y: 240, w: COLS[2].w }),
-    body({ id: "col-l-body", ...ph(demo, "The SK 4 record player put the turntable under a clear acrylic lid. Critics called it Snow White's coffin. Every competitor copied the lid within a decade.", "Left body"), x: COLS[2].x[0], y: 256, w: COLS[2].w, h: 368 }),
+    body({ id: "col-l-body", ...ph(demo, "<p>The SK 4 record player put the turntable under a clear acrylic lid. Critics called it Snow White's coffin. Every competitor copied the lid within a decade.</p><p>The housing was steel and elm. The controls were the only things you could not see through, so they were the only things you looked at.</p><p>It sold for a decade with almost no changes, which was the point.</p>", "Left body"), x: COLS[2].x[0], y: 256, w: COLS[2].w, h: 368 }),
     f.text({ id: "col-r-head", ...ph(demo, "Now", "Right heading"), fontSize: 26, fontWeight: 500, lineHeight: 1.2, x: COLS[2].x[1], y: 192, w: COLS[2].w, h: 36 }),
     hair({ id: "col-r-rule", x: COLS[2].x[1], y: 240, w: COLS[2].w }),
-    body({ id: "col-r-body", ...ph(demo, "The same restraint reads as calm on a screen: one typeface, a warm grey ground, and an orange mark that tells you where to look. Everything else is left off.", "Right body"), x: COLS[2].x[1], y: 256, w: COLS[2].w, h: 368 }),
+    body({ id: "col-r-body", ...ph(demo, "<p>The same restraint reads as calm on a screen: one typeface, a warm grey ground, and an orange mark that tells you where to look. Everything else is left off.</p><p>Each slide answers one question. The ask is the last slide, beside the disc, and nothing follows it.</p><p>If a slide needs a second colour to make sense, the slide is the problem.</p>", "Right body"), x: COLS[2].x[1], y: 256, w: COLS[2].w, h: 368 }),
   ],
 });
 
@@ -224,9 +224,8 @@ const numbers = (demo) => {
   const els = stats.flatMap(([v, l], i) => {
     const x = COLS[3].x[i];
     return [
-      hair({ id: `st-r${i}`, x, y: 192, w: COLS[3].w, fill: INK }),
-      f.text({ id: `st-v${i}`, html: v, fontSize: 104, fontWeight: 500, lineHeight: 1.0, x, y: 212, w: COLS[3].w, h: 112 }),
-      body({ id: `st-l${i}`, html: l, color: GREY, x, y: 340, w: COLS[3].w, h: 90 }),
+      f.text({ id: `st-v${i}`, ...ph(demo, v, v), fontSize: 104, fontWeight: 500, lineHeight: 1.0, x, y: 212, w: COLS[3].w, h: 112 }),
+      body({ id: `st-l${i}`, ...ph(demo, l, l), color: GREY, x, y: 340, w: COLS[3].w, h: 90 }),
     ];
   });
   return {
@@ -237,7 +236,7 @@ const numbers = (demo) => {
     notes: "Headline numbers. One plain number per box at 104px with a one-line label. The note at the bottom carries the source or the consequence.",
     elements: [
       ...chrome(),
-      ...slideHead(demo ? "In numbers" : "Slide title"),
+      ...slideHead(demo, "In numbers"),
       ...els,
       hair({ id: "st-foot-rule", x: 96, y: 548, w: 1088 }),
       body({ id: "st-note", ...ph(demo, "Rams joined Braun in 1955 and became head of design in 1961. The ten principles were first published in the late 1970s and revised through the 1980s.", "Source or consequence"), fontSize: 20, color: GREY, x: 96, y: 564, w: 1088, h: 60 }),
@@ -253,7 +252,7 @@ const chart = (demo) => ({
   notes: "Chart. Series in charcoal, orange and grey. Bar and line data are plain numbers; only pie takes {name, value}. The legend must be an object to render. textStyle.fontFamily is set so the chart uses Jost rather than the browser default.",
   elements: [
     ...chrome(),
-    ...slideHead(demo ? "Products in the catalogue" : "Slide title"),
+    ...slideHead(demo, "Products in the catalogue"),
     f.chart({
       id: "chart-main",
       preset: "bar",
@@ -266,12 +265,12 @@ const chart = (demo) => ({
         grid: { left: 48, right: 8, top: 44, bottom: 32 },
         legend: { top: 0, textStyle: { color: INK, fontSize: 16 } },
         tooltip: { trigger: "axis" },
-        xAxis: { type: "category", data: ["1960", "1965", "1970", "1975", "1980", "1985"], axisLine: { lineStyle: { color: INK } }, axisLabel: { color: INK, fontSize: 16 } },
+        xAxis: { type: "category", data: demo ? ["1960", "1965", "1970", "1975", "1980", "1985"] : ["A", "B", "C", "D", "E", "F"], axisLine: { lineStyle: { color: INK } }, axisLabel: { color: INK, fontSize: 16 } },
         yAxis: { type: "value", axisLine: { show: false }, splitLine: { lineStyle: { color: HAIR } }, axisLabel: { color: GREY, fontSize: 14 } },
         series: [
-          { name: "Audio", type: "bar", data: [12, 18, 24, 22, 19, 14], itemStyle: { color: INK } },
-          { name: "Personal care", type: "bar", data: [4, 9, 15, 21, 26, 30], itemStyle: { color: ORANGE } },
-          { name: "Average", type: "line", data: [8, 13, 19, 21, 22, 22], symbol: "none", lineStyle: { color: GREY, width: 2 } },
+          { name: demo ? "Audio" : "Series 1", type: "bar", data: [12, 18, 24, 22, 19, 14], itemStyle: { color: INK } },
+          { name: demo ? "Personal care" : "Series 2", type: "bar", data: [4, 9, 15, 21, 26, 30], itemStyle: { color: ORANGE } },
+          { name: demo ? "Average" : "Series 3", type: "line", data: [8, 13, 19, 21, 22, 22], symbol: "none", lineStyle: { color: GREY, width: 2 } },
         ],
       },
     }),
@@ -286,7 +285,7 @@ const table = (demo) => ({
   notes: "Comparison table. Header row in Braun black, 1px hairlines, no zebra. Tables are for specs and comparisons; a numeric trend belongs in the chart layout.",
   elements: [
     ...chrome(),
-    ...slideHead(demo ? "Three radios" : "Slide title"),
+    ...slideHead(demo, "Three radios"),
     f.table({
       id: "tbl-main",
       x: 96,
@@ -299,7 +298,7 @@ const table = (demo) => ({
             { cells: [{ html: "Model" }, { html: "Year" }, { html: "Bands" }, { html: "Note" }] },
             { cells: [{ html: "T 3 pocket radio" }, { html: "1958" }, { html: "MW" }, { html: "The dial the cover borrows" }] },
             { cells: [{ html: "TP 1 radio and player" }, { html: "1959" }, { html: "MW" }, { html: "Portable, one unit" }] },
-            { cells: [{ html: "T 1000 world receiver", bold: true }, { html: "1963" }, { html: "LW MW SW FM" }, { html: "Still in production plans", color: ORANGE, bold: true }] },
+            { cells: [{ html: "T 1000 world receiver", bold: true }, { html: "1963" }, { html: "LW MW SW FM" }, { html: "Still in production plans", bold: true }] },
             { cells: [{ html: "RT 20 table radio" }, { html: "1961" }, { html: "MW FM" }, { html: "Wood and grey" }] },
           ]
         : [
@@ -332,8 +331,8 @@ const process = (demo) => {
     return [
       knob({ id: `pr-k${i}`, x, y: 192, w: 44, h: 44 }),
       f.text({ id: `pr-n${i}`, html: String(i + 1), fontSize: 20, fontWeight: 500, lineHeight: 1, align: "center", valign: "middle", x, y: 192, w: 44, h: 44 }),
-      f.text({ id: `pr-t${i}`, html: h, fontSize: 26, fontWeight: 500, lineHeight: 1.2, x, y: 260, w: COLS[4].w, h: 36 }),
-      body({ id: `pr-d${i}`, html: d, x, y: 308, w: COLS[4].w, h: 316 }),
+      f.text({ id: `pr-t${i}`, ...ph(demo, h, h), fontSize: 26, fontWeight: 500, lineHeight: 1.2, x, y: 260, w: COLS[4].w, h: 36 }),
+      body({ id: `pr-d${i}`, ...ph(demo, d, d), x, y: 308, w: COLS[4].w, h: 316 }),
     ];
   });
   return {
@@ -344,8 +343,8 @@ const process = (demo) => {
     notes: "Process. Four numbered knobs joined by a dotted orange track. In the demo, step 2 is clickable: a transparent rect over it links to a state slide, and the left arrow returns.",
     elements: [
       ...chrome(),
-      ...slideHead(demo ? "How a Braun product was designed" : "Slide title"),
-      f.line({ id: "pr-flow", x: 140, y: 212, w: 1044, h: 2, fill: ORANGE, stroke: ORANGE, strokeWidth: 2, strokeStyle: "dotted" }),
+      ...slideHead(demo, "How a Braun product was designed"),
+      f.line({ id: "pr-flow", x: 140, y: 212, w: 812, h: 2, fill: ORANGE, stroke: ORANGE, strokeWidth: 2, strokeStyle: "dotted" }),
       ...els,
       ...(demo
         ? [
@@ -365,7 +364,7 @@ const processDetail = () => ({
   notes: "State slide for step 2 (hidden from the arrow-key sequence, reached by clicking the step). Left arrow returns to the process slide.",
   elements: [
     ...chrome(),
-    ...slideHead("How a Braun product was designed"),
+    ...slideHead(true, "How a Braun product was designed"),
     knob({ id: "pr-k1", x: 96, y: 192, w: 44, h: 44 }),
     f.text({ id: "pr-n1", html: "2", fontSize: 20, fontWeight: 500, lineHeight: 1, align: "center", valign: "middle", x: 96, y: 192, w: 44, h: 44 }),
     f.text({ id: "pr-t1", html: "Reduce", fontSize: 26, fontWeight: 500, lineHeight: 1.2, x: 96, y: 260, w: 340, h: 36 }),
@@ -390,9 +389,9 @@ const quote = (demo) => ({
   elements: [
     ...chrome(),
     hair({ id: "q-rule-top", x: 96, y: 192, w: 1088, fill: INK }),
-    f.text({ id: "q-body", ...ph(demo, "Indifference towards people and the reality in which they live is actually the one and only cardinal sin in design.", "Quotation"), fontSize: 40, fontWeight: 400, lineHeight: 1.25, x: 96, y: 236, w: 1040, h: 260 }),
-    hair({ id: "q-rule-bottom", x: 96, y: 528, w: 1088, fill: INK }),
-    f.text({ id: "q-attrib", ...ph(demo, "Dieter Rams", "Name, source"), fontSize: 20, color: GREY, x: 96, y: 548, w: 1000, h: 32 }),
+    f.text({ id: "q-body", ...ph(demo, "Indifference towards people and the reality in which they live is actually the one and only cardinal sin in design.", "Quotation"), fontSize: 40, fontWeight: 400, lineHeight: 1.25, x: 96, y: 236, w: 1040, h: 200 }),
+    hair({ id: "q-rule-bottom", x: 96, y: 460, w: 1088, fill: INK }),
+    f.text({ id: "q-attrib", ...ph(demo, "Dieter Rams", "Name, source"), fontSize: 20, color: GREY, x: 96, y: 480, w: 1000, h: 32 }),
   ],
 });
 

@@ -24,7 +24,7 @@ const hair = (o) => f.rect({ fill: HAIR, h: 1, ...o });
 const body = (o) => f.text({ fontSize: 22, lineHeight: 1.35, ...o });
 const label = (o) => f.text({ fontSize: 16, fontWeight: 500, lineHeight: 1.3, color: GREY, ...o });
 
-// Content slides share this chrome; the ids stay stable so it morphs in place.
+// Content slides share this chrome; the ids stay stable across slides.
 const chrome = ({ mark = true } = {}) => [
   f.line({ id: "head-rule", x: 96, y: 64, w: 1088, h: 2, fill: INK }),
   label({ id: "run-title", html: "{{title}}", x: 96, y: 76, w: 600, h: 22 }),
@@ -32,7 +32,7 @@ const chrome = ({ mark = true } = {}) => [
   ...(mark ? [f.rect({ id: "mark", x: 1168, y: 78, w: 16, h: 16 })] : []),
 ];
 
-const slideHead = (html) => heading({ id: "slide-head", html, x: 96, y: 120, w: 1088, h: 60 });
+const slideHead = (demo, html, placeholder = "Slide title") => heading({ id: "slide-head", ...ph(demo, html, placeholder), x: 96, y: 120, w: 1088, h: 60 });
 
 // Every builder returns a slide. `demo` fills sample content; otherwise the
 // user-editable text becomes a placeholder for the layout picker.
@@ -48,7 +48,7 @@ const cover = (demo) => ({
   elements: [
     f.line({ id: "head-rule", x: 96, y: 64, w: 1088, h: 2, fill: INK }),
     label({ id: "run-title", html: "{{company}}", x: 96, y: 76, w: 600, h: 22 }),
-    label({ id: "run-page", html: "2026-09-22", color: INK, align: "right", x: 1004, y: 76, w: 180, h: 22 }),
+    label({ id: "run-page", ...ph(demo, "2026-09-22", "Date"), color: INK, align: "right", x: 1004, y: 76, w: 180, h: 22 }),
     f.rect({
       id: "mark",
       x: 784,
@@ -79,7 +79,7 @@ const agenda = (demo) => {
     background: PAPER,
     transition: "none",
     notes: "Agenda. The running head shows the deck title, the page number sits at the right with the red mark beside it. Four rows fit the band; delete a row rather than shrinking the type.",
-    elements: [...chrome(), slideHead(demo ? "Agenda" : "Agenda"), ...rows],
+    elements: [...chrome(), slideHead(demo, "Agenda", "Agenda"), ...rows],
   };
 };
 
@@ -115,15 +115,15 @@ const titleBody = (demo) => ({
   name: "Title and body",
   background: PAPER,
   transition: "none",
-  notes: "Title and body. The body box runs the full band. Use <ul> for bullets, or replace the box with a chart or table. Body stays at 22px; if it does not fit, cut words or split the slide.",
+  notes: "Title and body. The body column is 816px so lines stay readable. Use <ul> for bullets, or replace the box with a chart or table. Body stays at 22px; if it does not fit, cut words or split the slide.",
   elements: [
     ...chrome(),
-    slideHead(demo ? "The grid is a tool, not a cage" : "Slide title"),
+    slideHead(demo, "The grid is a tool, not a cage"),
     body({
       id: "body-copy",
       ...ph(
         demo,
-        "<p>The International Typographic Style came out of Swiss design schools in the 1950s. It favours a mathematical grid, sans-serif type set flush left, objective photography and the removal of anything that does not carry information.</p><p>Its lessons still hold for a slide: one typeface, one accent, generous margins, and text you can read from the back of the room.</p><ul><li>Align everything to the same left edge</li><li>Let white space do the separating</li><li>Use size and weight for hierarchy, never colour alone</li></ul>",
+        "<p>The International Typographic Style came out of Swiss design schools in the 1950s. It favours a mathematical grid, sans-serif type set flush left, objective photography and the removal of anything that does not carry information.</p><p>Its lessons still hold for a slide: one typeface, one accent, generous margins, and text you can read from the back of the room.</p><ul><li>Align everything to the same left edge</li><li>Let white space do the separating</li><li>Use size and weight for hierarchy, never colour alone</li><li>Set numbers in the same face as the words</li></ul><p>None of this is nostalgia. A room full of people reading a projected slide has the same constraints as a commuter reading a poster across a platform.</p>",
         "Body copy",
       ),
       x: 96,
@@ -150,8 +150,8 @@ const points = (demo) => {
     const y = 200 + i * 152;
     return [
       f.line({ id: `pt-r${i}`, x: 96, y, w: 1088, h: 2, fill: INK }),
-      f.text({ id: `pt-h${i}`, html: h, fontSize: 28, fontWeight: 700, lineHeight: 1.2, x: 96, y: y + 16, w: 300, h: 40 }),
-      body({ id: `pt-d${i}`, html: d, x: 470, y: y + 18, w: 714, h: 110 }),
+      f.text({ id: `pt-h${i}`, ...ph(demo, h, h), fontSize: 28, fontWeight: 700, lineHeight: 1.2, x: 96, y: y + 16, w: 300, h: 40 }),
+      body({ id: `pt-d${i}`, ...ph(demo, d, d), x: 470, y: y + 18, w: 714, h: 110 }),
     ];
   });
   return {
@@ -160,7 +160,7 @@ const points = (demo) => {
     background: PAPER,
     transition: "none",
     notes: "Points. Three rows, each a 2px rule, a bold lead and a sentence. Three fill the band; for more, split the slide.",
-    elements: [...chrome(), slideHead(demo ? "Three things the style asks of you" : "Slide title"), ...rows],
+    elements: [...chrome(), slideHead(demo, "Three things the style asks of you"), ...rows],
   };
 };
 
@@ -172,13 +172,13 @@ const twoCol = (demo) => ({
   notes: "Two columns, 528px each with a 32px gutter. Each column has a 28px lead line and 22px body. Good for before/after or problem/response.",
   elements: [
     ...chrome(),
-    slideHead(demo ? "Before and after" : "Slide title"),
+    slideHead(demo, "Before and after"),
     f.text({ id: "col-l-head", ...ph(demo, "Before", "Left heading"), fontSize: 28, fontWeight: 700, lineHeight: 1.2, x: COLS[2].x[0], y: 200, w: COLS[2].w, h: 40 }),
     f.line({ id: "col-l-rule", x: COLS[2].x[0], y: 252, w: COLS[2].w, h: 2, fill: INK }),
-    body({ id: "col-l-body", ...ph(demo, "Six typefaces across the deck. Centred headings that change size on every slide. Bullets nested three deep, with the important number in the footer where nobody looks.", "Left body"), x: COLS[2].x[0], y: 272, w: COLS[2].w, h: 384 }),
+    body({ id: "col-l-body", ...ph(demo, "<p>Six typefaces across the deck. Centred headings that change size on every slide. Bullets nested three deep, with the important number in the footer where nobody looks.</p><p>Every slide was built from the previous one, so the errors compounded. By the end nobody could say what the deck was asking for.</p><p>The fix was not more design. It was less.</p>", "Left body"), x: COLS[2].x[0], y: 272, w: COLS[2].w, h: 384 }),
     f.text({ id: "col-r-head", ...ph(demo, "After", "Right heading"), fontSize: 28, fontWeight: 700, lineHeight: 1.2, x: COLS[2].x[1], y: 200, w: COLS[2].w, h: 40 }),
     f.line({ id: "col-r-rule", x: COLS[2].x[1], y: 252, w: COLS[2].w, h: 2, fill: INK }),
-    body({ id: "col-r-body", ...ph(demo, "One typeface at three sizes. Every heading on the same baseline. The number the audience came for set at 112px, alone, with a one-line label.", "Right body"), x: COLS[2].x[1], y: 272, w: COLS[2].w, h: 384 }),
+    body({ id: "col-r-body", ...ph(demo, "<p>One typeface at three sizes. Every heading on the same baseline. The number the audience came for set at 112px, alone, with a one-line label.</p><p>Each slide answers one question. The ask is the last slide, in red, and nothing follows it.</p><p>If a slide needs a second typeface to make sense, the slide is the problem.</p>", "Right body"), x: COLS[2].x[1], y: 272, w: COLS[2].w, h: 384 }),
   ],
 });
 
@@ -198,8 +198,8 @@ const numbers = (demo) => {
     const x = COLS[3].x[i];
     return [
       f.line({ id: `st-r${i}`, x, y: 200, w: COLS[3].w, h: 2, fill: INK }),
-      f.text({ id: `st-v${i}`, html: v, fontSize: 112, fontWeight: 700, lineHeight: 1.0, letterSpacing: -1, x, y: 224, w: COLS[3].w, h: 120 }),
-      body({ id: `st-l${i}`, html: l, color: GREY, x, y: 364, w: COLS[3].w, h: 90 }),
+      f.text({ id: `st-v${i}`, ...ph(demo, v, v), fontSize: 112, fontWeight: 700, lineHeight: 1.0, letterSpacing: -1, x, y: 224, w: COLS[3].w, h: 120 }),
+      body({ id: `st-l${i}`, ...ph(demo, l, l), color: GREY, x, y: 364, w: COLS[3].w, h: 90 }),
     ];
   });
   return {
@@ -210,7 +210,7 @@ const numbers = (demo) => {
     notes: "Headline numbers. One plain number per box at 112px with a one-line label. The line at the bottom gives the numbers their consequence; delete it if the numbers speak alone.",
     elements: [
       ...chrome(),
-      slideHead(demo ? "What the audit found" : "Slide title"),
+      slideHead(demo, "What the audit found"),
       ...els,
       hair({ id: "st-foot-rule", x: 96, y: 576, w: 1088 }),
       body({ id: "st-note", ...ph(demo, "Sample of 120 internal decks presented between March and August. Typeface count includes fonts embedded in pasted screenshots.", "Source or consequence"), fontSize: 20, color: GREY, x: 96, y: 592, w: 1088, h: 64 }),
@@ -226,7 +226,7 @@ const chart = (demo) => ({
   notes: "Chart. Two bar series in ink and red plus a target line in grey. Bar and line data are plain numbers; only pie takes {name, value}. The legend must be an object to render. textStyle.fontFamily is set so the chart uses Archivo rather than the browser default.",
   elements: [
     ...chrome(),
-    slideHead(demo ? "Decks reworked per month" : "Slide title"),
+    slideHead(demo, "Decks reworked per month"),
     f.chart({
       id: "chart-main",
       preset: "bar",
@@ -239,12 +239,12 @@ const chart = (demo) => ({
         grid: { left: 48, right: 8, top: 44, bottom: 32 },
         legend: { top: 0, textStyle: { color: INK, fontSize: 16 } },
         tooltip: { trigger: "axis" },
-        xAxis: { type: "category", data: ["Mar", "Apr", "May", "Jun", "Jul", "Aug"], axisLine: { lineStyle: { color: INK } }, axisLabel: { color: INK, fontSize: 16 } },
+        xAxis: { type: "category", data: demo ? ["Mar", "Apr", "May", "Jun", "Jul", "Aug"] : ["A", "B", "C", "D", "E", "F"], axisLine: { lineStyle: { color: INK } }, axisLabel: { color: INK, fontSize: 16 } },
         yAxis: { type: "value", axisLine: { show: false }, splitLine: { lineStyle: { color: HAIR } }, axisLabel: { color: GREY, fontSize: 14 } },
         series: [
-          { name: "Submitted", type: "bar", data: [14, 18, 22, 21, 26, 31], itemStyle: { color: INK } },
-          { name: "Reworked", type: "bar", data: [9, 12, 11, 8, 7, 5], itemStyle: { color: RED } },
-          { name: "Target", type: "line", data: [10, 9, 8, 7, 6, 5], symbol: "none", lineStyle: { color: GREY, width: 2 } },
+          { name: demo ? "Submitted" : "Series 1", type: "bar", data: [14, 18, 22, 21, 26, 31], itemStyle: { color: INK } },
+          { name: demo ? "Reworked" : "Series 2", type: "bar", data: [9, 12, 11, 8, 7, 5], itemStyle: { color: RED } },
+          { name: demo ? "Target" : "Series 3", type: "line", data: [10, 9, 8, 7, 6, 5], symbol: "none", lineStyle: { color: GREY, width: 2 } },
         ],
       },
     }),
@@ -259,7 +259,7 @@ const table = (demo) => ({
   notes: "Comparison table. Header row in ink, 1px hairlines, no zebra. Tables are for specs and comparisons; a numeric trend belongs in the chart layout.",
   elements: [
     ...chrome(),
-    slideHead(demo ? "Options on the table" : "Slide title"),
+    slideHead(demo, "Options on the table"),
     f.table({
       id: "tbl-main",
       x: 96,
@@ -305,8 +305,8 @@ const process = (demo) => {
     return [
       f.line({ id: `pr-r${i}`, x, y: 200, w: COLS[4].w, h: 2, fill: INK }),
       heading({ id: `pr-n${i}`, html: String(i + 1), x, y: 216, w: 80, h: 56 }),
-      f.text({ id: `pr-t${i}`, html: h, fontSize: 24, fontWeight: 700, lineHeight: 1.2, x, y: 316, w: COLS[4].w, h: 36 }),
-      body({ id: `pr-d${i}`, html: d, x, y: 364, w: COLS[4].w, h: 292 }),
+      f.text({ id: `pr-t${i}`, ...ph(demo, h, h), fontSize: 24, fontWeight: 700, lineHeight: 1.2, x, y: 316, w: COLS[4].w, h: 36 }),
+      body({ id: `pr-d${i}`, ...ph(demo, d, d), x, y: 364, w: COLS[4].w, h: 292 }),
     ];
   });
   return {
@@ -317,7 +317,7 @@ const process = (demo) => {
     notes: "Process. Four numbered columns on a dashed red line. In the demo, step 2 is clickable: a transparent rect over it links to a state slide. Left arrow returns.",
     elements: [
       ...chrome(),
-      slideHead(demo ? "How the audit ran" : "Slide title"),
+      slideHead(demo, "How the audit ran"),
       ...els,
       f.line({ id: "pr-flow", x: 96, y: 290, w: 1088, h: 3, fill: RED, stroke: RED, strokeWidth: 3, strokeStyle: "dashed", lineEnd: "arrow" }),
       ...(demo
@@ -338,13 +338,13 @@ const processDetail = () => ({
   notes: "State slide for step 2 (hidden from the arrow-key sequence, reached by clicking the step). Left arrow returns to the process slide.",
   elements: [
     ...chrome(),
-    slideHead("How the audit ran"),
+    slideHead(true, "How the audit ran"),
     f.line({ id: "pr-r1", x: 96, y: 200, w: 1088, h: 2, fill: INK }),
     heading({ id: "pr-n1", html: "2", x: 96, y: 216, w: 80, h: 56 }),
     f.text({ id: "pr-t1", html: "Measure", fontSize: 24, fontWeight: 700, lineHeight: 1.2, x: 96, y: 316, w: 340, h: 36 }),
     body({
       id: "det-body",
-      html: "<p>Three counts per slide: typefaces, colours, words. Screenshots count for whatever fonts are visible in them, because the audience sees those too.</p><p>We also logged the first thing each reviewer's eye landed on. In 41 of 120 decks it was the page number.</p>",
+      html: "<p>Three counts per slide: typefaces, colours, words. Screenshots count for whatever fonts are visible in them, because the audience sees those too.</p><p>We also logged the first thing each reviewer's eye landed on. In 41 of 120 decks it was the page number.</p><p>Nothing here needed a tool: a printed deck, a pen and twenty minutes per deck. The counts are in the appendix.</p>",
       x: 470,
       y: 316,
       w: 714,
