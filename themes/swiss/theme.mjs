@@ -1,7 +1,8 @@
 // Swiss: International Typographic Style. One grotesque (Archivo), flush-left
 // ragged-right, a 2px rule and running head on every slide, and a single red
-// square ("mark") that morphs from slide to slide: a 400px block on the cover,
+// square ("mark") that recurs at a different scale: a 400px block on the cover,
 // a 16px dot beside the page number, a bar on dividers, full-bleed at the end.
+// No animation anywhere: the ids stay stable so a morph can be switched on later.
 import { join } from "node:path";
 import { COLS, dataUri, factory } from "../../scripts/lib.mjs";
 
@@ -43,7 +44,7 @@ const cover = (demo) => ({
   background: PAPER,
   transition: "none",
   notes:
-    "Cover. Title and company fill from File > Properties, so set them once. The date is a literal: it records when the deck was written, and it is deliberately not the {{date}} token, which would show whatever day the deck is presented. The red square drifts slowly, then on the next slide it shrinks into the 16px dot beside the page number and keeps morphing through the deck.",
+    "Cover. Title and company fill from File > Properties, so set them once. The date is a literal: it records when the deck was written, and it is deliberately not the {{date}} token, which would show whatever day the deck is presented. The red square is the deck's one mark; it reappears at a different scale on the dividers and the closing slide.",
   elements: [
     f.line({ id: "head-rule", x: 96, y: 64, w: 1088, h: 2, fill: INK }),
     label({ id: "run-title", html: "{{company}}", x: 96, y: 76, w: 600, h: 22 }),
@@ -54,10 +55,9 @@ const cover = (demo) => ({
       y: 160,
       w: 400,
       h: 400,
-      fx: { loop: { type: "motion-path", path: "M0 0 C 10 -12, 18 12, 0 20 S -16 6, 0 0", duration: 16, ease: "sine.inOut" } },
     }),
-    display({ id: "deck-title", html: "{{title}}", valign: "bottom", x: 96, y: 300, w: 640, h: 292, fx: { enter: "fade-up", order: 0 } }),
-    body({ id: "cover-sub", ...ph(demo, "A subtitle, the event, or the client", "Subtitle"), color: GREY, x: 96, y: 608, w: 640, h: 48, fx: { enter: "fade-up", order: 1 } }),
+    display({ id: "deck-title", html: "{{title}}", valign: "bottom", x: 96, y: 300, w: 640, h: 292 }),
+    body({ id: "cover-sub", ...ph(demo, "A subtitle, the event, or the client", "Subtitle"), color: GREY, x: 96, y: 608, w: 640, h: 48 }),
   ],
 });
 
@@ -77,8 +77,8 @@ const agenda = (demo) => {
     id: "s-agenda",
     name: "Agenda",
     background: PAPER,
-    transition: "morph",
-    notes: "Agenda. Arriving here morphs the cover: the running head swaps to the deck title, the page number appears, and the red square shrinks to its resting place beside it. Four rows fit the band; delete a row rather than shrinking the type.",
+    transition: "none",
+    notes: "Agenda. The running head shows the deck title, the page number sits at the right with the red mark beside it. Four rows fit the band; delete a row rather than shrinking the type.",
     elements: [...chrome(), slideHead(demo ? "Agenda" : "Agenda"), ...rows],
   };
 };
@@ -87,8 +87,8 @@ const section = (demo) => ({
   id: "s-section",
   name: "Section",
   background: PAPER,
-  transition: "morph",
-  notes: "Section divider. The mark stretches into a vertical bar. Number the sections only if the order matters to the audience; otherwise delete the numeral and let the title sit alone.",
+  transition: "none",
+  notes: "Section divider. The mark becomes a vertical bar. Number the sections only if the order matters to the audience; otherwise delete the numeral and let the title sit alone.",
   elements: [
     ...chrome({ mark: false }),
     f.rect({ id: "mark", x: 96, y: 200, w: 24, h: 456 }),
@@ -101,7 +101,7 @@ const statement = (demo) => ({
   id: "s-statement",
   name: "Statement",
   background: PAPER,
-  transition: "morph",
+  transition: "none",
   notes: "Statement. One sentence, no bullets, flush left. Keep it under about twenty words so it holds at 56px. The source line underneath is optional.",
   elements: [
     ...chrome(),
@@ -114,7 +114,7 @@ const titleBody = (demo) => ({
   id: "s-body",
   name: "Title and body",
   background: PAPER,
-  transition: "morph",
+  transition: "none",
   notes: "Title and body. The body box runs the full band. Use <ul> for bullets, or replace the box with a chart or table. Body stays at 22px; if it does not fit, cut words or split the slide.",
   elements: [
     ...chrome(),
@@ -148,19 +148,18 @@ const points = (demo) => {
       ];
   const rows = items.flatMap(([h, d], i) => {
     const y = 200 + i * 152;
-    const fx = demo && i > 0 ? { step: i } : undefined;
     return [
-      f.line({ id: `pt-r${i}`, x: 96, y, w: 1088, h: 2, fill: INK, fx }),
-      f.text({ id: `pt-h${i}`, html: h, fontSize: 28, fontWeight: 700, lineHeight: 1.2, x: 96, y: y + 16, w: 300, h: 40, fx }),
-      body({ id: `pt-d${i}`, html: d, x: 470, y: y + 18, w: 714, h: 110, fx }),
+      f.line({ id: `pt-r${i}`, x: 96, y, w: 1088, h: 2, fill: INK }),
+      f.text({ id: `pt-h${i}`, html: h, fontSize: 28, fontWeight: 700, lineHeight: 1.2, x: 96, y: y + 16, w: 300, h: 40 }),
+      body({ id: `pt-d${i}`, html: d, x: 470, y: y + 18, w: 714, h: 110 }),
     ];
   });
   return {
     id: "s-points",
     name: "Points",
     background: PAPER,
-    transition: "morph",
-    notes: "Points. The first row shows on arrival, the next two reveal one click at a time (fx.step on each row). Three rows fill the band. Remove the fx.step keys to show all at once.",
+    transition: "none",
+    notes: "Points. Three rows, each a 2px rule, a bold lead and a sentence. Three fill the band; for more, split the slide.",
     elements: [...chrome(), slideHead(demo ? "Three things the style asks of you" : "Slide title"), ...rows],
   };
 };
@@ -169,7 +168,7 @@ const twoCol = (demo) => ({
   id: "s-twocol",
   name: "Two columns",
   background: PAPER,
-  transition: "morph",
+  transition: "none",
   notes: "Two columns, 528px each with a 32px gutter. Each column has a 28px lead line and 22px body. Good for before/after or problem/response.",
   elements: [
     ...chrome(),
@@ -199,7 +198,7 @@ const numbers = (demo) => {
     const x = COLS[3].x[i];
     return [
       f.line({ id: `st-r${i}`, x, y: 200, w: COLS[3].w, h: 2, fill: INK }),
-      f.text({ id: `st-v${i}`, html: v, fontSize: 112, fontWeight: 700, lineHeight: 1.0, letterSpacing: -1, x, y: 224, w: COLS[3].w, h: 120, fx: demo ? { countUp: true } : undefined }),
+      f.text({ id: `st-v${i}`, html: v, fontSize: 112, fontWeight: 700, lineHeight: 1.0, letterSpacing: -1, x, y: 224, w: COLS[3].w, h: 120 }),
       body({ id: `st-l${i}`, html: l, color: GREY, x, y: 364, w: COLS[3].w, h: 90 }),
     ];
   });
@@ -207,8 +206,8 @@ const numbers = (demo) => {
     id: "s-numbers",
     name: "Numbers",
     background: PAPER,
-    transition: "morph",
-    notes: "Headline numbers count up on arrival (fx.countUp). One plain number per box: countUp strips markup and animates every digit it finds. The line at the bottom gives the numbers their consequence; delete it if the numbers speak alone.",
+    transition: "none",
+    notes: "Headline numbers. One plain number per box at 112px with a one-line label. The line at the bottom gives the numbers their consequence; delete it if the numbers speak alone.",
     elements: [
       ...chrome(),
       slideHead(demo ? "What the audit found" : "Slide title"),
@@ -256,7 +255,7 @@ const table = (demo) => ({
   id: "s-table",
   name: "Table",
   background: PAPER,
-  transition: "morph",
+  transition: "none",
   notes: "Comparison table. Header row in ink, 1px hairlines, no zebra. Tables are for specs and comparisons; a numeric trend belongs in the chart layout.",
   elements: [
     ...chrome(),
@@ -314,13 +313,13 @@ const process = (demo) => {
     id: "s-process",
     name: "Process",
     background: PAPER,
-    transition: "morph",
-    notes: "Process. Four columns and a dashed red line that marches (fx.loop dash-march) so the sequence reads as movement. In the demo, step 2 is clickable: a transparent rect over it links to a state slide. Left arrow returns.",
+    transition: "none",
+    notes: "Process. Four numbered columns on a dashed red line. In the demo, step 2 is clickable: a transparent rect over it links to a state slide. Left arrow returns.",
     elements: [
       ...chrome(),
       slideHead(demo ? "How the audit ran" : "Slide title"),
       ...els,
-      f.line({ id: "pr-flow", x: 96, y: 290, w: 1088, h: 3, fill: RED, stroke: RED, strokeWidth: 3, strokeStyle: "dashed", lineEnd: "arrow", fx: { loop: { type: "dash-march", distance: 18, duration: 1.4 } } }),
+      f.line({ id: "pr-flow", x: 96, y: 290, w: 1088, h: 3, fill: RED, stroke: RED, strokeWidth: 3, strokeStyle: "dashed", lineEnd: "arrow" }),
       ...(demo
         ? [
             f.rect({ id: "pr-hit1", x: COLS[4].x[1] - 12, y: 200, w: COLS[4].w + 24, h: 456, fill: "rgba(0,0,0,0)", link: "s-process-detail" }),
@@ -335,7 +334,7 @@ const processDetail = () => ({
   id: "s-process-detail",
   stateOf: "s-process",
   background: PAPER,
-  transition: "morph",
+  transition: "none",
   notes: "State slide for step 2 (hidden from the arrow-key sequence, reached by clicking the step). Left arrow returns to the process slide.",
   elements: [
     ...chrome(),
@@ -374,13 +373,13 @@ const image = (demo) => ({
   name: "Image",
   background: INK,
   transition: "none",
-  notes: "Full-bleed image with a slow ken-burns drift, an ink scrim and the title at the bottom left. Replace the placeholder asset with a photo downscaled to 2560px before embedding. Text baked into the photo cannot be edited, so keep captions in the text element.",
+  notes: "Full-bleed image with an ink scrim and the title at the bottom left. Replace the placeholder asset with a photo downscaled to 2560px before embedding. Text baked into the photo cannot be edited, so keep captions in the text element.",
   elements: [
-    f.image({ id: "hero-img", src: "asset:placeholder", fit: "cover", x: 0, y: 0, w: 1280, h: 720, fx: { ambient: "kenburns", ken: { dir: "drift", scale: 1.08, duration: 24 } } }),
+    f.image({ id: "hero-img", src: "asset:placeholder", fit: "cover", x: 0, y: 0, w: 1280, h: 720 }),
     f.rect({ id: "hero-scrim", x: 0, y: 0, w: 1280, h: 720, fill: INK, opacity: 0.45 }),
     f.rect({ id: "mark", x: 96, y: 520, w: 24, h: 24 }),
-    f.text({ id: "hero-title", ...ph(demo, "Objective photography, cropped to the grid", "Caption or title"), fontSize: 56, fontWeight: 700, lineHeight: 1.05, color: PAPER, valign: "bottom", x: 96, y: 360, w: 900, h: 140, fx: { enter: "fade-up", order: 0 } }),
-    body({ id: "hero-sub", ...ph(demo, "Replace the placeholder with a real photograph", "Subtitle"), color: PAPER, x: 136, y: 520, w: 800, h: 40, fx: { enter: "fade-up", order: 1 } }),
+    f.text({ id: "hero-title", ...ph(demo, "Objective photography, cropped to the grid", "Caption or title"), fontSize: 56, fontWeight: 700, lineHeight: 1.05, color: PAPER, valign: "bottom", x: 96, y: 360, w: 900, h: 140 }),
+    body({ id: "hero-sub", ...ph(demo, "Replace the placeholder with a real photograph", "Subtitle"), color: PAPER, x: 136, y: 520, w: 800, h: 40 }),
   ],
 });
 
@@ -388,8 +387,8 @@ const closing = (demo) => ({
   id: "s-closing",
   name: "Closing",
   background: PAPER,
-  transition: "morph",
-  notes: "Closing. The mark grows to fill the slide. End on the ask rather than the word Questions. The second line is where to send people: a URL, a name, a date. {{author}} and {{company}} resolve from File > Properties.",
+  transition: "none",
+  notes: "Closing. The mark fills the slide. End on the ask rather than the word Questions. The second line is where to send people: a URL, a name, a date. {{author}} and {{company}} resolve from File > Properties.",
   elements: [
     f.rect({ id: "mark", x: 0, y: 0, w: 1280, h: 720 }),
     f.text({ id: "close-line", ...ph(demo, "Re-set one deck on this grid before the next review.", "The ask"), fontSize: 64, fontWeight: 700, lineHeight: 1.05, color: PAPER, valign: "bottom", x: 96, y: 200, w: 1000, h: 392 }),

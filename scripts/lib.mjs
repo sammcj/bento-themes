@@ -67,7 +67,10 @@ export function assertDoc(doc) {
       if (e.type === "text" && !("html" in e) && !("placeholder" in e)) problems.push(`${label}/${e.id}: text without html`);
       if (e.type === "text" && e.fontSize < 14) problems.push(`${label}/${e.id}: fontSize ${e.fontSize} below 14px floor`);
       if (e.fontFamily && !e.fontFamily.includes(",")) problems.push(`${label}/${e.id}: fontFamily needs a fallback stack`);
+      // Themes here are static by design: no entrances, loops, step reveals or count-ups.
+      if (e.fx) problems.push(`${label}/${e.id}: carries fx (templates are animation-free)`);
     }
+    if (s.transition && s.transition !== "none") problems.push(`${label}: transition must be "none"`);
   };
   for (const s of doc.slides) {
     if (!s.notes) problems.push(`${s.id}: missing notes`);

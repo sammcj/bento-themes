@@ -58,7 +58,7 @@
    "id": "s-cover",
    "background": "#E4E1DA",
    "transition": "none",
-   "notes": "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written, rather than the {{date}} token which shows the day it is presented. The orange indicator orbits the dial once every forty seconds; on the next slide it morphs into the small dot in the footer and keeps moving through the deck.",
+   "notes": "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written, rather than the {{date}} token which shows the day it is presented. The orange indicator on the dial is the deck's one colour; it recurs as the small dot in the footer, on the dividers and on the closing slide.",
    "elements": [
     {
      "rotation": 0,
@@ -174,15 +174,7 @@
      "x": 946,
      "y": 146,
      "w": 28,
-     "h": 28,
-     "fx": {
-      "loop": {
-       "type": "motion-path",
-       "path": "M0 0 A160 160 0 1 1 0 320 A160 160 0 1 1 0 0",
-       "duration": 40,
-       "ease": "none"
-      }
-     }
+     "h": 28
     },
     {
      "rotation": 0,
@@ -200,11 +192,7 @@
      "x": 96,
      "y": 260,
      "w": 600,
-     "h": 300,
-     "fx": {
-      "enter": "fade-up",
-      "order": 0
-     }
+     "h": 300
     },
     {
      "rotation": 0,
@@ -222,19 +210,15 @@
      "x": 96,
      "y": 576,
      "w": 600,
-     "h": 48,
-     "fx": {
-      "enter": "fade-up",
-      "order": 1
-     }
+     "h": 48
     }
    ]
   },
   {
    "id": "s-agenda",
    "background": "#E4E1DA",
-   "transition": "morph",
-   "notes": "Agenda. Arriving here morphs the cover: the orbiting indicator settles into the footer, the running head swaps to the deck title and the page number appears. Four rows fit; delete rows rather than shrinking the type.",
+   "transition": "none",
+   "notes": "Agenda. The footer carries the indicator, the deck title and the page number. Four rows fit; delete rows rather than shrinking the type.",
    "elements": [
     {
      "rotation": 0,
@@ -545,8 +529,8 @@
   {
    "id": "s-section",
    "background": "#1E1E1C",
-   "transition": "morph",
-   "notes": "Section divider on Braun black. The indicator grows to a 48px disc beside the section number. Number sections only when the order matters; otherwise delete the numeral.",
+   "transition": "none",
+   "notes": "Section divider on Braun black. The indicator becomes a 48px disc beside the section number. Number sections only when the order matters; otherwise delete the numeral.",
    "elements": [
     {
      "rotation": 0,
@@ -656,7 +640,7 @@
   {
    "id": "s-statement",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "Statement. One sentence, no bullets. Under twenty words holds at 52px. The line beneath is for a source or a consequence; delete it if the sentence stands alone.",
    "elements": [
     {
@@ -767,7 +751,7 @@
   {
    "id": "s-body",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "Title and body. The body column is 816px so lines stay readable. Use <ul> for bullets. Body stays at 24px; if it does not fit, cut words or split the slide.",
    "elements": [
     {
@@ -893,8 +877,8 @@
   {
    "id": "s-points",
    "background": "#E4E1DA",
-   "transition": "morph",
-   "notes": "Points. The first row shows on arrival and the next two reveal one click at a time (fx.step). Three rows fill the band. Remove the fx.step keys to show them all at once.",
+   "transition": "none",
+   "notes": "Points. Three rows, each a hairline, a medium lead and a sentence. Three fill the band; for more, split the slide.",
    "elements": [
     {
      "rotation": 0,
@@ -1060,10 +1044,7 @@
      "id": "pt-r1",
      "x": 96,
      "y": 336,
-     "w": 1088,
-     "fx": {
-      "step": 1
-     }
+     "w": 1088
     },
     {
      "rotation": 0,
@@ -1081,10 +1062,7 @@
      "x": 96,
      "y": 356,
      "w": 340,
-     "h": 70,
-     "fx": {
-      "step": 1
-     }
+     "h": 70
     },
     {
      "rotation": 0,
@@ -1102,10 +1080,7 @@
      "x": 470,
      "y": 358,
      "w": 714,
-     "h": 104,
-     "fx": {
-      "step": 1
-     }
+     "h": 104
     },
     {
      "rotation": 0,
@@ -1120,10 +1095,7 @@
      "id": "pt-r2",
      "x": 96,
      "y": 480,
-     "w": 1088,
-     "fx": {
-      "step": 2
-     }
+     "w": 1088
     },
     {
      "rotation": 0,
@@ -1141,10 +1113,7 @@
      "x": 96,
      "y": 500,
      "w": 340,
-     "h": 70,
-     "fx": {
-      "step": 2
-     }
+     "h": 70
     },
     {
      "rotation": 0,
@@ -1162,17 +1131,14 @@
      "x": 470,
      "y": 502,
      "w": 714,
-     "h": 104,
-     "fx": {
-      "step": 2
-     }
+     "h": 104
     }
    ]
   },
   {
    "id": "s-twocol",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "Two columns, 528px each with a 32px gutter. Each has a 26px lead line and a hairline before 22px body. Suits before/after or problem/response.",
    "elements": [
     {
@@ -1382,8 +1348,8 @@
   {
    "id": "s-numbers",
    "background": "#E4E1DA",
-   "transition": "morph",
-   "notes": "Headline numbers count up on arrival (fx.countUp). One plain number per box: countUp strips markup and animates every digit it finds. The note at the bottom carries the source or the consequence.",
+   "transition": "none",
+   "notes": "Headline numbers. One plain number per box at 104px with a one-line label. The note at the bottom carries the source or the consequence.",
    "elements": [
     {
      "rotation": 0,
@@ -1516,10 +1482,7 @@
      "x": 96,
      "y": 212,
      "w": 340,
-     "h": 112,
-     "fx": {
-      "countUp": true
-     }
+     "h": 112
     },
     {
      "rotation": 0,
@@ -1570,10 +1533,7 @@
      "x": 470,
      "y": 212,
      "w": 340,
-     "h": 112,
-     "fx": {
-      "countUp": true
-     }
+     "h": 112
     },
     {
      "rotation": 0,
@@ -1624,10 +1584,7 @@
      "x": 844,
      "y": 212,
      "w": 340,
-     "h": 112,
-     "fx": {
-      "countUp": true
-     }
+     "h": 112
     },
     {
      "rotation": 0,
@@ -1909,7 +1866,7 @@
   {
    "id": "s-table",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "Comparison table. Header row in Braun black, 1px hairlines, no zebra. Tables are for specs and comparisons; a numeric trend belongs in the chart layout.",
    "elements": [
     {
@@ -2138,8 +2095,8 @@
   {
    "id": "s-process",
    "background": "#E4E1DA",
-   "transition": "morph",
-   "notes": "Process. Four numbered knobs joined by a dotted orange track that marches (fx.loop dash-march). In the demo, step 2 is clickable: a transparent rect over it links to a state slide, and the left arrow returns.",
+   "transition": "none",
+   "notes": "Process. Four numbered knobs joined by a dotted orange track. In the demo, step 2 is clickable: a transparent rect over it links to a state slide, and the left arrow returns.",
    "elements": [
     {
      "rotation": 0,
@@ -2254,14 +2211,7 @@
      "x": 140,
      "y": 212,
      "w": 1044,
-     "strokeStyle": "dotted",
-     "fx": {
-      "loop": {
-       "type": "dash-march",
-       "distance": 12,
-       "duration": 1.6
-      }
-     }
+     "strokeStyle": "dotted"
     },
     {
      "rotation": 0,
@@ -2575,7 +2525,7 @@
    "id": "s-process-detail",
    "stateOf": "s-process",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "State slide for step 2 (hidden from the arrow-key sequence, reached by clicking the step). Left arrow returns to the process slide.",
    "elements": [
     {
@@ -2911,7 +2861,7 @@
    "id": "s-image",
    "background": "#1E1E1C",
    "transition": "none",
-   "notes": "Full-bleed image with a slow ken-burns drift, a dark scrim and the caption at the bottom left. Replace the placeholder asset with a photo downscaled to 2560px before embedding. Keep captions in the text element, since text baked into a photo cannot be edited.",
+   "notes": "Full-bleed image with a dark scrim and the caption at the bottom left. Replace the placeholder asset with a photo downscaled to 2560px before embedding. Keep captions in the text element, since text baked into a photo cannot be edited.",
    "elements": [
     {
      "rotation": 0,
@@ -2924,15 +2874,7 @@
      "x": 0,
      "y": 0,
      "w": 1280,
-     "h": 720,
-     "fx": {
-      "ambient": "kenburns",
-      "ken": {
-       "dir": "drift",
-       "scale": 1.08,
-       "duration": 24
-      }
-     }
+     "h": 720
     },
     {
      "rotation": 0,
@@ -2965,11 +2907,7 @@
      "x": 96,
      "y": 380,
      "w": 900,
-     "h": 130,
-     "fx": {
-      "enter": "fade-up",
-      "order": 0
-     }
+     "h": 130
     },
     {
      "rotation": 0,
@@ -3001,19 +2939,15 @@
      "x": 124,
      "y": 524,
      "w": 800,
-     "h": 40,
-     "fx": {
-      "enter": "fade-up",
-      "order": 1
-     }
+     "h": 40
     }
    ]
   },
   {
    "id": "s-closing",
    "background": "#E4E1DA",
-   "transition": "morph",
-   "notes": "Closing. The indicator grows into a 480px disc. End on the ask rather than the word Questions. The second line is where to send people: a URL, a name, a date. {{author}} and {{company}} resolve from File > Properties.",
+   "transition": "none",
+   "notes": "Closing. The indicator becomes a 480px disc. End on the ask rather than the word Questions. The second line is where to send people: a URL, a name, a date. {{author}} and {{company}} resolve from File > Properties.",
    "elements": [
     {
      "rotation": 0,
@@ -3190,15 +3124,7 @@
      "x": 946,
      "y": 146,
      "w": 28,
-     "h": 28,
-     "fx": {
-      "loop": {
-       "type": "motion-path",
-       "path": "M0 0 A160 160 0 1 1 0 320 A160 160 0 1 1 0 0",
-       "duration": 40,
-       "ease": "none"
-      }
-     }
+     "h": 28
     },
     {
      "rotation": 0,
@@ -3216,11 +3142,7 @@
      "x": 96,
      "y": 260,
      "w": 600,
-     "h": 300,
-     "fx": {
-      "enter": "fade-up",
-      "order": 0
-     }
+     "h": 300
     },
     {
      "rotation": 0,
@@ -3239,11 +3161,7 @@
      "x": 96,
      "y": 576,
      "w": 600,
-     "h": 48,
-     "fx": {
-      "enter": "fade-up",
-      "order": 1
-     }
+     "h": 48
     }
    ]
   },
@@ -3251,7 +3169,7 @@
    "id": "layout-rams-agenda",
    "name": "Agenda",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -3568,7 +3486,7 @@
    "id": "layout-rams-section",
    "name": "Section",
    "background": "#1E1E1C",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -3682,7 +3600,7 @@
    "id": "layout-rams-statement",
    "name": "Statement",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -3796,7 +3714,7 @@
    "id": "layout-rams-body",
    "name": "Title and body",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -3924,7 +3842,7 @@
    "id": "layout-rams-points",
    "name": "Points",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -4186,7 +4104,7 @@
    "id": "layout-rams-twocol",
    "name": "Two columns",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -4401,7 +4319,7 @@
    "id": "layout-rams-numbers",
    "name": "Numbers",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -4922,7 +4840,7 @@
    "id": "layout-rams-table",
    "name": "Table",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -5133,7 +5051,7 @@
    "id": "layout-rams-process",
    "name": "Process",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {
@@ -5249,14 +5167,7 @@
      "x": 140,
      "y": 212,
      "w": 1044,
-     "strokeStyle": "dotted",
-     "fx": {
-      "loop": {
-       "type": "dash-march",
-       "distance": 12,
-       "duration": 1.6
-      }
-     }
+     "strokeStyle": "dotted"
     },
     {
      "rotation": 0,
@@ -5694,15 +5605,7 @@
      "x": 0,
      "y": 0,
      "w": 1280,
-     "h": 720,
-     "fx": {
-      "ambient": "kenburns",
-      "ken": {
-       "dir": "drift",
-       "scale": 1.08,
-       "duration": 24
-      }
-     }
+     "h": 720
     },
     {
      "rotation": 0,
@@ -5736,11 +5639,7 @@
      "x": 96,
      "y": 380,
      "w": 900,
-     "h": 130,
-     "fx": {
-      "enter": "fade-up",
-      "order": 0
-     }
+     "h": 130
     },
     {
      "rotation": 0,
@@ -5773,11 +5672,7 @@
      "x": 124,
      "y": 524,
      "w": 800,
-     "h": 40,
-     "fx": {
-      "enter": "fade-up",
-      "order": 1
-     }
+     "h": 40
     }
    ]
   },
@@ -5785,7 +5680,7 @@
    "id": "layout-rams-closing",
    "name": "Closing",
    "background": "#E4E1DA",
-   "transition": "morph",
+   "transition": "none",
    "notes": "",
    "elements": [
     {

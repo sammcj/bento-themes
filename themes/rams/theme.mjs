@@ -1,8 +1,9 @@
 // Rams: mid-century product design after Dieter Rams and Braun. Warm grey
 // ground, charcoal text, hairlines, one geometric sans (Jost, a Futura
 // revival), and a single orange indicator ("dot") that is the only colour on
-// the page. The dot orbits a dial on the cover, then morphs through the deck:
+// the page. The dot sits on a dial on the cover and recurs through the deck:
 // a 12px indicator in the footer, a 48px disc on dividers, a large disc at the end.
+// No animation anywhere: the ids stay stable so a morph can be switched on later.
 import { join } from "node:path";
 import { COLS, dataUri, factory } from "../../scripts/lib.mjs";
 
@@ -67,7 +68,7 @@ const cover = (demo) => ({
   background: GROUND,
   transition: "none",
   notes:
-    "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written, rather than the {{date}} token which shows the day it is presented. The orange indicator orbits the dial once every forty seconds; on the next slide it morphs into the small dot in the footer and keeps moving through the deck.",
+    "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written, rather than the {{date}} token which shows the day it is presented. The orange indicator on the dial is the deck's one colour; it recurs as the small dot in the footer, on the dividers and on the closing slide.",
   elements: [
     hair({ id: "foot-rule", x: 96, y: 640, w: 1088 }),
     label({ id: "run-title", html: "{{company}}", x: 96, y: 650, w: 600, h: 20 }),
@@ -81,10 +82,9 @@ const cover = (demo) => ({
       y: 96 + 64 - 14,
       w: 28,
       h: 28,
-      fx: { loop: { type: "motion-path", path: "M0 0 A160 160 0 1 1 0 320 A160 160 0 1 1 0 0", duration: 40, ease: "none" } },
     }),
-    display({ id: "deck-title", html: "{{title}}", valign: "bottom", x: 96, y: 260, w: 600, h: 300, fx: { enter: "fade-up", order: 0 } }),
-    body({ id: "cover-sub", ...ph(demo, "A subtitle, the event, or the client", "Subtitle"), color: GREY, x: 96, y: 576, w: 600, h: 48, fx: { enter: "fade-up", order: 1 } }),
+    display({ id: "deck-title", html: "{{title}}", valign: "bottom", x: 96, y: 260, w: 600, h: 300 }),
+    body({ id: "cover-sub", ...ph(demo, "A subtitle, the event, or the client", "Subtitle"), color: GREY, x: 96, y: 576, w: 600, h: 48 }),
   ],
 });
 
@@ -104,8 +104,8 @@ const agenda = (demo) => {
     id: "s-agenda",
     name: "Agenda",
     background: GROUND,
-    transition: "morph",
-    notes: "Agenda. Arriving here morphs the cover: the orbiting indicator settles into the footer, the running head swaps to the deck title and the page number appears. Four rows fit; delete rows rather than shrinking the type.",
+    transition: "none",
+    notes: "Agenda. The footer carries the indicator, the deck title and the page number. Four rows fit; delete rows rather than shrinking the type.",
     elements: [...chrome(), ...slideHead("Agenda"), ...rows],
   };
 };
@@ -114,8 +114,8 @@ const section = (demo) => ({
   id: "s-section",
   name: "Section",
   background: BLACK,
-  transition: "morph",
-  notes: "Section divider on Braun black. The indicator grows to a 48px disc beside the section number. Number sections only when the order matters; otherwise delete the numeral.",
+  transition: "none",
+  notes: "Section divider on Braun black. The indicator becomes a 48px disc beside the section number. Number sections only when the order matters; otherwise delete the numeral.",
   elements: [
     ...chrome({ dark: true, dot: false }),
     f.ellipse({ id: "dot", x: 96, y: 200, w: 48, h: 48 }),
@@ -128,7 +128,7 @@ const statement = (demo) => ({
   id: "s-statement",
   name: "Statement",
   background: GROUND,
-  transition: "morph",
+  transition: "none",
   notes: "Statement. One sentence, no bullets. Under twenty words holds at 52px. The line beneath is for a source or a consequence; delete it if the sentence stands alone.",
   elements: [
     ...chrome(),
@@ -141,7 +141,7 @@ const titleBody = (demo) => ({
   id: "s-body",
   name: "Title and body",
   background: GROUND,
-  transition: "morph",
+  transition: "none",
   notes: "Title and body. The body column is 816px so lines stay readable. Use <ul> for bullets. Body stays at 24px; if it does not fit, cut words or split the slide.",
   elements: [
     ...chrome(),
@@ -175,19 +175,18 @@ const points = (demo) => {
       ];
   const rows = items.flatMap(([h, d], i) => {
     const y = 192 + i * 144;
-    const fx = demo && i > 0 ? { step: i } : undefined;
     return [
-      hair({ id: `pt-r${i}`, x: 96, y, w: 1088, fx }),
-      f.text({ id: `pt-h${i}`, html: h, fontSize: 26, fontWeight: 500, lineHeight: 1.2, x: 96, y: y + 20, w: 340, h: 70, fx }),
-      body({ id: `pt-d${i}`, html: d, x: 470, y: y + 22, w: 714, h: 104, fx }),
+      hair({ id: `pt-r${i}`, x: 96, y, w: 1088 }),
+      f.text({ id: `pt-h${i}`, html: h, fontSize: 26, fontWeight: 500, lineHeight: 1.2, x: 96, y: y + 20, w: 340, h: 70 }),
+      body({ id: `pt-d${i}`, html: d, x: 470, y: y + 22, w: 714, h: 104 }),
     ];
   });
   return {
     id: "s-points",
     name: "Points",
     background: GROUND,
-    transition: "morph",
-    notes: "Points. The first row shows on arrival and the next two reveal one click at a time (fx.step). Three rows fill the band. Remove the fx.step keys to show them all at once.",
+    transition: "none",
+    notes: "Points. Three rows, each a hairline, a medium lead and a sentence. Three fill the band; for more, split the slide.",
     elements: [...chrome(), ...slideHead(demo ? "Three of the ten principles" : "Slide title"), ...rows],
   };
 };
@@ -196,7 +195,7 @@ const twoCol = (demo) => ({
   id: "s-twocol",
   name: "Two columns",
   background: GROUND,
-  transition: "morph",
+  transition: "none",
   notes: "Two columns, 528px each with a 32px gutter. Each has a 26px lead line and a hairline before 22px body. Suits before/after or problem/response.",
   elements: [
     ...chrome(),
@@ -226,7 +225,7 @@ const numbers = (demo) => {
     const x = COLS[3].x[i];
     return [
       hair({ id: `st-r${i}`, x, y: 192, w: COLS[3].w, fill: INK }),
-      f.text({ id: `st-v${i}`, html: v, fontSize: 104, fontWeight: 500, lineHeight: 1.0, x, y: 212, w: COLS[3].w, h: 112, fx: demo ? { countUp: true } : undefined }),
+      f.text({ id: `st-v${i}`, html: v, fontSize: 104, fontWeight: 500, lineHeight: 1.0, x, y: 212, w: COLS[3].w, h: 112 }),
       body({ id: `st-l${i}`, html: l, color: GREY, x, y: 340, w: COLS[3].w, h: 90 }),
     ];
   });
@@ -234,8 +233,8 @@ const numbers = (demo) => {
     id: "s-numbers",
     name: "Numbers",
     background: GROUND,
-    transition: "morph",
-    notes: "Headline numbers count up on arrival (fx.countUp). One plain number per box: countUp strips markup and animates every digit it finds. The note at the bottom carries the source or the consequence.",
+    transition: "none",
+    notes: "Headline numbers. One plain number per box at 104px with a one-line label. The note at the bottom carries the source or the consequence.",
     elements: [
       ...chrome(),
       ...slideHead(demo ? "In numbers" : "Slide title"),
@@ -283,7 +282,7 @@ const table = (demo) => ({
   id: "s-table",
   name: "Table",
   background: GROUND,
-  transition: "morph",
+  transition: "none",
   notes: "Comparison table. Header row in Braun black, 1px hairlines, no zebra. Tables are for specs and comparisons; a numeric trend belongs in the chart layout.",
   elements: [
     ...chrome(),
@@ -341,12 +340,12 @@ const process = (demo) => {
     id: "s-process",
     name: "Process",
     background: GROUND,
-    transition: "morph",
-    notes: "Process. Four numbered knobs joined by a dotted orange track that marches (fx.loop dash-march). In the demo, step 2 is clickable: a transparent rect over it links to a state slide, and the left arrow returns.",
+    transition: "none",
+    notes: "Process. Four numbered knobs joined by a dotted orange track. In the demo, step 2 is clickable: a transparent rect over it links to a state slide, and the left arrow returns.",
     elements: [
       ...chrome(),
       ...slideHead(demo ? "How a Braun product was designed" : "Slide title"),
-      f.line({ id: "pr-flow", x: 140, y: 212, w: 1044, h: 2, fill: ORANGE, stroke: ORANGE, strokeWidth: 2, strokeStyle: "dotted", fx: { loop: { type: "dash-march", distance: 12, duration: 1.6 } } }),
+      f.line({ id: "pr-flow", x: 140, y: 212, w: 1044, h: 2, fill: ORANGE, stroke: ORANGE, strokeWidth: 2, strokeStyle: "dotted" }),
       ...els,
       ...(demo
         ? [
@@ -362,7 +361,7 @@ const processDetail = () => ({
   id: "s-process-detail",
   stateOf: "s-process",
   background: GROUND,
-  transition: "morph",
+  transition: "none",
   notes: "State slide for step 2 (hidden from the arrow-key sequence, reached by clicking the step). Left arrow returns to the process slide.",
   elements: [
     ...chrome(),
@@ -402,13 +401,13 @@ const image = (demo) => ({
   name: "Image",
   background: BLACK,
   transition: "none",
-  notes: "Full-bleed image with a slow ken-burns drift, a dark scrim and the caption at the bottom left. Replace the placeholder asset with a photo downscaled to 2560px before embedding. Keep captions in the text element, since text baked into a photo cannot be edited.",
+  notes: "Full-bleed image with a dark scrim and the caption at the bottom left. Replace the placeholder asset with a photo downscaled to 2560px before embedding. Keep captions in the text element, since text baked into a photo cannot be edited.",
   elements: [
-    f.image({ id: "hero-img", src: "asset:placeholder", fit: "cover", x: 0, y: 0, w: 1280, h: 720, fx: { ambient: "kenburns", ken: { dir: "drift", scale: 1.08, duration: 24 } } }),
+    f.image({ id: "hero-img", src: "asset:placeholder", fit: "cover", x: 0, y: 0, w: 1280, h: 720 }),
     f.rect({ id: "hero-scrim", x: 0, y: 0, w: 1280, h: 720, fill: BLACK, opacity: 0.5 }),
-    f.text({ id: "hero-title", ...ph(demo, "The object, photographed plainly", "Caption or title"), fontSize: 52, fontWeight: 500, lineHeight: 1.1, color: BLACK_TX, valign: "bottom", x: 96, y: 380, w: 900, h: 130, fx: { enter: "fade-up", order: 0 } }),
+    f.text({ id: "hero-title", ...ph(demo, "The object, photographed plainly", "Caption or title"), fontSize: 52, fontWeight: 500, lineHeight: 1.1, color: BLACK_TX, valign: "bottom", x: 96, y: 380, w: 900, h: 130 }),
     f.ellipse({ id: "dot", x: 96, y: 534, w: 12, h: 12 }),
-    body({ id: "hero-sub", ...ph(demo, "Replace the placeholder with a real photograph", "Subtitle"), color: BLACK_TX, x: 124, y: 524, w: 800, h: 40, fx: { enter: "fade-up", order: 1 } }),
+    body({ id: "hero-sub", ...ph(demo, "Replace the placeholder with a real photograph", "Subtitle"), color: BLACK_TX, x: 124, y: 524, w: 800, h: 40 }),
   ],
 });
 
@@ -416,8 +415,8 @@ const closing = (demo) => ({
   id: "s-closing",
   name: "Closing",
   background: GROUND,
-  transition: "morph",
-  notes: "Closing. The indicator grows into a 480px disc. End on the ask rather than the word Questions. The second line is where to send people: a URL, a name, a date. {{author}} and {{company}} resolve from File > Properties.",
+  transition: "none",
+  notes: "Closing. The indicator becomes a 480px disc. End on the ask rather than the word Questions. The second line is where to send people: a URL, a name, a date. {{author}} and {{company}} resolve from File > Properties.",
   elements: [
     f.ellipse({ id: "dot", x: 704, y: 120, w: 480, h: 480 }),
     f.text({ id: "close-line", ...ph(demo, "Take one control off the next thing you ship.", "The ask"), fontSize: 56, fontWeight: 500, lineHeight: 1.1, valign: "bottom", x: 96, y: 200, w: 560, h: 372 }),
