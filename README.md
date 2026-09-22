@@ -36,7 +36,7 @@ Data slides after Edward Tufte's books, for talks where the charts and tables ca
 
 ## Using a theme
 
-1. Download `themes/<name>/<Name>.bento.html` and open it in a browser. The file is a template, so every open starts a new deck.
+1. Download `themes/<name>/<Name>.bento.html` and open it in a browser. The file carries no `docId`, so every open mints a fresh deck and the file you downloaded is never modified.
 2. Set the title, company and author under File > Properties. Covers and footers fill from them.
 3. Add slides from the New-slide picker; the theme's layouts are listed under "This document".
 4. Save. The saved deck is an ordinary Bento file.
