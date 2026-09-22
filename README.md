@@ -41,7 +41,7 @@ Data slides after Edward Tufte's books, for talks where the charts and tables ca
 3. Add slides from the New-slide picker; the theme's layouts are listed under "This document".
 4. Save. The saved deck is an ordinary Bento file and no longer a template.
 
-To apply a theme to an existing deck, paste the layouts from `<Name>.doc.json` into your deck's JSON (Save > Replace from JSON) or point an agent at the theme file with the bento-slides skill.
+To apply a theme to an existing deck, paste the layouts from `<Name>.doc.json` into your deck's JSON (Save > Replace from JSON) or point an agent at the theme file with the [bento-slides skill](https://github.com/sammcj/agentic-coding/blob/main/Skills/bento-slides/SKILL.md), which is the recommended way to author decks from these themes.
 
 Every theme has the same core layouts (cover, agenda, section, statement, title and body, points, two columns, numbers, chart, table, process with a clickable detail state, quote, full-bleed image, closing) plus three for screenshots: one large capture, a capture with notes beside it, and two clippings side by side. Captures are letterboxed (`fit: "contain"`) so mismatched aspect ratios still sit tidily; the placeholder is a wireframe drawn in code, replace it with a PNG downscaled to 2560px wide. Every layout carries speaker notes on its demo slide explaining what it is for. The templates are animation-free: no transitions, entrances, loops, step reveals or count-ups. Element ids are stable across slides, so setting `transition: "morph"` on a slide is all it takes to animate the shared chrome if you want it.
 
