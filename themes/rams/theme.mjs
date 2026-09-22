@@ -329,10 +329,10 @@ const process = (demo) => {
   const els = steps.flatMap(([h, d], i) => {
     const x = COLS[4].x[i];
     return [
-      knob({ id: `pr-k${i}`, x, y: 192, w: 44, h: 44 }),
-      f.text({ id: `pr-n${i}`, html: String(i + 1), fontSize: 20, fontWeight: 500, lineHeight: 1, align: "center", valign: "middle", x, y: 192, w: 44, h: 44 }),
-      f.text({ id: `pr-t${i}`, ...ph(demo, h, h), fontSize: 26, fontWeight: 500, lineHeight: 1.2, x, y: 260, w: COLS[4].w, h: 36 }),
-      body({ id: `pr-d${i}`, ...ph(demo, d, d), x, y: 308, w: COLS[4].w, h: 316 }),
+      knob({ id: `pr-k${i}`, x, y: 292, w: 44, h: 44 }),
+      f.text({ id: `pr-n${i}`, html: String(i + 1), fontSize: 20, fontWeight: 500, lineHeight: 1, align: "center", valign: "middle", x, y: 292, w: 44, h: 44 }),
+      f.text({ id: `pr-t${i}`, ...ph(demo, h, h), fontSize: 26, fontWeight: 500, lineHeight: 1.2, x, y: 360, w: COLS[4].w, h: 36 }),
+      body({ id: `pr-d${i}`, ...ph(demo, d, d), x, y: 408, w: COLS[4].w, h: 130 }),
     ];
   });
   return {
@@ -344,7 +344,7 @@ const process = (demo) => {
     elements: [
       ...chrome(),
       ...slideHead(demo, "How a Braun product was designed"),
-      f.line({ id: "pr-flow", x: 140, y: 212, w: 812, h: 2, fill: ORANGE, stroke: ORANGE, strokeWidth: 2, strokeStyle: "dotted" }),
+      f.line({ id: "pr-flow", x: 140, y: 312, w: 812, h: 2, fill: ORANGE, stroke: ORANGE, strokeWidth: 2, strokeStyle: "dotted" }),
       ...els,
       ...(demo
         ? [
@@ -388,10 +388,10 @@ const quote = (demo) => ({
   notes: "Pull quote between two hairlines. Use a real sentence someone said, with a name.",
   elements: [
     ...chrome(),
-    hair({ id: "q-rule-top", x: 96, y: 192, w: 1088, fill: INK }),
-    f.text({ id: "q-body", ...ph(demo, "Indifference towards people and the reality in which they live is actually the one and only cardinal sin in design.", "Quotation"), fontSize: 40, fontWeight: 400, lineHeight: 1.25, x: 96, y: 236, w: 1040, h: 200 }),
-    hair({ id: "q-rule-bottom", x: 96, y: 460, w: 1088, fill: INK }),
-    f.text({ id: "q-attrib", ...ph(demo, "Dieter Rams", "Name, source"), fontSize: 20, color: GREY, x: 96, y: 480, w: 1000, h: 32 }),
+    hair({ id: "q-rule-top", x: 96, y: 232, w: 1088, fill: INK }),
+    f.text({ id: "q-body", ...ph(demo, "Indifference towards people and the reality in which they live is actually the one and only cardinal sin in design.", "Quotation"), fontSize: 40, fontWeight: 400, lineHeight: 1.25, x: 96, y: 276, w: 1040, h: 220 }),
+    hair({ id: "q-rule-bottom", x: 96, y: 516, w: 1088, fill: INK }),
+    f.text({ id: "q-attrib", ...ph(demo, "Dieter Rams", "Name, source"), fontSize: 20, color: GREY, x: 96, y: 536, w: 1000, h: 32 }),
   ],
 });
 

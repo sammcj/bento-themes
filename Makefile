@@ -25,7 +25,7 @@ runtime:
 	curl -fsSL https://bento.page/releases/slides/Bento_Slides.bento.html -o $(RUNTIME)
 	@grep -q 'id="bento-doc"' $(RUNTIME) || { echo "no #bento-doc block in the download" >&2; exit 1; }
 	@node scripts/inflate_runtime.mjs $(RUNTIME) --out $(BUILD)/runtime >/dev/null
-	@grep -o '__bentoRuntime",{value:"[^"]*"' $(BUILD)/runtime/*.js | grep -o '[0-9][0-9.]*' | head -1 > runtime/VERSION
+	@grep -oh '__bentoRuntime",{value:"[^"]*"' $(BUILD)/runtime/*.js | grep -o '[0-9][0-9.]*' | head -1 > runtime/VERSION
 	@echo "runtime $$(cat runtime/VERSION)"
 
 $(RUNTIME):

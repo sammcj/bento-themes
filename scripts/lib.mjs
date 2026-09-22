@@ -81,7 +81,8 @@ export function assertDoc(doc) {
       // Themes here are static by design: no entrances, loops, step reveals or count-ups.
       if (e.fx) problems.push(`${label}/${e.id}: carries fx (templates are animation-free)`);
     }
-    if (s.transition && s.transition !== "none") problems.push(`${label}: transition must be "none"`);
+    // The runtime defaults a missing transition to "fade", so the key must be present.
+    if (s.transition !== "none") problems.push(`${label}: transition must be "none"`);
   };
   for (const s of doc.slides) {
     if (!s.notes) problems.push(`${s.id}: missing notes`);

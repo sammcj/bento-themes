@@ -2133,7 +2133,7 @@
      "h": 2,
      "id": "pr-flow",
      "x": 140,
-     "y": 212,
+     "y": 312,
      "w": 812,
      "strokeStyle": "dotted"
     },
@@ -2147,7 +2147,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k0",
      "x": 96,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2165,7 +2165,7 @@
      "html": "1",
      "fontSize": 20,
      "x": 96,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2183,7 +2183,7 @@
      "html": "Question",
      "fontSize": 26,
      "x": 96,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -2201,9 +2201,9 @@
      "id": "pr-d0",
      "html": "Does the product need to exist at all, and for whom.",
      "x": 96,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     },
     {
      "rotation": 0,
@@ -2215,7 +2215,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k1",
      "x": 374,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2233,7 +2233,7 @@
      "html": "2",
      "fontSize": 20,
      "x": 374,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2251,7 +2251,7 @@
      "html": "Reduce",
      "fontSize": 26,
      "x": 374,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -2269,9 +2269,9 @@
      "id": "pr-d1",
      "html": "Remove every part and control that does not earn its place.",
      "x": 374,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     },
     {
      "rotation": 0,
@@ -2283,7 +2283,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k2",
      "x": 652,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2301,7 +2301,7 @@
      "html": "3",
      "fontSize": 20,
      "x": 652,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2319,7 +2319,7 @@
      "html": "Detail",
      "fontSize": 26,
      "x": 652,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -2337,9 +2337,9 @@
      "id": "pr-d2",
      "html": "Radii, gaps, type and colour, decided once and applied everywhere.",
      "x": 652,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     },
     {
      "rotation": 0,
@@ -2351,7 +2351,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k3",
      "x": 930,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2369,7 +2369,7 @@
      "html": "4",
      "fontSize": 20,
      "x": 930,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -2387,7 +2387,7 @@
      "html": "Test",
      "fontSize": 26,
      "x": 930,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -2405,9 +2405,9 @@
      "id": "pr-d3",
      "html": "Put it in a home for a month and watch what people actually touch.",
      "x": 930,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     },
     {
      "rotation": 0,
@@ -2725,7 +2725,7 @@
      "h": 1,
      "id": "q-rule-top",
      "x": 96,
-     "y": 192,
+     "y": 232,
      "w": 1088
     },
     {
@@ -2742,9 +2742,9 @@
      "html": "Indifference towards people and the reality in which they live is actually the one and only cardinal sin in design.",
      "fontSize": 40,
      "x": 96,
-     "y": 236,
+     "y": 276,
      "w": 1040,
-     "h": 200
+     "h": 220
     },
     {
      "rotation": 0,
@@ -2758,7 +2758,7 @@
      "h": 1,
      "id": "q-rule-bottom",
      "x": 96,
-     "y": 460,
+     "y": 516,
      "w": 1088
     },
     {
@@ -2775,7 +2775,7 @@
      "html": "Dieter Rams",
      "fontSize": 20,
      "x": 96,
-     "y": 480,
+     "y": 536,
      "w": 1000,
      "h": 32
     }
@@ -5035,7 +5035,7 @@
      "h": 2,
      "id": "pr-flow",
      "x": 140,
-     "y": 212,
+     "y": 312,
      "w": 812,
      "strokeStyle": "dotted"
     },
@@ -5049,7 +5049,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k0",
      "x": 96,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5067,7 +5067,7 @@
      "html": "1",
      "fontSize": 20,
      "x": 96,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5086,7 +5086,7 @@
      "placeholder": "Step one",
      "fontSize": 26,
      "x": 96,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -5105,9 +5105,9 @@
      "html": "",
      "placeholder": "What happens",
      "x": 96,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     },
     {
      "rotation": 0,
@@ -5119,7 +5119,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k1",
      "x": 374,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5137,7 +5137,7 @@
      "html": "2",
      "fontSize": 20,
      "x": 374,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5156,7 +5156,7 @@
      "placeholder": "Step two",
      "fontSize": 26,
      "x": 374,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -5175,9 +5175,9 @@
      "html": "",
      "placeholder": "What happens",
      "x": 374,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     },
     {
      "rotation": 0,
@@ -5189,7 +5189,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k2",
      "x": 652,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5207,7 +5207,7 @@
      "html": "3",
      "fontSize": 20,
      "x": 652,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5226,7 +5226,7 @@
      "placeholder": "Step three",
      "fontSize": 26,
      "x": 652,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -5245,9 +5245,9 @@
      "html": "",
      "placeholder": "What happens",
      "x": 652,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     },
     {
      "rotation": 0,
@@ -5259,7 +5259,7 @@
      "fill": "#E4E1DA",
      "id": "pr-k3",
      "x": 930,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5277,7 +5277,7 @@
      "html": "4",
      "fontSize": 20,
      "x": 930,
-     "y": 192,
+     "y": 292,
      "w": 44,
      "h": 44
     },
@@ -5296,7 +5296,7 @@
      "placeholder": "Step four",
      "fontSize": 26,
      "x": 930,
-     "y": 260,
+     "y": 360,
      "w": 254,
      "h": 36
     },
@@ -5315,9 +5315,9 @@
      "html": "",
      "placeholder": "What happens",
      "x": 930,
-     "y": 308,
+     "y": 408,
      "w": 254,
-     "h": 316
+     "h": 130
     }
    ]
   },
@@ -5407,7 +5407,7 @@
      "h": 1,
      "id": "q-rule-top",
      "x": 96,
-     "y": 192,
+     "y": 232,
      "w": 1088
     },
     {
@@ -5425,9 +5425,9 @@
      "placeholder": "Quotation",
      "fontSize": 40,
      "x": 96,
-     "y": 236,
+     "y": 276,
      "w": 1040,
-     "h": 200
+     "h": 220
     },
     {
      "rotation": 0,
@@ -5441,7 +5441,7 @@
      "h": 1,
      "id": "q-rule-bottom",
      "x": 96,
-     "y": 460,
+     "y": 516,
      "w": 1088
     },
     {
@@ -5459,7 +5459,7 @@
      "placeholder": "Name, source",
      "fontSize": 20,
      "x": 96,
-     "y": 480,
+     "y": 536,
      "w": 1000,
      "h": 32
     }

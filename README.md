@@ -50,7 +50,7 @@ The committed runtime is the version in `runtime/VERSION`. `make check` prints t
 3. Set `template: true`, `present: { slideNumber: false }` if the theme draws its own page numbers, and embed fonts as woff2 data URIs under `assets`.
 4. Run `make check` and read every PNG. Text overflow and dropped keys are invisible in the JSON.
 
-Design constraints the existing themes follow, enforced by `assertDoc`: no `fx` and `transition: "none"` everywhere, one accent colour, one or two typefaces, 96px side margins, body text 22px or larger, nothing under 14px.
+`assertDoc` enforces: no `fx`, `transition: "none"` on every slide and layout, the 14px type floor, unique ids, notes on every slide, valid link and state targets, placeholders for layout copy. Conventions the themes follow by hand: one accent colour, one or two typefaces, 96px side margins, body text 22px or larger.
 
 ### Gotchas
 

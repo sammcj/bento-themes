@@ -303,10 +303,10 @@ const process = (demo) => {
   const els = steps.flatMap(([h, d], i) => {
     const x = COLS[4].x[i];
     return [
-      f.line({ id: `pr-r${i}`, x, y: 200, w: COLS[4].w, h: 2, fill: INK }),
-      heading({ id: `pr-n${i}`, html: String(i + 1), x, y: 216, w: 80, h: 56 }),
-      f.text({ id: `pr-t${i}`, ...ph(demo, h, h), fontSize: 24, fontWeight: 700, lineHeight: 1.2, x, y: 316, w: COLS[4].w, h: 36 }),
-      body({ id: `pr-d${i}`, ...ph(demo, d, d), x, y: 364, w: COLS[4].w, h: 292 }),
+      f.line({ id: `pr-r${i}`, x, y: 290, w: COLS[4].w, h: 2, fill: INK }),
+      heading({ id: `pr-n${i}`, html: String(i + 1), x, y: 306, w: 80, h: 56 }),
+      f.text({ id: `pr-t${i}`, ...ph(demo, h, h), fontSize: 24, fontWeight: 700, lineHeight: 1.2, x, y: 406, w: COLS[4].w, h: 36 }),
+      body({ id: `pr-d${i}`, ...ph(demo, d, d), x, y: 454, w: COLS[4].w, h: 120 }),
     ];
   });
   return {
@@ -319,7 +319,7 @@ const process = (demo) => {
       ...chrome(),
       slideHead(demo, "How the audit ran"),
       ...els,
-      f.line({ id: "pr-flow", x: 96, y: 290, w: 1088, h: 3, fill: RED, stroke: RED, strokeWidth: 3, strokeStyle: "dashed", lineEnd: "arrow" }),
+      f.line({ id: "pr-flow", x: 96, y: 380, w: 1088, h: 3, fill: RED, stroke: RED, strokeWidth: 3, strokeStyle: "dashed", lineEnd: "arrow" }),
       ...(demo
         ? [
             f.rect({ id: "pr-hit1", x: COLS[4].x[1] - 12, y: 200, w: COLS[4].w + 24, h: 456, fill: "rgba(0,0,0,0)", link: "s-process-detail" }),
@@ -392,7 +392,7 @@ const closing = (demo) => ({
   elements: [
     f.rect({ id: "mark", x: 0, y: 0, w: 1280, h: 720 }),
     f.text({ id: "close-line", ...ph(demo, "Re-set one deck on this grid before the next review.", "The ask"), fontSize: 64, fontWeight: 700, lineHeight: 1.05, color: PAPER, valign: "bottom", x: 96, y: 200, w: 1000, h: 392 }),
-    body({ id: "close-meta", ...ph(demo, "{{company}}", "Contact or link"), color: PAPER, x: 96, y: 616, w: 1000, h: 40 }),
+    body({ id: "close-meta", ...ph(demo, "{{company}}", "Contact or link"), fontSize: 24, color: PAPER, x: 96, y: 616, w: 1000, h: 40 }),
   ],
 });
 

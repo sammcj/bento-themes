@@ -269,7 +269,9 @@ const readability = await evaluate(`((minFont, minCover) => {
     // Without the chrome exclusion a {{page}} footer at y=680 makes every slide "cover" the canvas.
     const backdrop = (e) => (e.type === "shape" || e.type === "image") && e.w * e.h >= 0.6 * W * H;
     const chrome = (e) => (e.h < 0.05 * H || e.w * e.h < 0.015 * W * H) && (e.y + e.h > 0.88 * H || e.y < 0.06 * H);
-    const content = els.filter((e) => !backdrop(e) && !chrome(e));
+    // Invisible hit targets (transparent fill, no stroke) are not content either.
+    const invisible = (e) => e.type === "shape" && /^(transparent|rgba\([^)]*,\s*0\s*\))$/.test(String(e.fill || "").replace(/\s/g, "")) && (!e.stroke || e.stroke === "none");
+    const content = els.filter((e) => !backdrop(e) && !chrome(e) && !invisible(e));
     // Decorative shapes (accent bars, card backgrounds) extend the box but do not make a slide dense: a cover is
     // title + subtitle + accent bar, and counting the bar would flag every cover.
     const dense = content.filter((e) => e.type !== "shape" && (e.type !== "text" || hasText(e)));
