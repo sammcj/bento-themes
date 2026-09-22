@@ -1,4 +1,4 @@
-// Tufte: cream page, one old-style serif (Newsreader), hairline rules and a
+// Tufte: cream page, one old-style serif (EB Garamond), hairline rules and a
 // side-note column beside the main text on the reading layouts. Charts carry
 // the minimum ink: no gridlines, thin axes, three series in brick red, ink and
 // grey. The recurring "mark" is a 64px brick-red hairline under every title.
@@ -11,7 +11,7 @@ const INK = "#111111";
 const GREY = "#666460";
 const HAIR = "#CFCBC0";
 const RED = "#A51C30";
-const FONT = "Newsreader, 'Iowan Old Style', Georgia, 'Times New Roman', serif";
+const FONT = "'EB Garamond', 'Iowan Old Style', Garamond, Georgia, serif";
 
 const t = { fontFamily: FONT, color: INK, accent: RED };
 const f = factory(t);
@@ -20,14 +20,15 @@ const f = factory(t);
 const MAIN = { x: 96, w: 704 };
 const SIDE = { x: 832, w: 352 };
 
-// Type scale (px): display 84, section 64, title 44, lead 30, body 26, note 19, running head 15.
+// Type scale (px): display 96, section 68, title 48, lead 32, body 28, note 20, running head 16.
+// Garamond's x-height is small, so every size sits a step above the Newsreader scale it replaced.
 // Tufte's headings are never bold; hierarchy comes from size and position.
-const display = (o) => f.text({ fontSize: 84, lineHeight: 1.02, letterSpacing: -0.5, ...o });
-const heading = (o) => f.text({ fontSize: 44, lineHeight: 1.1, ...o });
-const lead = (o) => f.text({ fontSize: 30, lineHeight: 1.2, ...o });
-const body = (o) => f.text({ fontSize: 26, lineHeight: 1.4, ...o });
-const note = (o) => f.text({ fontSize: 19, lineHeight: 1.4, color: GREY, ...o });
-const label = (o) => f.text({ fontSize: 15, lineHeight: 1.3, color: GREY, ...o });
+const display = (o) => f.text({ fontSize: 96, lineHeight: 1.02, letterSpacing: -0.5, ...o });
+const heading = (o) => f.text({ fontSize: 48, lineHeight: 1.1, ...o });
+const lead = (o) => f.text({ fontSize: 32, lineHeight: 1.2, ...o });
+const body = (o) => f.text({ fontSize: 28, lineHeight: 1.4, ...o });
+const note = (o) => f.text({ fontSize: 20, lineHeight: 1.4, color: GREY, ...o });
+const label = (o) => f.text({ fontSize: 16, lineHeight: 1.3, color: GREY, ...o });
 const hair = (o) => f.rect({ fill: HAIR, h: 1, ...o });
 const mark = (o) => f.rect({ id: "mark", x: 96, w: 64, h: 2, ...o });
 
@@ -71,7 +72,7 @@ const agenda = (demo) => {
   const rows = items.flatMap((it, i) => {
     const y = 200 + i * 112;
     return [
-      f.text({ id: `ag-t${i}`, ...ph(demo, it, it), fontSize: 28, lineHeight: 1.2, x: MAIN.x, y: y + 40, w: MAIN.w, h: 40 }),
+      f.text({ id: `ag-t${i}`, ...ph(demo, it, it), fontSize: 30, lineHeight: 1.2, x: MAIN.x, y: y + 40, w: MAIN.w, h: 40 }),
       hair({ id: `ag-r${i}`, x: MAIN.x, y: y + 96, w: MAIN.w }),
     ];
   });
@@ -86,21 +87,21 @@ const agenda = (demo) => {
 const section = (demo) =>
   slide("s-section", "Section", "Section divider. The title sits low on the page with the mark under it and a one-sentence lead in grey. No section numbers: the agenda already gives the order.", [
     ...chrome(),
-    f.text({ id: "sec-title", ...ph(demo, "Latency and cost", "Section title"), fontSize: 64, lineHeight: 1.1, valign: "bottom", x: 96, y: 200, w: 1088, h: 220 },),
+    f.text({ id: "sec-title", ...ph(demo, "Latency and cost", "Section title"), fontSize: 68, lineHeight: 1.1, valign: "bottom", x: 96, y: 200, w: 1088, h: 220 },),
     mark({ y: 444 }),
     body({ id: "sec-lead", ...ph(demo, "Two changes landed in the period: request batching in week 4 and a smaller reranker in week 6. The charts that follow separate their effects.", "One sentence on what this section covers"), color: GREY, x: 96, y: 468, w: MAIN.w, h: 130 }),
   ]);
 
 const statement = (demo) =>
-  slide("s-statement", "Statement", "Statement. One sentence, no bullets, set at 48px across the band. Keep it under about twenty-five words. The source line underneath is optional.", [
+  slide("s-statement", "Statement", "Statement. One sentence, no bullets, set at 52px across the band. Keep it under about twenty-five words. The source line underneath is optional.", [
     ...chrome(),
-    f.text({ id: "stmt", ...ph(demo, "A benchmark number without its confidence interval and its cost is a claim, not a result.", "One idea, one sentence"), fontSize: 48, lineHeight: 1.2, valign: "middle", x: 96, y: 200, w: 1088, h: 340 }),
+    f.text({ id: "stmt", ...ph(demo, "A benchmark number without its confidence interval and its cost is a claim, not a result.", "One idea, one sentence"), fontSize: 52, lineHeight: 1.2, valign: "middle", x: 96, y: 200, w: 1088, h: 340 }),
     mark({ y: 564 }),
     note({ id: "stmt-src", ...ph(demo, "Team evaluation guideline, revised August", "Source or context"), x: 96, y: 588, w: 1088, h: 30 }),
   ]);
 
 const titleBody = (demo) =>
-  slide("s-body", "Title and body", "Title and body. The main column is 704px so lines stay readable at 26px; the side note column carries the caveat, source or method in 19px grey. Use <ul> for bullets. If the body does not fit, cut words or split the slide.", [
+  slide("s-body", "Title and body", "Title and body. The main column is 704px so lines stay readable at 28px; the side note column carries the caveat, source or method in 20px grey. Use <ul> for bullets. If the body does not fit, cut words or split the slide.", [
     ...chrome(),
     ...slideHead(demo, "How the benchmark ran"),
     body({
@@ -134,14 +135,14 @@ const points = (demo) => {
         ["Point three", "Supporting sentence"],
       ];
   const rows = items.flatMap(([h, d], i) => {
-    const y = 200 + i * 144;
+    const y = 200 + i * 145;
     return [
       hair({ id: `pt-r${i}`, x: MAIN.x, y, w: MAIN.w }),
-      lead({ id: `pt-h${i}`, ...ph(demo, h, h), x: MAIN.x, y: y + 16, w: MAIN.w, h: 40 }),
-      body({ id: `pt-d${i}`, ...ph(demo, d, d), x: MAIN.x, y: y + 60, w: MAIN.w, h: 80 }),
+      lead({ id: `pt-h${i}`, ...ph(demo, h, h), x: MAIN.x, y: y + 12, w: MAIN.w, h: 40 }),
+      body({ id: `pt-d${i}`, ...ph(demo, d, d), x: MAIN.x, y: y + 54, w: MAIN.w, h: 80 }),
     ];
   });
-  return slide("s-points", "Points", "Points. Three rows in the main column, each a hairline, a 30px lead and one or two sentences. The side note holds what applies to all three. For more than three, split the slide.", [
+  return slide("s-points", "Points", "Points. Three rows in the main column, each a hairline, a 32px lead and one or two sentences. The side note holds what applies to all three. For more than three, split the slide.", [
     ...chrome(),
     ...slideHead(demo, "Three things the numbers do not say"),
     ...rows,
@@ -150,7 +151,7 @@ const points = (demo) => {
 };
 
 const twoCol = (demo) =>
-  slide("s-twocol", "Two columns", "Two columns, 528px each with a 32px gutter. Each column has a 30px lead, a hairline and 26px body. Good for before/after or method/result.", [
+  slide("s-twocol", "Two columns", "Two columns, 528px each with a 32px gutter. Each column has a 32px lead, a hairline and 28px body. Good for before/after or method/result.", [
     ...chrome(),
     ...slideHead(demo, "Before and after batching"),
     lead({ id: "col-l-head", ...ph(demo, "Before", "Left heading"), x: COLS[2].x[0], y: 200, w: COLS[2].w, h: 40 }),
@@ -177,11 +178,11 @@ const numbers = (demo) => {
     const x = COLS[3].x[i];
     return [
       hair({ id: `st-r${i}`, x, y: 200, w: COLS[3].w }),
-      f.text({ id: `st-v${i}`, ...ph(demo, v, v), fontSize: 92, lineHeight: 1.0, letterSpacing: -1, x, y: 244, w: COLS[3].w, h: 104 }),
-      f.text({ id: `st-l${i}`, ...ph(demo, l, l), fontSize: 22, lineHeight: 1.35, color: GREY, x, y: 372, w: COLS[3].w, h: 130 }),
+      f.text({ id: `st-v${i}`, ...ph(demo, v, v), fontSize: 104, lineHeight: 1.0, letterSpacing: -1, x, y: 240, w: COLS[3].w, h: 116 }),
+      f.text({ id: `st-l${i}`, ...ph(demo, l, l), fontSize: 24, lineHeight: 1.35, color: GREY, x, y: 380, w: COLS[3].w, h: 130 }),
     ];
   });
-  return slide("s-numbers", "Numbers", "Headline numbers. One number per column at 92px regular weight with a short label; a number with its unit (410 ms) fits the column at that size. The note under the foot rule says where the numbers came from; delete it only if the method is on an earlier slide.", [
+  return slide("s-numbers", "Numbers", "Headline numbers. One number per column at 104px regular weight with a short label; a number with its unit (410 ms) fits the column at that size. The note under the foot rule says where the numbers came from; delete it only if the method is on an earlier slide.", [
     ...chrome(),
     ...slideHead(demo, "Headline results"),
     ...els,
@@ -190,9 +191,9 @@ const numbers = (demo) => {
   ]);
 };
 
-const axisText = { color: GREY, fontSize: 15 };
+const axisText = { color: GREY, fontSize: 18 };
 const chart = (demo) =>
-  slide("s-chart", "Chart", "Chart. A line chart of three series in the main column (brick red, ink, grey) with the reading of the chart in the side note, so the graphic and its explanation sit together. Gridlines are painted in the ground colour because charts-lite ignores splitLine.show; thin axes; the legend is an object so it renders; textStyle.fontFamily is set so the chart uses Newsreader rather than the browser default. Bar and line data are plain numbers.", [
+  slide("s-chart", "Chart", "Chart. A line chart of three series in the main column (brick red, ink, grey) with the reading of the chart in the side note, so the graphic and its explanation sit together. Gridlines are painted in the ground colour because charts-lite ignores splitLine.show; thin axes; the legend is an object so it renders; textStyle.fontFamily is set so the chart uses the serif rather than the browser default. Bar and line data are plain numbers.", [
     ...chrome(),
     ...slideHead(demo, "Latency by week"),
     f.chart({
@@ -204,8 +205,8 @@ const chart = (demo) =>
       h: 456,
       option: {
         textStyle: { fontFamily: FONT },
-        grid: { left: 56, right: 16, top: 44, bottom: 32 },
-        legend: { top: 0, textStyle: { fontSize: 16 } },
+        grid: { left: 60, right: 16, top: 48, bottom: 36 },
+        legend: { top: 0, textStyle: { fontSize: 20 } },
         tooltip: { trigger: "axis" },
         xAxis: { type: "category", data: demo ? ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"] : ["A", "B", "C", "D", "E", "F", "G", "H"], axisLine: { lineStyle: { color: INK } }, axisLabel: axisText },
         yAxis: { type: "value", axisLine: { lineStyle: { color: INK } }, splitLine: { lineStyle: { color: PAPER } }, axisLabel: { ...axisText, formatter: "{value} s" } },
@@ -248,7 +249,7 @@ const table = (demo) =>
             { cells: [cell("Row"), num(""), num(""), num(""), num("")] },
             { cells: [cell("Row"), num(""), num(""), num(""), num("")] },
           ],
-      style: { headerBg: PAPER, headerColor: INK, borderColor: PAPER, borderWidth: 0, cellPadX: 12, cellPadY: 20, fontSize: 22, color: INK, radius: 0 },
+      style: { headerBg: PAPER, headerColor: INK, borderColor: PAPER, borderWidth: 0, cellPadX: 12, cellPadY: 19, fontSize: 24, color: INK, radius: 0 },
     }),
     // Five rows of 72px: the rules land on the row boundaries of the borderless table above.
     f.rect({ id: "tbl-rule-top", x: 96, y: 200, w: 1088, h: 1, fill: INK }),
@@ -277,7 +278,7 @@ const process = (demo) => {
       hair({ id: `pr-r${i}`, x, y: 262, w: COLS[4].w }),
       heading({ id: `pr-n${i}`, html: String(i + 1), color: GREY, x, y: 278, w: 80, h: 56 }),
       lead({ id: `pr-t${i}`, ...ph(demo, h, h), x, y: 350, w: COLS[4].w, h: 40 }),
-      f.text({ id: `pr-d${i}`, ...ph(demo, d, d), fontSize: 24, lineHeight: 1.35, x, y: 398, w: COLS[4].w, h: 214 }),
+      f.text({ id: `pr-d${i}`, ...ph(demo, d, d), fontSize: 26, lineHeight: 1.35, x, y: 398, w: COLS[4].w, h: 214 }),
     ];
   });
   return slide("s-process", "Process", "Process. Four numbered columns under hairlines, the group centred in the band; the numerals are grey because the order matters but the numbers do not. In the demo, step 2 is clickable: a transparent rect over it links to a state slide. Left arrow returns.", [
@@ -318,9 +319,9 @@ const processDetail = () => ({
 });
 
 const quote = (demo) =>
-  slide("s-quote", "Quote", "Pull quote. A real sentence someone wrote, with a name and a source. Set at 40px across 960px; the mark and the attribution sit under it.", [
+  slide("s-quote", "Quote", "Pull quote. A real sentence someone wrote, with a name and a source. Set at 44px across 960px; the mark and the attribution sit under it.", [
     ...chrome(),
-    f.text({ id: "q-body", ...ph(demo, "Graphical excellence is that which gives to the viewer the greatest number of ideas in the shortest time with the least ink in the smallest space.", "Quotation"), fontSize: 40, lineHeight: 1.25, valign: "middle", x: 96, y: 200, w: 960, h: 340 }),
+    f.text({ id: "q-body", ...ph(demo, "Graphical excellence is that which gives to the viewer the greatest number of ideas in the shortest time with the least ink in the smallest space.", "Quotation"), fontSize: 44, lineHeight: 1.25, valign: "middle", x: 96, y: 200, w: 960, h: 340 }),
     mark({ y: 564 }),
     note({ id: "q-attrib", ...ph(demo, "Edward Tufte, The Visual Display of Quantitative Information, 1983", "Name, source"), x: 96, y: 588, w: 960, h: 30 }),
   ]);
@@ -334,15 +335,15 @@ const image = (demo) => ({
   elements: [
     f.image({ id: "hero-img", src: "asset:placeholder", fit: "cover", x: 0, y: 0, w: 1280, h: 720 }),
     f.rect({ id: "hero-scrim", x: 0, y: 0, w: 1280, h: 720, fill: PAPER, opacity: 0.5 }),
-    f.text({ id: "hero-title", ...ph(demo, "A single request, traced end to end", "Caption or title"), fontSize: 48, lineHeight: 1.1, valign: "bottom", x: 96, y: 380, w: 900, h: 120 }),
+    f.text({ id: "hero-title", ...ph(demo, "A single request, traced end to end", "Caption or title"), fontSize: 52, lineHeight: 1.1, valign: "bottom", x: 96, y: 380, w: 900, h: 120 }),
     mark({ y: 524 }),
     body({ id: "hero-sub", ...ph(demo, "Replace the placeholder with a figure or photograph", "Subtitle"), color: GREY, x: 96, y: 548, w: 800, h: 40 }),
   ],
 });
 
 const closing = (demo) =>
-  slide("s-closing", "Closing", "Closing. The ask at 56px, the mark under it, and where to send people: a URL, a name, a date. End on the ask rather than the word Questions. {{author}} and {{company}} resolve from File > Properties.", [
-    f.text({ id: "close-line", ...ph(demo, "Adopt the week-3 judge as the baseline and re-run the set monthly.", "The ask"), fontSize: 56, lineHeight: 1.1, valign: "bottom", x: 96, y: 200, w: 960, h: 300 }),
+  slide("s-closing", "Closing", "Closing. The ask at 60px, the mark under it, and where to send people: a URL, a name, a date. End on the ask rather than the word Questions. {{author}} and {{company}} resolve from File > Properties.", [
+    f.text({ id: "close-line", ...ph(demo, "Adopt the week-3 judge as the baseline and re-run the set monthly.", "The ask"), fontSize: 60, lineHeight: 1.1, valign: "bottom", x: 96, y: 200, w: 960, h: 300 }),
     mark({ y: 524 }),
     body({ id: "close-meta", ...ph(demo, "{{company}}", "Contact or link"), color: GREY, x: 96, y: 548, w: 960, h: 40 }),
   ]);
@@ -381,8 +382,8 @@ const sparklines = (demo) => {
     const y = 200 + Math.floor(i / 2) * 236;
     return [
       hair({ id: `sp-r${i}`, x, y, w: COLS[2].w }),
-      f.text({ id: `sp-t${i}`, ...ph(demo, title, title), fontSize: 22, lineHeight: 1.2, x, y: y + 14, w: 360, h: 30 }),
-      f.text({ id: `sp-v${i}`, ...ph(demo, value, value), fontSize: 28, lineHeight: 1.0, align: "right", x: x + 368, y: y + 10, w: 160, h: 32 },),
+      f.text({ id: `sp-t${i}`, ...ph(demo, title, title), fontSize: 24, lineHeight: 1.2, x, y: y + 12, w: 360, h: 32 }),
+      f.text({ id: `sp-v${i}`, ...ph(demo, value, value), fontSize: 30, lineHeight: 1.0, align: "right", x: x + 368, y: y + 10, w: 160, h: 34 },),
       f.chart({ id: `sp-c${i}`, preset: "line", x, y: y + 56, w: COLS[2].w, h: 164, option: sparkOption(data) }),
     ];
   });
@@ -430,15 +431,15 @@ export default function makeDoc({ root }) {
       headingFamily: FONT,
       palette: { bg2: INK, tx2: GREY, accent2: INK, accent3: GREY, accent4: HAIR, hlink: RED },
       chartPalette: [RED, INK, GREY],
-      table: { headerBg: PAPER, headerColor: INK, borderColor: HAIR, borderWidth: 1, fontSize: 22, color: INK, radius: 0 },
+      table: { headerBg: PAPER, headerColor: INK, borderColor: HAIR, borderWidth: 1, fontSize: 24, color: INK, radius: 0 },
     },
     fonts: [
-      { family: "Newsreader", asset: "newsreader", weight: "400 700" },
-      { family: "Newsreader", asset: "newsreader-italic", weight: "400 700", style: "italic" },
+      { family: "EB Garamond", asset: "eb-garamond", weight: "400 700" },
+      { family: "EB Garamond", asset: "eb-garamond-italic", weight: "400 700", style: "italic" },
     ],
     assets: {
-      newsreader: dataUri(join(root, "fonts", "newsreader-latin.woff2")),
-      "newsreader-italic": dataUri(join(root, "fonts", "newsreader-italic-latin.woff2")),
+      "eb-garamond": dataUri(join(root, "fonts", "eb-garamond-latin.woff2")),
+      "eb-garamond-italic": dataUri(join(root, "fonts", "eb-garamond-italic-latin.woff2")),
       placeholder: placeholderSvg(),
     },
     present: { slideNumber: false, progress: false },

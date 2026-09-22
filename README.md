@@ -18,16 +18,16 @@ Mid-century product design after Dieter Rams and Braun. Warm grey ground, charco
 ![Rams cover](themes/rams/preview/slide-01.png)
 ![Rams process](themes/rams/preview/slide-11.png)
 
-### Mono
+### Mono (dark and light)
 
-A well-set terminal, for engineering talks. Near-black ground, warm off-white text, one monospace face (JetBrains Mono) and a single phosphor green. A `>` prompt and a block cursor recur through the deck: an idle prompt line above the cover title, in the status bar beside the page number, after the numeral on the inverted green section dividers and as a large block on the closing slide. Adds a `code` layout for syntax-coloured snippets on a charcoal panel.
+A well-set terminal, for engineering talks. One monospace face (JetBrains Mono), a `>` prompt and a block cursor as the recurring mark: an idle prompt line above the cover title, in the status bar beside the page number, after the numeral on the inverted section dividers and as a large block on the closing slide. Adds a `code` layout for syntax-coloured snippets on a panel. Two palettes share every builder: Mono Dark is near-black with phosphor green; Mono Light is warm paper with a deep green, for bright rooms and printed hand-outs. `themes/mono-light/theme.mjs` is the light palette applied to the builders in `themes/mono-dark/theme.mjs`.
 
-![Mono cover](themes/mono/preview/slide-01.png)
-![Mono code](themes/mono/preview/slide-12.png)
+![Mono Dark cover](themes/mono-dark/preview/slide-01.png)
+![Mono Light code](themes/mono-light/preview/slide-12.png)
 
 ### Tufte
 
-Data slides after Edward Tufte's books, for talks where the charts and tables carry the argument. Cream page, one old-style serif (Newsreader) at regular weight, a side-note column beside the main text, and hairline rules in place of boxes. Charts carry the least ink the runtime allows: no gridlines, thin axes, three series in brick red, ink and grey. The table is ruled only above and below the header and at the foot. A 15th layout puts four sparklines on a 2x2 grid. The one mark is a short red rule under every title.
+Data slides after Edward Tufte's books, for talks where the charts and tables carry the argument. Cream page, EB Garamond at regular weight (the closest Google Fonts face to the Bembo of his books), a side-note column beside the main text, and hairline rules in place of boxes. Charts carry the least ink the runtime allows: no gridlines, thin axes, three series in brick red, ink and grey. The table is ruled only above and below the header and at the foot. A 15th layout puts four sparklines on a 2x2 grid. The one mark is a short red rule under every title.
 
 ![Tufte chart](themes/tufte/preview/slide-09.png)
 ![Tufte small multiples](themes/tufte/preview/slide-10.png)
@@ -64,6 +64,8 @@ The committed runtime is the version in `runtime/VERSION`. `make check` prints t
 3. Set `template: true`, `present: { slideNumber: false }` if the theme draws its own page numbers, and embed fonts as woff2 data URIs under `assets`.
 4. Run `make check` and read every PNG. Text overflow and dropped keys are invisible in the JSON.
 
+For a colour variant, export a named builder that takes a palette and import it from a second directory (`themes/mono-light/theme.mjs` is 20 lines). Layout ids carry the variant slug so both sets can live in one deck. `make` treats any directory with a `theme.mjs` as a theme.
+
 `assertDoc` enforces: no `fx`, `transition: "none"` on every slide and layout, the 14px type floor, unique ids, notes on every slide, valid link and state targets, placeholders for layout copy. Conventions the themes follow by hand: one accent colour, one or two typefaces, 96px side margins, body text 22px or larger.
 
 ### Gotchas
@@ -80,7 +82,7 @@ The committed runtime is the version in `runtime/VERSION`. `make check` prints t
 
 ## Fonts
 
-Archivo (35KB), Jost (26KB), JetBrains Mono (31KB) and Newsreader (129KB upright, 144KB italic) are embedded as Latin-subset variable woff2 files under the SIL Open Font License; see `fonts/OFL-*.txt`. Newsreader's italic is a second file declared with `style: "italic"` so side notes are true italics rather than browser-synthesised obliques. Bento's two shell faces (Fraunces 900 and Instrument Sans) need no bytes at all: `"asset": "builtin:fraunces-900"` or `"builtin:instrument-sans"`.
+Archivo (35KB), Jost (26KB), JetBrains Mono (31KB) and EB Garamond (44KB upright, 47KB italic) are embedded as Latin-subset variable woff2 files under the SIL Open Font License; see `fonts/OFL-*.txt`. EB Garamond's italic is a second file declared with `style: "italic"` so side notes are true italics rather than browser-synthesised obliques. Bento's two shell faces (Fraunces 900 and Instrument Sans) need no bytes at all: `"asset": "builtin:fraunces-900"` or `"builtin:instrument-sans"`.
 
 ## Licence
 

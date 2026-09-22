@@ -1,4 +1,5 @@
-THEMES := $(notdir $(wildcard themes/*))
+# A theme is any directory with a theme.mjs; directories without one hold code shared between variants.
+THEMES := $(patsubst themes/%/theme.mjs,%,$(wildcard themes/*/theme.mjs))
 RUNTIME := runtime/Bento_Slides.bento.html
 BUILD := .build
 
