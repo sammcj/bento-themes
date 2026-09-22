@@ -38,6 +38,15 @@ These cost a build-render cycle each to find. The full list is in the README und
 
 **`measure()` returns the box width, not the text width,** and a trailing `<p>` adds its margin to the measured height.
 
+## Update CHANGELOG.md after changes
+
+After a change that alters behaviour - a new theme or layout, a changed default, a removal, a real fix - you MUST add a bullet to `CHANGELOG.md` under today's date heading (`## YYYY-MM-DD`, newest first), creating the heading if absent.
+
+- One line, under 15 words. What changed, not how it was built.
+- Skip trivia: wording, formatting, typos, file moves, regenerated previews. Git history covers those.
+- Write more than one line only if a future agent could not recover the reasoning from the source.
+- No version numbers.
+
 ## Reference
 
 `node scripts/inflate_runtime.mjs runtime/Bento_Slides.bento.html --out .build/runtime` extracts the runtime as searchable minified JS. `rg` it to settle a question about app behaviour rather than guessing; that is how the collab and `template` behaviour above was confirmed.
