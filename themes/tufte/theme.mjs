@@ -48,8 +48,11 @@ const slideHead = (demo, html, placeholder = "Slide title") => [
 ];
 
 // Side notes are italic in the demo; user copy in the layout is upright until they wrap it in <i>.
-const sideNote = (demo, sample, { y = 200, h = 456 } = {}) =>
-  note({ id: "side-note", ...ph(demo, `<p><i>${sample}</i></p>`, "Side note"), x: SIDE.x, y, w: SIDE.w, h });
+// `sample` is one paragraph or an array of them; the wrapper owns the markup.
+const sideNote = (demo, sample, { y = 200, h = 456 } = {}) => {
+  const html = [sample].flat().map((p) => `<p><i>${p}</i></p>`).join("");
+  return note({ id: "side-note", ...ph(demo, html, "Side note"), x: SIDE.x, y, w: SIDE.w, h });
+};
 
 const slide = (id, name, notes, elements) => ({ id, name, background: PAPER, transition: "none", notes, elements });
 
@@ -97,7 +100,7 @@ const statement = (demo) =>
   ]);
 
 const titleBody = (demo) =>
-  slide("s-body", "Title and body", "Title and body. The main column is 704px so lines stay readable at 24px; the side note column carries the caveat, source or method in 18px grey. Use <ul> for bullets. If the body does not fit, cut words or split the slide.", [
+  slide("s-body", "Title and body", "Title and body. The main column is 704px so lines stay readable at 26px; the side note column carries the caveat, source or method in 19px grey. Use <ul> for bullets. If the body does not fit, cut words or split the slide.", [
     ...chrome(),
     ...slideHead(demo, "How the benchmark ran"),
     body({
@@ -112,7 +115,10 @@ const titleBody = (demo) =>
       w: MAIN.w,
       h: 456,
     }),
-    sideNote(demo, "The sample size gives a two point margin on the pass rate at 95% confidence. Differences smaller than that between models are noise.</i></p><p><i>Temperature was 0 for every model except Model C, whose API does not accept it; its three runs differ by half a point. Raw runs and the rubric are in the appendix."),
+    sideNote(demo, [
+      "The sample size gives a two point margin on the pass rate at 95% confidence. Differences smaller than that between models are noise.",
+      "Temperature was 0 for every model except Model C, whose API does not accept it; its three runs differ by half a point. Raw runs and the rubric are in the appendix.",
+    ]),
   ]);
 
 const points = (demo) => {
@@ -160,7 +166,7 @@ const numbers = (demo) => {
     ? [
         ["84%", "pass rate on the held-out set, up from 79% last quarter"],
         ["410 ms", "p50 latency after batching, down from 620 ms"],
-        ["$1.90", "cost per million output tokens, unchanged"],
+        ["$1.90", "cost per million output tokens, down from $2.10"],
       ]
     : [
         ["00", "Label"],
@@ -314,7 +320,7 @@ const processDetail = () => ({
 const quote = (demo) =>
   slide("s-quote", "Quote", "Pull quote. A real sentence someone wrote, with a name and a source. Set at 40px across 960px; the mark and the attribution sit under it.", [
     ...chrome(),
-    f.text({ id: "q-body", ...ph(demo, "Above all else show the data. Graphical excellence is that which gives to the viewer the greatest number of ideas in the shortest time with the least ink in the smallest space.", "Quotation"), fontSize: 40, lineHeight: 1.25, valign: "middle", x: 96, y: 200, w: 960, h: 340 }),
+    f.text({ id: "q-body", ...ph(demo, "Graphical excellence is that which gives to the viewer the greatest number of ideas in the shortest time with the least ink in the smallest space.", "Quotation"), fontSize: 40, lineHeight: 1.25, valign: "middle", x: 96, y: 200, w: 960, h: 340 }),
     mark({ y: 564 }),
     note({ id: "q-attrib", ...ph(demo, "Edward Tufte, The Visual Display of Quantitative Information, 1983", "Name, source"), x: 96, y: 588, w: 960, h: 30 }),
   ]);
@@ -423,6 +429,7 @@ export default function makeDoc({ root }) {
       fontFamily: FONT,
       headingFamily: FONT,
       palette: { bg2: INK, tx2: GREY, accent2: INK, accent3: GREY, accent4: HAIR, hlink: RED },
+      chartPalette: [RED, INK, GREY],
       table: { headerBg: PAPER, headerColor: INK, borderColor: HAIR, borderWidth: 1, fontSize: 22, color: INK, radius: 0 },
     },
     fonts: [

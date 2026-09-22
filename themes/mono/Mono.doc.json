@@ -75,7 +75,7 @@
    "id": "s-cover",
    "background": "#0F1114",
    "transition": "none",
-   "notes": "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written; {{date}} would show the day it is presented. The block cursor sits directly after the title and is placed for a four-character title (Mono): each character of the mono face is 0.6em, so for your own title set its x to 160 + 43 x characters + 18. The prompt glyph and cursor recur through the deck: 16px in the status bar, after the section number and as a large block on the closing slide.",
+   "notes": "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written; {{date}} would show the day it is presented. An idle prompt line (glyph and block cursor) sits above the title; the two marks recur through the deck: 16px in the status bar, after the section number and as a large block on the closing slide.",
    "elements": [
     {
      "rotation": 0,
@@ -145,9 +145,24 @@
       36
      ],
      "x": 96,
-     "y": 290,
+     "y": 218,
      "w": 30,
      "h": 36
+    },
+    {
+     "rotation": 0,
+     "opacity": 1,
+     "type": "shape",
+     "shape": "rect",
+     "stroke": "none",
+     "strokeWidth": 0,
+     "radius": 0,
+     "fill": "#5DF28A",
+     "id": "mark",
+     "w": 43,
+     "h": 74,
+     "x": 160,
+     "y": 199
     },
     {
      "rotation": 0,
@@ -162,25 +177,10 @@
      "fontSize": 72,
      "id": "deck-title",
      "html": "{{title}}",
-     "x": 160,
-     "y": 268,
-     "w": 1024,
+     "x": 96,
+     "y": 300,
+     "w": 1088,
      "h": 160
-    },
-    {
-     "rotation": 0,
-     "opacity": 1,
-     "type": "shape",
-     "shape": "rect",
-     "stroke": "none",
-     "strokeWidth": 0,
-     "radius": 0,
-     "fill": "#5DF28A",
-     "id": "mark",
-     "w": 43,
-     "h": 74,
-     "x": 351,
-     "y": 281
     },
     {
      "rotation": 0,
@@ -195,9 +195,9 @@
      "fontSize": 24,
      "id": "cover-sub",
      "html": "A slide template for engineering talks",
-     "x": 160,
-     "y": 452,
-     "w": 1024,
+     "x": 96,
+     "y": 484,
+     "w": 1088,
      "h": 36
     }
    ]
@@ -502,7 +502,7 @@
    "id": "s-section",
    "background": "#5DF28A",
    "transition": "none",
-   "notes": "Section divider, inverted: phosphor ground, near-black type. The cursor sits after the section number. Number sections only when the order matters; otherwise delete the numeral and the cursor moves to the title line.",
+   "notes": "Section divider, inverted: phosphor ground, near-black type. The cursor sits after the section number. Number sections only when the order matters; otherwise delete the numeral and the cursor.",
    "elements": [
     {
      "rotation": 0,
@@ -743,7 +743,7 @@
    "id": "s-body",
    "background": "#0F1114",
    "transition": "none",
-   "notes": "Title and body. The body column is 816px, about 68 characters a line in the mono face. Use <ul> for bullets. Body stays at 20px; if it does not fit, cut words or split the slide.",
+   "notes": "Title and body. The body column is 816px, about 61 characters a line in the mono face. Use <ul> for bullets. Body stays at 22px; if it does not fit, cut words or split the slide.",
    "elements": [
     {
      "rotation": 0,
@@ -1792,7 +1792,9 @@
       "yAxis": {
        "type": "value",
        "axisLine": {
-        "show": false
+        "lineStyle": {
+         "color": "#0F1114"
+        }
        },
        "splitLine": {
         "lineStyle": {
@@ -2016,14 +2018,15 @@
          "html": "42 GB"
         },
         {
-         "html": "1 240 at batch 8"
+         "html": "1,240 at batch 8"
         }
        ]
       },
       {
        "cells": [
         {
-         "html": "vllm 0.6"
+         "html": "vllm 0.6",
+         "bold": true
         },
         {
          "html": "fp8"
@@ -2032,15 +2035,15 @@
          "html": "23 GB"
         },
         {
-         "html": "1 610 at batch 8"
+         "html": "1,610 at batch 8",
+         "bold": true
         }
        ]
       },
       {
        "cells": [
         {
-         "html": "llama.cpp",
-         "bold": true
+         "html": "llama.cpp"
         },
         {
          "html": "q8_0"
@@ -2049,8 +2052,7 @@
          "html": "24 GB"
         },
         {
-         "html": "610 at batch 1",
-         "bold": true
+         "html": "610 at batch 1"
         }
        ]
       },
@@ -2217,7 +2219,7 @@
      "h": 2,
      "id": "pr-flow",
      "x": 140,
-     "y": 277,
+     "y": 283,
      "w": 812,
      "strokeStyle": "dotted"
     },
@@ -2234,7 +2236,7 @@
      "h": 44,
      "id": "pr-k0",
      "x": 96,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2252,7 +2254,7 @@
      "id": "pr-n0",
      "html": "1",
      "x": 96,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2268,7 +2270,7 @@
      "id": "pr-t0",
      "html": "Tokenise",
      "x": 96,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -2282,13 +2284,13 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d0",
-     "html": "The prompt becomes token ids. Cached per template, so a repeated prefix costs nothing the second time.",
+     "html": "The prompt becomes token ids. Cached per template, so a repeated prefix is free.",
      "x": 96,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     },
     {
      "rotation": 0,
@@ -2303,7 +2305,7 @@
      "h": 44,
      "id": "pr-k1",
      "x": 374,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2321,7 +2323,7 @@
      "id": "pr-n1",
      "html": "2",
      "x": 374,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2337,7 +2339,7 @@
      "id": "pr-t1",
      "html": "Prefill",
      "x": 374,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -2351,13 +2353,13 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d1",
-     "html": "One forward pass over the prompt fills the KV cache. Compute bound: time grows with prompt length.",
+     "html": "One pass over the prompt fills the KV cache. Compute bound: time grows with length.",
      "x": 374,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     },
     {
      "rotation": 0,
@@ -2372,7 +2374,7 @@
      "h": 44,
      "id": "pr-k2",
      "x": 652,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2390,7 +2392,7 @@
      "id": "pr-n2",
      "html": "3",
      "x": 652,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2406,7 +2408,7 @@
      "id": "pr-t2",
      "html": "Decode",
      "x": 652,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -2420,13 +2422,13 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d2",
-     "html": "One token per step per sequence. Memory bound, so sequences are batched and the batch is nearly free.",
+     "html": "One token per step per sequence. Memory bound, so batching is nearly free.",
      "x": 652,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     },
     {
      "rotation": 0,
@@ -2441,7 +2443,7 @@
      "h": 44,
      "id": "pr-k3",
      "x": 930,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2459,7 +2461,7 @@
      "id": "pr-n3",
      "html": "4",
      "x": 930,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -2475,7 +2477,7 @@
      "id": "pr-t3",
      "html": "Stream",
      "x": 930,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -2489,13 +2491,13 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d3",
-     "html": "Tokens leave as they are produced. The client sees first output early, before the reply is complete.",
+     "html": "Tokens leave as they are produced. The client sees output before the reply ends.",
      "x": 930,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     },
     {
      "rotation": 0,
@@ -3277,9 +3279,24 @@
       36
      ],
      "x": 96,
-     "y": 290,
+     "y": 218,
      "w": 30,
      "h": 36
+    },
+    {
+     "rotation": 0,
+     "opacity": 1,
+     "type": "shape",
+     "shape": "rect",
+     "stroke": "none",
+     "strokeWidth": 0,
+     "radius": 0,
+     "fill": "#5DF28A",
+     "id": "mark",
+     "w": 43,
+     "h": 74,
+     "x": 160,
+     "y": 199
     },
     {
      "rotation": 0,
@@ -3294,25 +3311,10 @@
      "fontSize": 72,
      "id": "deck-title",
      "html": "{{title}}",
-     "x": 160,
-     "y": 268,
-     "w": 1024,
+     "x": 96,
+     "y": 300,
+     "w": 1088,
      "h": 160
-    },
-    {
-     "rotation": 0,
-     "opacity": 1,
-     "type": "shape",
-     "shape": "rect",
-     "stroke": "none",
-     "strokeWidth": 0,
-     "radius": 0,
-     "fill": "#5DF28A",
-     "id": "mark",
-     "w": 43,
-     "h": 74,
-     "x": 351,
-     "y": 281
     },
     {
      "rotation": 0,
@@ -3328,9 +3330,9 @@
      "id": "cover-sub",
      "html": "",
      "placeholder": "Subtitle, event or client",
-     "x": 160,
-     "y": 452,
-     "w": 1024,
+     "x": 96,
+     "y": 484,
+     "w": 1088,
      "h": 36
     }
    ]
@@ -4965,7 +4967,9 @@
       "yAxis": {
        "type": "value",
        "axisLine": {
-        "show": false
+        "lineStyle": {
+         "color": "#0F1114"
+        }
        },
        "splitLine": {
         "lineStyle": {
@@ -5360,7 +5364,7 @@
      "h": 2,
      "id": "pr-flow",
      "x": 140,
-     "y": 277,
+     "y": 283,
      "w": 812,
      "strokeStyle": "dotted"
     },
@@ -5377,7 +5381,7 @@
      "h": 44,
      "id": "pr-k0",
      "x": 96,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5395,7 +5399,7 @@
      "id": "pr-n0",
      "html": "1",
      "x": 96,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5412,7 +5416,7 @@
      "html": "",
      "placeholder": "Step one",
      "x": 96,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -5426,14 +5430,14 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d0",
      "html": "",
      "placeholder": "What happens",
      "x": 96,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     },
     {
      "rotation": 0,
@@ -5448,7 +5452,7 @@
      "h": 44,
      "id": "pr-k1",
      "x": 374,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5466,7 +5470,7 @@
      "id": "pr-n1",
      "html": "2",
      "x": 374,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5483,7 +5487,7 @@
      "html": "",
      "placeholder": "Step two",
      "x": 374,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -5497,14 +5501,14 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d1",
      "html": "",
      "placeholder": "What happens",
      "x": 374,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     },
     {
      "rotation": 0,
@@ -5519,7 +5523,7 @@
      "h": 44,
      "id": "pr-k2",
      "x": 652,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5537,7 +5541,7 @@
      "id": "pr-n2",
      "html": "3",
      "x": 652,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5554,7 +5558,7 @@
      "html": "",
      "placeholder": "Step three",
      "x": 652,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -5568,14 +5572,14 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d2",
      "html": "",
      "placeholder": "What happens",
      "x": 652,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     },
     {
      "rotation": 0,
@@ -5590,7 +5594,7 @@
      "h": 44,
      "id": "pr-k3",
      "x": 930,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5608,7 +5612,7 @@
      "id": "pr-n3",
      "html": "4",
      "x": 930,
-     "y": 256
+     "y": 262
     },
     {
      "rotation": 0,
@@ -5625,7 +5629,7 @@
      "html": "",
      "placeholder": "Step four",
      "x": 930,
-     "y": 324,
+     "y": 330,
      "w": 254,
      "h": 32
     },
@@ -5639,14 +5643,14 @@
      "align": "left",
      "valign": "top",
      "lineHeight": 1.45,
-     "fontSize": 20,
+     "fontSize": 22,
      "id": "pr-d3",
      "html": "",
      "placeholder": "What happens",
      "x": 930,
-     "y": 371,
+     "y": 377,
      "w": 254,
-     "h": 180
+     "h": 200
     }
    ]
   },

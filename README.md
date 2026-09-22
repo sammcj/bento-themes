@@ -20,7 +20,7 @@ Mid-century product design after Dieter Rams and Braun. Warm grey ground, charco
 
 ### Mono
 
-A well-set terminal, for engineering talks. Near-black ground, warm off-white text, one monospace face (JetBrains Mono) and a single phosphor green. A `>` prompt and a block cursor recur through the deck: on the cover title, in the status bar beside the page number, after the numeral on the inverted green section dividers and as a large block on the closing slide. Adds a `code` layout for syntax-coloured snippets on a charcoal panel.
+A well-set terminal, for engineering talks. Near-black ground, warm off-white text, one monospace face (JetBrains Mono) and a single phosphor green. A `>` prompt and a block cursor recur through the deck: an idle prompt line above the cover title, in the status bar beside the page number, after the numeral on the inverted green section dividers and as a large block on the closing slide. Adds a `code` layout for syntax-coloured snippets on a charcoal panel.
 
 ![Mono cover](themes/mono/preview/slide-01.png)
 ![Mono code](themes/mono/preview/slide-12.png)

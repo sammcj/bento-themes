@@ -24,7 +24,7 @@ const f = factory(t);
 
 // Type scale (px): display 72, section 64, heading 36, lead 26, body 22, caption 18, status 16.
 // Body is 22 for projectors and video calls; captions and number labels take 18, the floor is 14.
-const display = (o) => f.text({ fontSize: 64, fontWeight: 700, lineHeight: 1.1, ...o });
+const display = (o) => f.text({ fontSize: 72, fontWeight: 700, lineHeight: 1.1, ...o });
 const heading = (o) => f.text({ fontSize: 36, fontWeight: 700, lineHeight: 1.15, ...o });
 const lead = (o) => f.text({ fontSize: 26, fontWeight: 700, lineHeight: 1.2, ...o });
 const body = (o) => f.text({ fontSize: 22, lineHeight: 1.45, ...o });
@@ -81,16 +81,15 @@ const cover = (demo) => ({
   background: GROUND,
   transition: "none",
   notes:
-    "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written; {{date}} would show the day it is presented. The block cursor sits directly after the title and is placed for a four-character title (Mono): each character of the mono face is 0.6em, so for your own title set its x to 160 + 43 x characters + 18. The prompt glyph and cursor recur through the deck: 16px in the status bar, after the section number and as a large block on the closing slide.",
+    "Cover. Title and company fill from File > Properties. The date is a literal so it records when the deck was written; {{date}} would show the day it is presented. An idle prompt line (glyph and block cursor) sits above the title; the two marks recur through the deck: 16px in the status bar, after the section number and as a large block on the closing slide.",
   elements: [
     hair({ id: "foot-rule", x: 96, y: 644, w: 1088 }),
     status({ id: "run-title", html: "{{company}}", x: 96, y: 660, w: 700, h: 22 }),
     status({ id: "run-page", ...ph(demo, "2026-09-22", "Date"), color: TEXT, align: "right", x: 944, y: 660, w: 240, h: 22 }),
-    prompt(72, 96, firstLine(268, 72, 1.1)),
-    display({ id: "deck-title", html: "{{title}}", fontSize: 72, x: 160, y: 268, w: 1024, h: 160 }),
-    // Cursor after "Mono": glyph advance is exactly 0.6em, gap 0.25em, top on the cap line (baseline at 0.91em of the 1.1 line box, cap height 0.73em).
-    cursor(72, { x: 160 + Math.round(4 * 72 * CH) + 18, y: 268 + 13, h: 74 }),
-    body({ id: "cover-sub", ...ph(demo, "A slide template for engineering talks", "Subtitle, event or client"), fontSize: 24, color: GREY, x: 160, y: 452, w: 1024, h: 36 }),
+    prompt(72, 96, 236),
+    cursor(72, { x: 160, y: 199, h: 74 }),
+    display({ id: "deck-title", html: "{{title}}", x: 96, y: 300, w: 1088, h: 160 }),
+    body({ id: "cover-sub", ...ph(demo, "A slide template for engineering talks", "Subtitle, event or client"), fontSize: 24, color: GREY, x: 96, y: 484, w: 1088, h: 36 }),
   ],
 });
 
@@ -119,7 +118,7 @@ const section = (demo) => ({
   name: "Section",
   background: GREEN,
   transition: "none",
-  notes: "Section divider, inverted: phosphor ground, near-black type. The cursor sits after the section number. Number sections only when the order matters; otherwise delete the numeral and the cursor moves to the title line.",
+  notes: "Section divider, inverted: phosphor ground, near-black type. The cursor sits after the section number. Number sections only when the order matters; otherwise delete the numeral and the cursor.",
   elements: [
     ...chrome({ inverted: true, mark: false }),
     display({ id: "sec-num", ...ph(demo, "02", "01"), fontSize: 88, lineHeight: 1.0, color: GROUND, x: 96, y: 168, w: 160, h: 96 }),
@@ -147,7 +146,7 @@ const titleBody = (demo) => ({
   name: "Title and body",
   background: GROUND,
   transition: "none",
-  notes: "Title and body. The body column is 816px, about 68 characters a line in the mono face. Use <ul> for bullets. Body stays at 20px; if it does not fit, cut words or split the slide.",
+  notes: "Title and body. The body column is 816px, about 61 characters a line in the mono face. Use <ul> for bullets. Body stays at 22px; if it does not fit, cut words or split the slide.",
   elements: [
     ...chrome(),
     ...slideHead(demo, "Why batch size matters"),
@@ -263,7 +262,7 @@ const chart = (demo) => ({
         legend: { top: 0, textStyle: { color: TEXT, fontSize: 16 } },
         tooltip: { trigger: "axis" },
         xAxis: { type: "category", data: demo ? ["1", "2", "4", "8", "16", "32"] : ["A", "B", "C", "D", "E", "F"], axisLine: { lineStyle: { color: HAIR } }, axisLabel: { color: TEXT, fontSize: 16 } },
-        yAxis: { type: "value", axisLine: { show: false }, splitLine: { lineStyle: { color: HAIR } }, axisLabel: { color: GREY, fontSize: 14, formatter: "{value} ms" } },
+        yAxis: { type: "value", axisLine: { lineStyle: { color: GROUND } }, splitLine: { lineStyle: { color: HAIR } }, axisLabel: { color: GREY, fontSize: 14, formatter: "{value} ms" } },
         series: [
           { name: demo ? "p50" : "Series 1", type: "bar", data: [410, 430, 470, 560, 760, 1180], itemStyle: { color: GREEN } },
           { name: demo ? "p95" : "Series 2", type: "bar", data: [1900, 1420, 990, 1010, 1240, 1710], itemStyle: { color: TEXT } },
@@ -288,18 +287,18 @@ const table = (demo) => ({
     f.table({
       id: "tbl-main", x: 96, y: 184, w: 1088, h: 440,
       columns: [{ w: 1.3 }, { w: 1 }, { w: 1 }, { w: 1.4 }],
-      // Row 3 of the demo is bold in its first and last cells, the row the talk is about.
+      // Demo row 2 (vllm fp8, the batched option the talk recommends) is bold in its first and last cells.
       rows: (demo
         ? [
             ["Runtime", "Quantisation", "Memory", "Tokens per second"],
-            ["vllm 0.6", "bf16", "42 GB", "1 240 at batch 8"],
-            ["vllm 0.6", "fp8", "23 GB", "1 610 at batch 8"],
+            ["vllm 0.6", "bf16", "42 GB", "1,240 at batch 8"],
+            ["vllm 0.6", "fp8", "23 GB", "1,610 at batch 8"],
             ["llama.cpp", "q8_0", "24 GB", "610 at batch 1"],
             ["llama.cpp", "q4_k_m", "13 GB", "720 at batch 1"],
             ["mlx", "4 bit", "12 GB", "540 at batch 1"],
           ]
         : [["Column", "Column", "Column", "Column"], ["Row", "", "", ""], ["Row", "", "", ""], ["Row", "", "", ""]]
-      ).map((r, i) => ({ cells: r.map((html, c) => (demo && i === 3 && (c === 0 || c === 3) ? { html, bold: true } : { html })) })),
+      ).map((r, i) => ({ cells: r.map((html, c) => (demo && i === 2 && (c === 0 || c === 3) ? { html, bold: true } : { html })) })),
       style: TABLE_STYLE,
     }),
   ],
@@ -312,20 +311,20 @@ const nodeNum = (o) => f.text({ fontSize: 20, fontWeight: 700, lineHeight: 1, al
 const process = (demo) => {
   const steps = demo
     ? [
-        ["Tokenise", "The prompt becomes token ids. Cached per template, so a repeated prefix costs nothing the second time."],
-        ["Prefill", "One forward pass over the prompt fills the KV cache. Compute bound: time grows with prompt length."],
-        ["Decode", "One token per step per sequence. Memory bound, so sequences are batched and the batch is nearly free."],
-        ["Stream", "Tokens leave as they are produced. The client sees first output early, before the reply is complete."],
+        ["Tokenise", "The prompt becomes token ids. Cached per template, so a repeated prefix is free."],
+        ["Prefill", "One pass over the prompt fills the KV cache. Compute bound: time grows with length."],
+        ["Decode", "One token per step per sequence. Memory bound, so batching is nearly free."],
+        ["Stream", "Tokens leave as they are produced. The client sees output before the reply ends."],
       ]
     : ["Step one", "Step two", "Step three", "Step four"].map((p) => [p, "What happens"]);
   const els = steps.flatMap(([h, d], i) => {
     const x = COLS[4].x[i];
     return [
-      // Group is 289px tall (node 44, lead 31, six 20px lines 174, gaps 24 and 16), centred in the 184..616 band.
-      node({ id: `pr-k${i}`, x, y: 256 }),
-      nodeNum({ id: `pr-n${i}`, html: String(i + 1), x, y: 256 }),
-      lead({ id: `pr-t${i}`, ...ph(demo, h, h), x, y: 324, w: COLS[4].w, h: 32 }),
-      body({ id: `pr-d${i}`, ...ph(demo, d, d), fontSize: 20, x, y: 371, w: COLS[4].w, h: 180 }),
+      // Group is 275px tall (node 44, lead 31, five 22px lines 160, gaps 24 and 16), centred in the 184..616 band.
+      node({ id: `pr-k${i}`, x, y: 262 }),
+      nodeNum({ id: `pr-n${i}`, html: String(i + 1), x, y: 262 }),
+      lead({ id: `pr-t${i}`, ...ph(demo, h, h), x, y: 330, w: COLS[4].w, h: 32 }),
+      body({ id: `pr-d${i}`, ...ph(demo, d, d), x, y: 377, w: COLS[4].w, h: 200 }),
     ];
   });
   return {
@@ -337,7 +336,7 @@ const process = (demo) => {
     elements: [
       ...chrome(),
       ...slideHead(demo, "How a request is served"),
-      f.line({ id: "pr-flow", x: 140, y: 277, w: 812, h: 2, fill: GREEN, stroke: GREEN, strokeWidth: 2, strokeStyle: "dotted" }),
+      f.line({ id: "pr-flow", x: 140, y: 283, w: 812, h: 2, fill: GREEN, stroke: GREEN, strokeWidth: 2, strokeStyle: "dotted" }),
       ...els,
       ...(demo
         ? [

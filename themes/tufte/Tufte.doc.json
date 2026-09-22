@@ -28,6 +28,11 @@
    "accent4": "#CFCBC0",
    "hlink": "#A51C30"
   },
+  "chartPalette": [
+   "#A51C30",
+   "#111111",
+   "#666460"
+  ],
   "table": {
    "headerBg": "#FFFFF8",
    "headerColor": "#111111",
@@ -638,7 +643,7 @@
    "id": "s-body",
    "background": "#FFFFF8",
    "transition": "none",
-   "notes": "Title and body. The main column is 704px so lines stay readable at 24px; the side note column carries the caveat, source or method in 18px grey. Use <ul> for bullets. If the body does not fit, cut words or split the slide.",
+   "notes": "Title and body. The main column is 704px so lines stay readable at 26px; the side note column carries the caveat, source or method in 19px grey. Use <ul> for bullets. If the body does not fit, cut words or split the slide.",
    "elements": [
     {
      "rotation": 0,
@@ -1458,7 +1463,7 @@
      "valign": "top",
      "lineHeight": 1.35,
      "id": "st-l2",
-     "html": "cost per million output tokens, unchanged",
+     "html": "cost per million output tokens, down from $2.10",
      "fontSize": 22,
      "x": 844,
      "y": 372,
@@ -3325,7 +3330,7 @@
      "valign": "middle",
      "lineHeight": 1.25,
      "id": "q-body",
-     "html": "Above all else show the data. Graphical excellence is that which gives to the viewer the greatest number of ideas in the shortest time with the least ink in the smallest space.",
+     "html": "Graphical excellence is that which gives to the viewer the greatest number of ideas in the shortest time with the least ink in the smallest space.",
      "fontSize": 40,
      "x": 96,
      "y": 200,
