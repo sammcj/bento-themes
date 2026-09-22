@@ -513,7 +513,9 @@ export default function makeDoc({ root }) {
   return {
     format: "bento/slides",
     version: 1,
-    template: true,
+    // No template flag: the runtime would delete collab and mint live-session keys. docId is
+    // absent, so every open still mints a fresh deck. Sharing stays off until the user turns it on.
+    collab: { on: false },
     title: "Swiss",
     size: { width: 1280, height: 720 },
     meta: { author: "", company: "Company", subject: "", event: "", keywords: "swiss, international typographic style, grid" },

@@ -94,6 +94,13 @@ export function assertDoc(doc) {
     checkSlide(l, `layout ${l.name}`, true);
     for (const e of l.elements) if (e.link) problems.push(`layout ${l.name}/${e.id}: layouts must not carry link`);
   }
+  // A deck must open with live sharing off. `template: true` would defeat this: the
+  // runtime deletes collab when it mints from a template, then mints its own keys
+  // with on:true, and the first save writes ownerPriv into the file. Omitting docId
+  // already gives every open a fresh deck, so the flag buys nothing.
+  if (doc.template) problems.push("doc: template must not be set (the runtime would drop collab and mint sharing keys)");
+  if (doc.collab?.on !== false) problems.push('doc: collab must be { on: false } so decks do not open a live session');
+  if (doc.docId) problems.push("doc: docId must be absent so every open mints a fresh deck");
   if (problems.length) throw new Error("document check failed:\n  " + problems.join("\n  "));
 }
 

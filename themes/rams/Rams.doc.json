@@ -1,7 +1,9 @@
 {
  "format": "bento/slides",
  "version": 1,
- "template": true,
+ "collab": {
+  "on": false
+ },
  "title": "Rams",
  "size": {
   "width": 1280,

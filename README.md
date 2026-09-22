@@ -39,7 +39,9 @@ Data slides after Edward Tufte's books, for talks where the charts and tables ca
 1. Download `themes/<name>/<Name>.bento.html` and open it in a browser. The file is a template, so every open starts a new deck.
 2. Set the title, company and author under File > Properties. Covers and footers fill from them.
 3. Add slides from the New-slide picker; the theme's layouts are listed under "This document".
-4. Save. The saved deck is an ordinary Bento file and no longer a template.
+4. Save. The saved deck is an ordinary Bento file.
+
+Decks open with live sharing off (`collab: { on: false }`), so nothing reaches Bento's sync service until you turn it on from the Share menu.
 
 To apply a theme to an existing deck, paste the layouts from `<Name>.doc.json` into your deck's JSON (Save > Replace from JSON) or point an agent at the theme file with the [bento-slides skill](https://github.com/sammcj/agentic-coding/blob/main/Skills/bento-slides/SKILL.md), which is the recommended way to author decks from these themes.
 
@@ -63,17 +65,18 @@ The committed runtime is the version in `runtime/VERSION`. `make check` prints t
 
 1. Create `themes/<name>/theme.mjs` exporting a default function that returns a `bento/slides` document. Use `scripts/lib.mjs` for the element factories, column arithmetic and font embedding.
 2. Give every slide `notes` and every element an `id`. Keep ids stable across slides so users can opt into morph transitions.
-3. Set `template: true`, `present: { slideNumber: false }` if the theme draws its own page numbers, and embed fonts as woff2 data URIs under `assets`.
+3. Set `collab: { on: false }`, `present: { slideNumber: false }` if the theme draws its own page numbers, and embed fonts as woff2 data URIs under `assets`.
 4. Run `make check` and read every PNG. Text overflow and dropped keys are invisible in the JSON.
 
 For a colour variant, export a named builder that takes a palette and import it from a second directory (`themes/mono-light/theme.mjs` is 20 lines). Layout ids carry the variant slug so both sets can live in one deck. `make` treats any directory with a `theme.mjs` as a theme.
 
-`assertDoc` enforces: no `fx`, `transition: "none"` on every slide and layout, the 14px type floor, unique ids, notes on every slide, valid link and state targets, placeholders for layout copy. Conventions the themes follow by hand: one accent colour, one or two typefaces, 96px side margins, body text 22px or larger.
+`assertDoc` enforces: sharing off (`collab: { on: false }`, no `template`, no `docId`), no `fx`, `transition: "none"` on every slide and layout, the 14px type floor, unique ids, notes on every slide, valid link and state targets, placeholders for layout copy. Conventions the themes follow by hand: one accent colour, one or two typefaces, 96px side margins, body text 22px or larger.
 
 ### Gotchas
 
 - Write every typographic field on every element. When the runtime expands a document it fills gaps with editor defaults (system font, centred, `#1E2A3A`), never with `theme` values. `factory()` in `scripts/lib.mjs` does this for you.
-- `template: true` and `layouts` do not survive a round trip through `window.bento.loadDoc()` and `render_check.mjs --write`. Splice the JSON yourself (`build.mjs`) and use `render_check.mjs` only to validate and screenshot.
+- `layouts` do not survive a round trip through `window.bento.loadDoc()` and `render_check.mjs --write`. Splice the JSON yourself (`build.mjs`) and use `render_check.mjs` only to validate and screenshot.
+- Do not set `template: true`. The runtime deletes `collab` when it mints from a template, then mints its own live-session keys with `on: true`, and the first save writes `ownerPriv` into the deck. Omitting `docId` already gives every open a fresh deck, so the flag costs the sharing default and buys nothing.
 - Layout text the user replaces takes `html: ""` plus `placeholder`; chrome that must render (`{{title}}`, `{{page:2}}`) keeps `html`. Layouts must not carry `link`.
 - A 1px `line` shape renders thicker than 1px; use a `rect` with `h: 1` for hairlines.
 - Step reveals (`fx.step`) consume arrow presses. The vendored `render_check.mjs` presses through them before capturing each page; the upstream copy in the bento-slides skill does not and stops short of the last slides. Only relevant if a theme ever adds steps.
