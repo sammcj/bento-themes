@@ -18,12 +18,13 @@ Mid-century product design after Dieter Rams and Braun. Warm grey ground, charco
 ![Rams cover](themes/rams/preview/slide-01.png)
 ![Rams process](themes/rams/preview/slide-11.png)
 
-### Mono (dark and light)
+### Mono (light and dark)
 
-A well-set terminal, for engineering talks. One monospace face (JetBrains Mono), a `>` prompt and a block cursor as the recurring mark: an idle prompt line above the cover title, in the status bar beside the page number, after the numeral on the inverted section dividers and as a large block on the closing slide. Adds a `code` layout for syntax-coloured snippets on a panel. Two palettes share every builder: Mono Dark is near-black with phosphor green; Mono Light is warm paper with a deep green, for bright rooms and printed hand-outs. `themes/mono-light/theme.mjs` is the light palette applied to the builders in `themes/mono-dark/theme.mjs`.
+A well-set terminal, for engineering talks. One monospace face (JetBrains Mono), a `>` prompt and a block cursor as the recurring mark: an idle prompt line above the cover title, in the status bar beside the page number, after the numeral on the inverted section dividers and as a large block on the closing slide. Adds a `code` layout for syntax-coloured snippets on a panel. Two palettes share every builder. Mono Light is warm paper with a deep green; use it by default, since light slides survive projectors, screen sharing and video compression better than dark ones. Mono Dark is near-black with phosphor green for a dim room. `themes/mono-light/theme.mjs` is the light palette applied to the builders in `themes/mono-dark/theme.mjs`.
 
-![Mono Dark cover](themes/mono-dark/preview/slide-01.png)
+![Mono Light cover](themes/mono-light/preview/slide-01.png)
 ![Mono Light code](themes/mono-light/preview/slide-12.png)
+![Mono Dark cover](themes/mono-dark/preview/slide-01.png)
 
 ### Tufte
 
