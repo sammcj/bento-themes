@@ -438,6 +438,80 @@ async def batch(max_size: int = 8, wait_ms: int = 5) -> None:
     ],
   });
 
+  // A framed screenshot: panel, a window bar with three dots, the image letterboxed
+  // inside on the panel colour. Ids are prefixed so two frames can share a slide.
+  const frame = (p, { x, y, w, h }) => [
+    f.rect({ id: `${p}-frame`, x, y, w, h, fill: PANEL, stroke: HAIR, strokeWidth: 1 }),
+    f.rect({ id: `${p}-bar`, x, y, w, h: 28, fill: HEADER }),
+    ...[0, 1, 2].map((i) => f.ellipse({ id: `${p}-dot${i}`, x: x + 12 + i * 16, y: y + 10, w: 8, h: 8, fill: GREY })),
+    f.image({ id: `${p}-img`, src: "asset:shot", fit: "contain", x: x + 1, y: y + 28, w: w - 2, h: h - 29 }),
+  ];
+
+  const screenshot = (demo) => ({
+    id: "s-screenshot",
+    name: "Screenshot",
+    background: GROUND,
+    transition: "none",
+    notes: "Screenshot. One large capture in a window frame spanning the band, letterboxed on the panel colour, with a one-line caption. Replace the shot asset with a PNG downscaled to 2560px wide; keep the caption in the text element, since text baked into an image cannot be edited or read by a screen reader.",
+    elements: [
+      ...chrome(),
+      ...slideHead(demo, "The dashboard after batching"),
+      ...frame("shot", { x: 96, y: 184, w: 1088, h: 392 }),
+      caption({ id: "shot-caption", ...ph(demo, "Grafana, p95 latency panel, one week either side of the change.", "Caption"), x: 96, y: 590, w: 1088, h: 26 }),
+    ],
+  });
+
+  const screenshotNotes = (demo) => ({
+    id: "s-screenshot-notes",
+    name: "Screenshot with notes",
+    background: GROUND,
+    transition: "none",
+    notes: "Screenshot with notes. A medium capture on the left (656px) and a bold lead with commentary on the right. Use it when the shot needs reading, not just showing: what to look at, and what it means. Three prompt-glyph points fit in the right column.",
+    elements: [
+      ...chrome(),
+      ...slideHead(demo, "Reading the trace"),
+      ...frame("shot", { x: 96, y: 184, w: 656, h: 392 }),
+      caption({ id: "shot-caption", ...ph(demo, "Jaeger, one request, 200 token reply.", "Caption"), x: 96, y: 590, w: 656, h: 26 }),
+      lead({ id: "shot-lead", ...ph(demo, "Prefill is the wide span", "What to look at"), x: 784, y: 184, w: 400, h: 34 }),
+      hair({ id: "shot-rule", x: 784, y: 234, w: 400 }),
+      body({
+        id: "shot-body",
+        ...ph(
+          demo,
+          "<p>The first span is prefill over a 1,400 token prompt. Nothing else starts until it ends.</p><p>The 40 decode spans after it are short and even: memory bound, cheap to batch.</p><p>The gap before the first token is the 5 ms batch window.</p>",
+          "Commentary",
+        ),
+        x: 784, y: 254, w: 400, h: 362,
+      }),
+    ],
+  });
+
+  const clippings = (demo) => {
+    const shots = demo
+      ? [
+          ["Before", "One connection per request, p95 at 1.9 seconds."],
+          ["After", "Batches of eight, p95 at 1.0 seconds on the same nodes."],
+        ]
+      : [["Left caption", "One sentence on what the clipping shows"], ["Right caption", "One sentence on what the clipping shows"]];
+    const els = shots.flatMap(([h, d], i) => {
+      const x = COLS[2].x[i];
+      const p = i === 0 ? "clip-l" : "clip-r";
+      return [
+        ...frame(p, { x, y: 184, w: COLS[2].w, h: 300 }),
+        lead({ id: `${p}-head`, ...ph(demo, h, h), x, y: 508, w: COLS[2].w, h: 34 }),
+        body({ id: `${p}-body`, ...ph(demo, d, d), x, y: 550, w: COLS[2].w, h: 66 }),
+      ];
+    });
+    return {
+      id: "s-clippings",
+      name: "Two clippings",
+      background: GROUND,
+      transition: "none",
+      notes: "Two clippings. Two medium captures side by side in window frames, each with a bold lead and one sentence. Suits before/after, two tools doing the same job, or a config and its effect. Crop clippings to the same aspect ratio before embedding so the frames match.",
+      elements: [...chrome(), ...slideHead(demo, "Before and after, on the dashboard"), ...els],
+    };
+  };
+
   const closing = (demo) => ({
     id: "s-closing",
     name: "Closing",
@@ -466,7 +540,21 @@ async def batch(max_size: int = 8, wait_ms: int = 5) -> None:
     return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
   };
 
-  const builders = [cover, agenda, section, statement, titleBody, points, twoCol, numbers, chart, table, process, code, quote, image, closing];
+  // Stand-in for a screenshot: a wireframe of a sidebar, a header and text rows,
+  // in the panel palette with one accent bar. Same aspect as the large frame.
+  const shotSvg = () => {
+    const W = 1086, H = 363;
+    const bar = (x, y, w, h, fill, o = 1) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" opacity="${o}"/>`;
+    const side = [80, 120, 100, 140, 90, 110].map((w, i) => bar(24, 28 + i * 34, w, 10, HAIR)).join("");
+    const rows = [0.9, 0.7, 0.85, 0.5, 0.95, 0.6, 0.8].map((k, i) => bar(280, 84 + i * 36, Math.round(760 * k), 10, HAIR)).join("");
+    const svg =
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${bar(0, 0, W, H, PANEL)}` +
+      `${bar(0, 0, 240, H, HEADER)}${side}${bar(280, 28, 400, 14, GREY, 0.6)}${bar(280, 60, 760, 1, HAIR)}${rows}` +
+      `${bar(280, 340, 240, 6, ACCENT, 0.8)}</svg>`;
+    return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
+  };
+
+  const builders = [cover, agenda, section, statement, titleBody, points, twoCol, numbers, chart, table, process, code, screenshot, screenshotNotes, clippings, quote, image, closing];
   const slides = builders.map((b) => b(true));
   slides.splice(slides.findIndex((s) => s.id === "s-process") + 1, 0, processDetail());
   const layouts = builders.map((b) => {
@@ -494,7 +582,7 @@ async def batch(max_size: int = 8, wait_ms: int = 5) -> None:
       table: TABLE_STYLE,
     },
     fonts: [{ family: "JetBrains Mono", asset: "jetbrains-mono", weight: "400 700" }],
-    assets: { "jetbrains-mono": dataUri(join(root, "fonts", "jetbrains-mono-latin.woff2")), placeholder: placeholderSvg() },
+    assets: { "jetbrains-mono": dataUri(join(root, "fonts", "jetbrains-mono-latin.woff2")), placeholder: placeholderSvg(), shot: shotSvg() },
     present: { slideNumber: false, progress: false },
     slides,
     layouts,
