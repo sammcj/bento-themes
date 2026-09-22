@@ -50,9 +50,9 @@ const slideHead = (demo, html, placeholder = "Slide title") => [
 
 // Side notes are italic in the demo; user copy in the layout is upright until they wrap it in <i>.
 // `sample` is one paragraph or an array of them; the wrapper owns the markup.
-const sideNote = (demo, sample, { y = 200, h = 456 } = {}) => {
+const sideNote = (demo, sample, { id = "side-note", x = SIDE.x, y = 200, w = SIDE.w, h = 456 } = {}) => {
   const html = [sample].flat().map((p) => `<p><i>${p}</i></p>`).join("");
-  return note({ id: "side-note", ...ph(demo, html, "Side note"), x: SIDE.x, y, w: SIDE.w, h });
+  return note({ id, ...ph(demo, html, "Side note"), x, y, w, h });
 };
 
 const slide = (id, name, notes, elements) => ({ id, name, background: PAPER, transition: "none", notes, elements });
@@ -318,6 +318,68 @@ const processDetail = () => ({
   ],
 });
 
+// An unframed figure, as in Tufte's books: the image sits on the page with a hairline
+// under it and the caption in the side-note style beneath. Ids are prefixed so two
+// figures can share a slide. Boxes match the placeholder's aspect (SHOT_ASPECT) so the
+// demo shows no letterbox; a replacement image letterboxes on cream, which is invisible.
+const SHOT_ASPECT = 1088 / 375;
+const figure = (p, { x, y, w }) => {
+  const h = Math.round(w / SHOT_ASPECT);
+  return [f.image({ id: `${p}-img`, src: "asset:shot", fit: "contain", x, y, w, h }), hair({ id: `${p}-rule`, x, y: y + h + 12, w })];
+};
+const figureFoot = (y, w) => y + Math.round(w / SHOT_ASPECT) + 24;
+
+const screenshot = (demo) =>
+  slide("s-screenshot", "Screenshot", "Screenshot. One large capture across the band, unframed, with a hairline under it and a figure caption in the side-note style. Replace the shot asset with a PNG downscaled to 2560px wide; keep the caption in the text element, since text baked into an image cannot be edited or read by a screen reader.", [
+    ...chrome(),
+    ...slideHead(demo, "The dashboard after batching"),
+    ...figure("shot", { x: 96, y: 200, w: 1088 }),
+    sideNote(demo, "Latency panel, p95 by minute, one week either side of the change. The step on the Tuesday is the batching deploy.", { id: "shot-caption", x: 96, y: figureFoot(200, 1088), w: 1088, h: 56 }),
+  ]);
+
+const screenshotNotes = (demo) =>
+  slide("s-screenshot-notes", "Screenshot with notes", "Screenshot with notes. The capture sits in the 704px main column with its caption under the hairline; the commentary is a lead and a side note in the 352px column. Use it when the shot needs reading, not just showing: what to look at, and what it means.", [
+    ...chrome(),
+    ...slideHead(demo, "Reading the trace"),
+    ...figure("shot", { x: MAIN.x, y: 200, w: MAIN.w }),
+    sideNote(demo, "One request traced end to end, 200 token reply. Spans are drawn to the same time scale; the bar under the trace is the batch window.", { id: "shot-caption", x: MAIN.x, y: figureFoot(200, MAIN.w), w: MAIN.w, h: 90 }),
+    lead({ id: "shot-lead", ...ph(demo, "Prefill is the wide span", "What to look at"), x: SIDE.x, y: 200, w: SIDE.w, h: 40 }),
+    hair({ id: "shot-lead-rule", x: SIDE.x, y: 252, w: SIDE.w }),
+    sideNote(
+      demo,
+      [
+        "The first span is prefill over a 1,400 token prompt. Nothing else starts until it ends, so prompt length sets the floor on time to first token.",
+        "The 40 decode spans after it are short and even: memory bound, and cheap to batch with other requests.",
+        "The gap before the first token is the 40 ms batch window. It is the price of the p95 improvement on the previous slide.",
+      ],
+      { id: "shot-body", y: 268, h: 356 },
+    ),
+  ]);
+
+const clippings = (demo) => {
+  const shots = demo
+    ? [
+        ["Before", "One connection per request and one system prompt each. The p95 sat at 1.8 seconds and the gateway held 400 connections at peak, with a retry storm every Tuesday afternoon."],
+        ["After", "Batches of eight on the same nodes, sharing one cached system prompt. The p95 fell to 1.2 seconds and peak connections to 60; the Tuesday storm did not recur."],
+      ]
+    : [["Left caption", "One sentence on what the clipping shows"], ["Right caption", "One sentence on what the clipping shows"]];
+  const els = shots.flatMap(([h, d], i) => {
+    const x = COLS[2].x[i];
+    const p = i === 0 ? "clip-l" : "clip-r";
+    const foot = figureFoot(200, COLS[2].w);
+    return [
+      ...figure(p, { x, y: 200, w: COLS[2].w }),
+      lead({ id: `${p}-head`, ...ph(demo, h, h), x, y: foot, w: COLS[2].w, h: 40 }),
+      body({ id: `${p}-body`, ...ph(demo, d, d), x, y: foot + 48, w: COLS[2].w, h: 160 }),
+    ];
+  });
+  return slide("s-clippings", "Two clippings", "Two clippings. Two captures side by side in the 528px columns, each with a hairline, a lead and a few sentences. Suits before/after, two tools doing the same job, or a config and its effect. Crop clippings to the same aspect ratio before embedding so the hairlines land level.", [
+    ...chrome(),
+    ...slideHead(demo, "Before and after, on the dashboard"),
+    ...els,
+  ]);
+};
+
 const quote = (demo) =>
   slide("s-quote", "Quote", "Pull quote. A real sentence someone wrote, with a name and a source. Set at 44px across 960px; the mark and the attribution sit under it.", [
     ...chrome(),
@@ -394,6 +456,21 @@ const sparklines = (demo) => {
   ]);
 };
 
+// Stand-in for a screenshot: a wireframe of a sidebar, a header and text rows on a
+// cream panel one step off the page, hairline bars and one red bar. Aspect SHOT_ASPECT.
+const shotSvg = () => {
+  const W = 1088, H = 375;
+  const PANEL = "#F7F4EA", SIDEBAR = "#EFEBDF";
+  const bar = (x, y, w, h, fill) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"/>`;
+  const side = [80, 120, 100, 140, 90, 110].map((w, i) => bar(24, 32 + i * 36, w, 8, HAIR)).join("");
+  const rows = [0.9, 0.7, 0.85, 0.5, 0.95, 0.6, 0.8].map((k, i) => bar(280, 92 + i * 36, Math.round(760 * k), 8, HAIR)).join("");
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${bar(0, 0, W, H, PANEL)}` +
+    `${bar(0, 0, 240, H, SIDEBAR)}${side}${bar(280, 32, 400, 12, GREY)}${bar(280, 66, 760, 1, HAIR)}${rows}` +
+    `${bar(280, 348, 240, 4, RED)}</svg>`;
+  return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
+};
+
 // A faint plotted curve on cream stands in for the figure the user will supply.
 const placeholderSvg = () => {
   const pts = [];
@@ -407,7 +484,7 @@ const placeholderSvg = () => {
 };
 
 export default function makeDoc({ root }) {
-  const builders = [cover, agenda, section, statement, titleBody, points, twoCol, numbers, chart, sparklines, table, process, quote, image, closing];
+  const builders = [cover, agenda, section, statement, titleBody, points, twoCol, numbers, chart, sparklines, table, process, screenshot, screenshotNotes, clippings, quote, image, closing];
   const slides = builders.map((b) => b(true));
   slides.splice(slides.findIndex((s) => s.id === "s-process") + 1, 0, processDetail());
   const layouts = builders.map((b) => {
@@ -441,6 +518,7 @@ export default function makeDoc({ root }) {
       "eb-garamond": dataUri(join(root, "fonts", "eb-garamond-latin.woff2")),
       "eb-garamond-italic": dataUri(join(root, "fonts", "eb-garamond-italic-latin.woff2")),
       placeholder: placeholderSvg(),
+      shot: shotSvg(),
     },
     present: { slideNumber: false, progress: false },
     slides,

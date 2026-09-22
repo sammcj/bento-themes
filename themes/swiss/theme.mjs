@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { COLS, dataUri, factory } from "../../scripts/lib.mjs";
 
 const PAPER = "#F3F1EC";
+const PANEL = "#E7E4DD"; // letterbox ground behind framed screenshots
 const INK = "#141414";
 const GREY = "#6B6B6B";
 const HAIR = "#C9C6BF";
@@ -22,6 +23,7 @@ const display = (o) => f.text({ fontSize: 96, fontWeight: 700, lineHeight: 1.0, 
 const heading = (o) => f.text({ fontSize: 44, fontWeight: 700, lineHeight: 1.05, ...o });
 const hair = (o) => f.rect({ fill: HAIR, h: 1, ...o });
 const body = (o) => f.text({ fontSize: 22, lineHeight: 1.35, ...o });
+const lead = (o) => f.text({ fontSize: 28, fontWeight: 700, lineHeight: 1.2, ...o });
 const label = (o) => f.text({ fontSize: 16, fontWeight: 500, lineHeight: 1.3, color: GREY, ...o });
 
 // Content slides share this chrome; the ids stay stable across slides.
@@ -354,6 +356,85 @@ const processDetail = () => ({
   ],
 });
 
+// A framed screenshot: a 1px ink rule around the image, letterboxed on a darker
+// paper. No window bar; the rule is the only chrome. Ids are prefixed so two
+// frames can share a slide.
+const frame = (p, { x, y, w, h }) => [
+  f.rect({ id: `${p}-frame`, x, y, w, h, fill: PANEL, stroke: INK, strokeWidth: 1 }),
+  f.image({ id: `${p}-img`, src: "asset:shot", fit: "contain", x: x + 1, y: y + 1, w: w - 2, h: h - 2 }),
+];
+
+const screenshot = (demo) => ({
+  id: "s-screenshot",
+  name: "Screenshot",
+  background: PAPER,
+  transition: "none",
+  notes: "Screenshot. One large capture spanning the band inside a 1px rule, letterboxed on a darker paper, with a one-line caption in the label style. Replace the shot asset with a PNG downscaled to 2560px wide; keep the caption in the text element, since text baked into an image cannot be edited or read by a screen reader.",
+  elements: [
+    ...chrome(),
+    slideHead(demo, "The dashboard after batching"),
+    ...frame("shot", { x: 96, y: 200, w: 1088, h: 416 }),
+    label({ id: "shot-caption", ...ph(demo, "Grafana, p95 latency panel, one week either side of the change.", "Caption"), x: 96, y: 632, w: 1088, h: 24 }),
+  ],
+});
+
+const screenshotNotes = (demo) => ({
+  id: "s-screenshot-notes",
+  name: "Screenshot with notes",
+  background: PAPER,
+  transition: "none",
+  notes: "Screenshot with notes. A medium capture on the left (656px) and a bold lead over a 2px rule with commentary on the right, the same column pattern as Two columns. Use it when the shot needs reading, not just showing: what to look at, and what it means. Three short paragraphs fit the right column.",
+  elements: [
+    ...chrome(),
+    slideHead(demo, "Reading the trace"),
+    ...frame("shot", { x: 96, y: 200, w: 656, h: 416 }),
+    label({ id: "shot-caption", ...ph(demo, "Jaeger, one request, 200 token reply.", "Caption"), x: 96, y: 632, w: 656, h: 24 }),
+    lead({ id: "shot-lead", ...ph(demo, "Prefill is the wide span", "What to look at"), x: 784, y: 200, w: 400, h: 40 }),
+    f.line({ id: "shot-rule", x: 784, y: 252, w: 400, h: 2, fill: INK }),
+    body({
+      id: "shot-body",
+      ...ph(
+        demo,
+        "<p>The first span is prefill over a 1,400 token prompt. Nothing else starts until it ends.</p><p>The 40 decode spans after it are short and even: memory bound, cheap to batch.</p><p>The gap before the first token is the 5 ms batch window.</p>",
+        "Commentary",
+      ),
+      x: 784,
+      y: 272,
+      w: 400,
+      h: 384,
+    }),
+  ],
+});
+
+const clippings = (demo) => {
+  const shots = demo
+    ? [
+        ["Before", "One connection per request, p95 at 1.9 seconds."],
+        ["After", "Batches of eight, p95 at 1.0 seconds on the same nodes."],
+      ]
+    : [
+        ["Left caption", "One sentence on what the clipping shows"],
+        ["Right caption", "One sentence on what the clipping shows"],
+      ];
+  const els = shots.flatMap(([h, d], i) => {
+    const x = COLS[2].x[i];
+    const p = i === 0 ? "clip-l" : "clip-r";
+    return [
+      ...frame(p, { x, y: 200, w: COLS[2].w, h: 320 }),
+      lead({ id: `${p}-head`, ...ph(demo, h, h), x, y: 540, w: COLS[2].w, h: 40 }),
+      body({ id: `${p}-body`, ...ph(demo, d, d), x, y: 588, w: COLS[2].w, h: 68 }),
+    ];
+  });
+  return {
+    id: "s-clippings",
+    name: "Two clippings",
+    background: PAPER,
+    transition: "none",
+    notes: "Two clippings. Two medium captures side by side, each inside a 1px rule with a bold lead and one sentence underneath. Suits before/after, two tools doing the same job, or a config and its effect. Crop clippings to the same aspect ratio before embedding so the frames match.",
+    elements: [...chrome(), slideHead(demo, "Before and after, on the dashboard"), ...els],
+  };
+};
+
 const quote = (demo) => ({
   id: "s-quote",
   name: "Quote",
@@ -405,8 +486,22 @@ const placeholderSvg = () => {
   return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
 };
 
+// Stand-in for a screenshot: a wireframe of a sidebar, a header and text rows on
+// paper, hairline bars and one red bar. Same aspect as the large frame's inner box.
+const shotSvg = () => {
+  const W = 1086, H = 414;
+  const bar = (x, y, w, h, fill) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"/>`;
+  const side = [80, 120, 100, 140, 90, 110].map((w, i) => bar(24, 32 + i * 36, w, 10, HAIR)).join("");
+  const rows = [0.9, 0.7, 0.85, 0.5, 0.95, 0.6, 0.8, 0.65].map((k, i) => bar(280, 96 + i * 36, Math.round(760 * k), 10, HAIR)).join("");
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${bar(0, 0, W, H, PAPER)}` +
+    `${bar(240, 0, 1, H, HAIR)}${side}${bar(280, 32, 400, 14, GREY)}${bar(280, 70, 760, 1, INK)}${rows}` +
+    `${bar(280, 388, 240, 6, RED)}</svg>`;
+  return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
+};
+
 export default function makeDoc({ root }) {
-  const builders = [cover, agenda, section, statement, titleBody, points, twoCol, numbers, chart, table, process, quote, image, closing];
+  const builders = [cover, agenda, section, statement, titleBody, points, twoCol, numbers, chart, table, process, screenshot, screenshotNotes, clippings, quote, image, closing];
   const slides = builders.map((b) => b(true));
   slides.splice(slides.findIndex((s) => s.id === "s-process") + 1, 0, processDetail());
   const layouts = builders.map((b) => {
@@ -432,7 +527,7 @@ export default function makeDoc({ root }) {
       table: { headerBg: INK, headerColor: PAPER, borderColor: HAIR, borderWidth: 1, fontSize: 20, color: INK, radius: 0 },
     },
     fonts: [{ family: "Archivo", asset: "archivo", weight: "400 700" }],
-    assets: { archivo: dataUri(join(root, "fonts", "archivo-latin.woff2")), placeholder: placeholderSvg() },
+    assets: { archivo: dataUri(join(root, "fonts", "archivo-latin.woff2")), placeholder: placeholderSvg(), shot: shotSvg() },
     present: { slideNumber: false, progress: false },
     slides,
     layouts,
