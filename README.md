@@ -4,27 +4,6 @@ Open source themes for [Bento](https://bento.page) slide decks. Each theme is a 
 
 ## Themes
 
-### Signal
-
-Big-type keynote slides after iA Presenter and the Takahashi and Lessig methods, for keynotes, AI strategy talks and exec openers. One idea per slide in Anton at up to 400px, Instrument Sans for body text, 64px margins and one vermilion accent on warm paper. Section dividers, statements and the closing slide are full-bleed fields in four colours that rotate by section (chartreuse, vermilion, lilac, cobalt). A four-bar signal meter recurs throughout: the colour key on the cover, the section count on the agenda and on each divider, and a small mark beside every page number. Adds a "Big figure" layout for a single number.
-
-![Signal section](themes/signal/preview/slide-03.png)
-![Signal process](themes/signal/preview/slide-12.png)
-
-### Transit
-
-Station signage and line maps after Massimo Vignelli and Unimark's New York subway work (1970-72), for roadmaps, migrations and anything with a "you are here". Content slides open under a black sign band with a thin white rule and the title in white Inter. Numbering is done with route discs: agenda stops, points, callouts and the page number. The process slide is a line map with stations, an interchange and a "you are here" marker, and its detail state zooms into one station. Green is the current line on every slide, with a second line colour kept for interchanges and legends.
-
-![Transit line map](themes/transit/preview/slide-11.png)
-![Transit numbers](themes/transit/preview/slide-08.png)
-
-### Transcript
-
-Slides set as an LLM conversation transcript, for AI engineering talks where prompts, responses, tool calls and traces are the evidence. Each turn is a block with a mono role label in the left gutter: white for user, grey for assistant and tool, a dashed outline for system, with model, tokens and latency as small mono metadata. Hanken Grotesk for turn content and JetBrains Mono for roles, span names and JSON. One teal accent marks the turn or span the speaker is talking about. The process layout is a trace waterfall whose detail state opens one span. Two extra layouts cover a prompt with its response and a tool call with its result.
-
-![Transcript tool call](themes/transcript/preview/slide-07.png)
-![Transcript trace](themes/transcript/preview/slide-13.png)
-
 ### Schematic
 
 Engineering drawing sheets for architecture, agent pipeline and RAG talks. Paper with a quiet 32px grid, a border frame, and a ruled title block (drawing title, sheet number, plot date) in the corner of every sheet. IBM Plex Sans for text and IBM Plex Mono for labels and figures. One safety orange marks the highlighted data path and the numbered callouts, which sit on the thing they describe and key to notes. Diagram boxes are grouped with their labels and joined by connectors, so a box can be dragged in the editor and its arrows follow.
@@ -61,6 +40,13 @@ Mid-century product design after Dieter Rams and Braun. Warm grey ground, charco
 ![Rams cover](themes/rams/preview/slide-01.png)
 ![Rams process](themes/rams/preview/slide-11.png)
 
+### Signal
+
+Big-type keynote slides after iA Presenter and the Takahashi and Lessig methods, for keynotes, AI strategy talks and exec openers. One idea per slide in Anton at up to 400px, Instrument Sans for body text, 64px margins and one vermilion accent on warm paper. Section dividers, statements and the closing slide are full-bleed fields in four colours that rotate by section (chartreuse, vermilion, lilac, cobalt). A four-bar signal meter recurs throughout: the colour key on the cover, the section count on the agenda and on each divider, and a small mark beside every page number. Adds a "Big figure" layout for a single number.
+
+![Signal section](themes/signal/preview/slide-03.png)
+![Signal process](themes/signal/preview/slide-12.png)
+
 ### Mono (light and dark)
 
 A well-set terminal, for engineering talks. One monospace face (JetBrains Mono), a `>` prompt and a block cursor as the recurring mark: an idle prompt line above the cover title, in the status bar beside the page number, after the numeral on the inverted section dividers and as a large block on the closing slide. Adds a `code` layout for syntax-coloured snippets on a panel. Two palettes share every builder. Mono Light is warm paper with a deep green; use it by default, since light slides survive projectors, screen sharing and video compression better than dark ones. Mono Dark is near-black with phosphor green for a dim room. `themes/mono-light/theme.mjs` is the light palette applied to the builders in `themes/mono-dark/theme.mjs`.
@@ -69,6 +55,20 @@ A well-set terminal, for engineering talks. One monospace face (JetBrains Mono),
 ![Mono Light code](themes/mono-light/preview/slide-12.png)
 ![Mono Light screenshot with notes](themes/mono-light/preview/slide-14.png)
 ![Mono Dark cover](themes/mono-dark/preview/slide-01.png)
+
+### Transit
+
+Station signage and line maps after Massimo Vignelli and Unimark's New York subway work (1970-72), for roadmaps, migrations and anything with a "you are here". Content slides open under a black sign band with a thin white rule and the title in white Inter. Numbering is done with route discs: agenda stops, points, callouts and the page number. The process slide is a line map with stations, an interchange and a "you are here" marker, and its detail state zooms into one station. Green is the current line on every slide, with a second line colour kept for interchanges and legends.
+
+![Transit line map](themes/transit/preview/slide-11.png)
+![Transit numbers](themes/transit/preview/slide-08.png)
+
+### Transcript
+
+Slides set as an LLM conversation transcript, for AI engineering talks where prompts, responses, tool calls and traces are the evidence. Each turn is a block with a mono role label in the left gutter: white for user, grey for assistant and tool, a dashed outline for system, with model, tokens and latency as small mono metadata. Hanken Grotesk for turn content and JetBrains Mono for roles, span names and JSON. One teal accent marks the turn or span the speaker is talking about. The process layout is a trace waterfall whose detail state opens one span. Two extra layouts cover a prompt with its response and a tool call with its result.
+
+![Transcript tool call](themes/transcript/preview/slide-07.png)
+![Transcript trace](themes/transcript/preview/slide-13.png)
 
 ### Tufte
 
