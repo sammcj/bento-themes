@@ -4,6 +4,28 @@ Open source themes for [Bento](https://bento.page) slide decks. Each theme is a 
 
 ## Themes
 
+### Schematic
+
+Engineering drawing sheets for architecture, agent pipeline and RAG talks. Paper with a quiet 32px grid, a border frame, and a ruled title block (drawing title, sheet number, plot date) in the corner of every sheet. IBM Plex Sans for text and IBM Plex Mono for labels and figures. One safety orange marks the highlighted data path and the numbered callouts, which sit on the thing they describe and key to notes. Diagram boxes are grouped with their labels and joined by connectors, so a box can be dragged in the editor and its arrows follow.
+
+![Schematic pipeline](themes/schematic/preview/slide-11.png)
+![Schematic cover](themes/schematic/preview/slide-01.png)
+
+### Assertion
+
+Assertion-evidence slides after Michael Alley, for talks that argue from data. Every content headline is a full-sentence claim and the space beneath it holds the evidence (a chart, table, diagram or screenshot) filling the band to the footer. Set like a newspaper data desk: warm white page, 64px margins, a bold Schibsted Grotesk headline under an ink hairline with a short heavy bar and a JetBrains Mono kicker, and mono source lines. One raspberry marks only the evidence the claim is about, and every other chart series is grey with a direct label in place of a legend. The closing slide is ink with no colour flood.
+
+![Assertion numbers](themes/assertion/preview/slide-08.png)
+![Assertion chart](themes/assertion/preview/slide-09.png)
+
+### Bento Grid (light and dark)
+
+Modular tiles in the manner of keynote feature grids and product pages, for overviews that mix figures, charts, code and screenshots on one slide. Rounded tiles on a 12-column grid with 40px margins and 16px gutters, Geist for text and Geist Mono for figures and code. Tiles come from a fixed set of spans, at most five per slide, and at most one hero tile carries the point. Dark sets near-black tiles with a lilac hero. Light sets white tiles on pale grey with a deep violet hero. The hero colour recurs as a chip beside the page number and fills the grid on section dividers.
+
+![Bento Grid Light numbers](themes/bento-grid-light/preview/slide-08.png)
+![Bento Grid Dark numbers](themes/bento-grid-dark/preview/slide-08.png)
+![Bento Grid Dark title and body](themes/bento-grid-dark/preview/slide-05.png)
+
 ### Swiss
 
 International Typographic Style. One grotesque (Archivo), flush-left ragged-right type, a 2px rule and running head on every slide, warm-white paper and one red. A single red square recurs through the deck: a 400px block on the cover, a 16px square beside the page number, a bar on section dividers, full-bleed on the closing slide.
@@ -33,28 +55,6 @@ Data slides after Edward Tufte's books, for talks where the charts and tables ca
 
 ![Tufte chart](themes/tufte/preview/slide-09.png)
 ![Tufte small multiples](themes/tufte/preview/slide-10.png)
-
-### Assertion
-
-Assertion-evidence slides after Michael Alley, for talks that argue from data. Every content headline is a full-sentence claim and the space beneath it holds the evidence (a chart, table, diagram or screenshot) filling the band to the footer. Set like a newspaper data desk: warm white page, 64px margins, a bold Schibsted Grotesk headline under an ink hairline with a short heavy bar and a JetBrains Mono kicker, and mono source lines. One raspberry marks only the evidence the claim is about, and every other chart series is grey with a direct label in place of a legend. The closing slide is ink with no colour flood.
-
-![Assertion numbers](themes/assertion/preview/slide-08.png)
-![Assertion chart](themes/assertion/preview/slide-09.png)
-
-### Bento Grid (light and dark)
-
-Modular tiles in the manner of keynote feature grids and product pages, for overviews that mix figures, charts, code and screenshots on one slide. Rounded tiles on a 12-column grid with 40px margins and 16px gutters, Geist for text and Geist Mono for figures and code. Tiles come from a fixed set of spans, at most five per slide, and at most one hero tile carries the point. Dark sets near-black tiles with a lilac hero. Light sets white tiles on pale grey with a deep violet hero. The hero colour recurs as a chip beside the page number and fills the grid on section dividers.
-
-![Bento Grid Light numbers](themes/bento-grid-light/preview/slide-08.png)
-![Bento Grid Dark numbers](themes/bento-grid-dark/preview/slide-08.png)
-![Bento Grid Dark title and body](themes/bento-grid-dark/preview/slide-05.png)
-
-### Schematic
-
-Engineering drawing sheets for architecture, agent pipeline and RAG talks. Paper with a quiet 32px grid, a border frame, and a ruled title block (drawing title, sheet number, plot date) in the corner of every sheet. IBM Plex Sans for text and IBM Plex Mono for labels and figures. One safety orange marks the highlighted data path and the numbered callouts, which sit on the thing they describe and key to notes. Diagram boxes are grouped with their labels and joined by connectors, so a box can be dragged in the editor and its arrows follow.
-
-![Schematic pipeline](themes/schematic/preview/slide-11.png)
-![Schematic cover](themes/schematic/preview/slide-01.png)
 
 ## Using a theme
 
