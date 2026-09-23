@@ -4,6 +4,27 @@ Open source themes for [Bento](https://bento.page) slide decks. Each theme is a 
 
 ## Themes
 
+### Signal
+
+Big-type keynote slides after iA Presenter and the Takahashi and Lessig methods, for keynotes, AI strategy talks and exec openers. One idea per slide in Anton at up to 400px, Instrument Sans for body text, 64px margins and one vermilion accent on warm paper. Section dividers, statements and the closing slide are full-bleed fields in four colours that rotate by section (chartreuse, vermilion, lilac, cobalt). A four-bar signal meter recurs throughout: the colour key on the cover, the section count on the agenda and on each divider, and a small mark beside every page number. Adds a "Big figure" layout for a single number.
+
+![Signal section](themes/signal/preview/slide-03.png)
+![Signal process](themes/signal/preview/slide-12.png)
+
+### Transit
+
+Station signage and line maps after Massimo Vignelli and Unimark's New York subway work (1970-72), for roadmaps, migrations and anything with a "you are here". Content slides open under a black sign band with a thin white rule and the title in white Inter. Numbering is done with route discs: agenda stops, points, callouts and the page number. The process slide is a line map with stations, an interchange and a "you are here" marker, and its detail state zooms into one station. Green is the current line on every slide, with a second line colour kept for interchanges and legends.
+
+![Transit line map](themes/transit/preview/slide-11.png)
+![Transit numbers](themes/transit/preview/slide-08.png)
+
+### Transcript
+
+Slides set as an LLM conversation transcript, for AI engineering talks where prompts, responses, tool calls and traces are the evidence. Each turn is a block with a mono role label in the left gutter: white for user, grey for assistant and tool, a dashed outline for system, with model, tokens and latency as small mono metadata. Hanken Grotesk for turn content and JetBrains Mono for roles, span names and JSON. One teal accent marks the turn or span the speaker is talking about. The process layout is a trace waterfall whose detail state opens one span. Two extra layouts cover a prompt with its response and a tool call with its result.
+
+![Transcript tool call](themes/transcript/preview/slide-07.png)
+![Transcript trace](themes/transcript/preview/slide-13.png)
+
 ### Schematic
 
 Engineering drawing sheets for architecture, agent pipeline and RAG talks. Paper with a quiet 32px grid, a border frame, and a ruled title block (drawing title, sheet number, plot date) in the corner of every sheet. IBM Plex Sans for text and IBM Plex Mono for labels and figures. One safety orange marks the highlighted data path and the numbered callouts, which sit on the thing they describe and key to notes. Diagram boxes are grouped with their labels and joined by connectors, so a box can be dragged in the editor and its arrows follow.
@@ -63,7 +84,7 @@ Data slides after Edward Tufte's books, for talks where the charts and tables ca
 3. Add slides from the New-slide picker; the theme's layouts are listed under "This document".
 4. Save. The saved deck is an ordinary Bento file.
 
-Decks open with live sharing off (`collab: { on: false }`), so nothing reaches Bento's sync service until you turn it on from the Share menu.
+Decks open with live sharing off (`collab: { on: false }`), so nothing reaches Bento's sync service until you turn it on from the Share menu. The theme file carries no sharing keys and Bento 1.2.3 does not mint them on Go live, so run Share > Reset access once before sharing a deck made from a theme.
 
 To apply a theme to an existing deck, paste the layouts from `<Name>.doc.json` into your deck's JSON (Save > Replace from JSON) or point an agent at the theme file with the [bento-slides skill](https://github.com/sammcj/agentic-coding/blob/main/Skills/bento-slides/SKILL.md), which is the recommended way to author decks from these themes.
 
@@ -89,7 +110,7 @@ See [docs/adding-a-theme.md](docs/adding-a-theme.md) for the steps, the conventi
 
 ## Fonts
 
-Archivo (35KB), Jost (26KB), JetBrains Mono (31KB), EB Garamond (44KB upright, 47KB italic), Schibsted Grotesk (46KB), Geist (29KB), Geist Mono (23KB) and IBM Plex Sans (40KB) are embedded as Latin-subset variable woff2 files. IBM Plex Mono is static on Google Fonts, so Schematic embeds only 400 and 600 (10KB each). All are under the SIL Open Font License; see `fonts/OFL-*.txt`. EB Garamond's italic is a second file declared with `style: "italic"` so side notes are true italics rather than browser-synthesised obliques. Bento's two shell faces (Fraunces 900 and Instrument Sans) need no bytes at all: `"asset": "builtin:fraunces-900"` or `"builtin:instrument-sans"`.
+Archivo (35KB), Jost (26KB), JetBrains Mono (31KB), EB Garamond (44KB upright, 47KB italic), Schibsted Grotesk (46KB), Geist (29KB), Geist Mono (23KB), IBM Plex Sans (40KB), Inter (72KB, weight and optical size axes) and Hanken Grotesk (34KB) are embedded as Latin-subset variable woff2 files. IBM Plex Mono is static on Google Fonts, so Schematic embeds only 400 and 600 (10KB each). Anton (12KB) has a single weight. Signal takes its body face from the builtin Instrument Sans. All are under the SIL Open Font License; see `fonts/OFL-*.txt`. EB Garamond's italic is a second file declared with `style: "italic"` so side notes are true italics rather than browser-synthesised obliques. Bento's two shell faces (Fraunces 900 and Instrument Sans) need no bytes at all: `"asset": "builtin:fraunces-900"` or `"builtin:instrument-sans"`.
 
 ## Licence
 

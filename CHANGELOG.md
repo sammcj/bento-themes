@@ -4,6 +4,9 @@
 
 ## 2026-09-23
 
+- Added Signal, Transit and Transcript themes, light only
+- `assertDoc` allows literal points numerals, transcript role labels and Transit's "you are here" tab in layouts
+- README: run Share > Reset access before sharing a theme deck (Go live mints no keys)
 - Added Assertion, Bento Grid (light and dark) and Schematic themes with 64px or 40px margins
 - `assertDoc` now allows literal screenshot callout numerals (`shot-cn`, `shot-kn`) in layouts
 - Decks now open with live sharing off; `template: true` dropped because it forced key minting

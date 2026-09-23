@@ -19,8 +19,9 @@ When adding a theme: run `make check`, commit the generated `preview/` PNGs, and
 
 - `scripts/lib.mjs` holds the element factories, `COLS` arithmetic and `assertDoc`. Use `factory(theme)` rather than writing element objects by hand.
 - `assertDoc` is the guard rail: sharing off, no `fx`, `transition: "none"` everywhere, 14px type floor, unique ids, notes on every slide, placeholders for layout copy. Extend it rather than working around it.
-- Every theme carries the same layout set with the same slide ids and element id prefixes, so a deck can swap themes without renaming elements. New layouts go into every theme.
+- Every theme carries the same layout set with the same slide ids and element id prefixes, so a deck can swap themes without renaming elements. New core layouts go into every theme. A theme may add up to two layouts of its own that only make sense in that style (Mono's code, Tufte's small multiples, Transcript's prompt and tool call).
 - Templates are static by choice: no transitions, entrances, loops, step reveals or count-ups.
+- Every theme has a light version. A dark variant is optional.
 - Colour variants share one builder: `themes/mono-dark/theme.mjs` exports `makeMono(palette, opts)` and `themes/mono-light/theme.mjs` is 20 lines. Layout ids carry the variant slug.
 - Side margins default to 96px. A theme may set its own in its header comment (Assertion and Schematic 64, Bento Grid 40) and use `columns()` from `scripts/lib.mjs`, since `COLS` assumes 96. `render_check` then reports `past-margin` infos, which are expected.
 - Craft floor: one accent colour, one or two typefaces, body 22px sans or 26px serif, text contrast 4.5:1 and large text 3:1 (compute the ratios, do not eyeball them), content filling the band rather than pooling slack at the bottom.

@@ -27,3 +27,11 @@ For a colour variant, export a named builder that takes a palette and import it 
 - Give a box and its label the same `groupId` so they drag as one. Dashed strokes work on rects with `strokeStyle: "dashed"`.
 - Image `radius` rounds the element box, not the letterboxed picture, so the corners only show when the capture matches the box's aspect ratio. Inside a tile, use the tile radius minus the inset.
 - `render_check`'s `low-coverage` check treats a shape or image covering 60% or more of the canvas as a backdrop, and a short text box near an edge as footer chrome, so tile and display layouts can trip it falsely.
+- Line shapes draw with round caps unless dashed, so a thick connector overshoots each end by half its width. Draw discs after the line to hide it, or cover a free end with a rect. A heavy `line` with `lineEnd: "arrow"` sizes the head from the stroke and swallows a short shaft; draw heavy arrows as a `path`.
+- Text `html` collapses runs of spaces. Write `&nbsp; ` where a second space matters ("3.2.&nbsp; Retrieval").
+- `<p>` margins are 1em and `validate()` counts a trailing `<p>` margin in the height. On a strict line grid use `<br><br>` between paragraphs.
+- `code` tokens take `codePalette` colours over the element colour. `grammarName: "md"` leaves plain ASCII art untokenised, apart from lines starting `>`, `#` or `- ` and pairs of `*` or `_`. Code elements have no padding, so a second code element in the same box can recolour one span with exact alignment.
+- charts-lite estimates legend label widths for a proportional face, so mono labels collide. Widen `legend.itemGap`, which is honoured.
+- Table cells wrap if the width is even a fraction of a pixel short of characters times advance plus padding. Leave a few pixels spare.
+- Two unescaped `$` on one line render as maths. Write `\$` for a literal dollar.
+- Bento's builtin faces (`builtin:instrument-sans`, `builtin:fraunces-900`) embed no bytes and pass `validate()` with no `font-not-embedded` finding.

@@ -62,9 +62,10 @@ export function factory(t) {
 }
 
 // Layout text that may keep literal html: numerals and glyphs that are not user copy.
-// shot-cn/shot-kn are screenshot callout numerals and the keys that match them.
+// shot-cn/shot-kn are screenshot callout numerals and the keys that match them;
+// *-role ids are transcript role labels (user, assistant, tool); here-t is Transit's "you are here" tab.
 // Everything else in a layout is either a {{token}} or an empty html with a placeholder.
-const LAYOUT_LITERALS = /^(q-mark|ag-n\d+|pr-n\d+|shot-[ck]n\d+)$/;
+const LAYOUT_LITERALS = /^(q-mark|here-t|ag-n\d+|pt-n\d+|pr-n\d+|shot-[ck]n\d+|[\w-]+-role)$/;
 
 // Sanity checks that the runtime would otherwise fail silently on.
 export function assertDoc(doc) {
