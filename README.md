@@ -42,7 +42,7 @@ Mid-century product design after Dieter Rams and Braun. Warm grey ground, charco
 
 ### Signal
 
-Big-type keynote slides after iA Presenter and the Takahashi and Lessig methods, for keynotes, AI strategy talks and exec openers. One idea per slide in Anton at up to 400px, Instrument Sans for body text, 64px margins and one vermilion accent on warm paper. Section dividers, statements and the closing slide are full-bleed fields in four colours that rotate by section (chartreuse, vermilion, lilac, cobalt). A four-bar signal meter recurs throughout: the colour key on the cover, the section count on the agenda and on each divider, and a small mark beside every page number. Adds a "Big figure" layout for a single number.
+Big-type keynote slides after the Takahashi and Lessig methods, for keynotes, AI strategy talks and exec openers. One idea per slide in Anton at up to 400px, Instrument Sans for body text, 64px margins and one vermilion accent on warm paper. Section dividers, statements and the closing slide are full-bleed fields in four colours that rotate by section (chartreuse, vermilion, lilac, cobalt). A four-bar signal meter recurs throughout: the colour key on the cover, the section count on the agenda and on each divider, and a small mark beside every page number. Adds a "Big figure" layout for a single number.
 
 ![Signal section](themes/signal/preview/slide-03.png)
 ![Signal process](themes/signal/preview/slide-12.png)
