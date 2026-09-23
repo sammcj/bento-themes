@@ -27,7 +27,7 @@ When adding a theme: run `make check`, commit the generated `preview/` PNGs, and
 
 ## Gotchas
 
-These cost a build-render cycle each to find. The full list is in the README under Gotchas; the ones that bite hardest:
+These cost a build-render cycle each to find. The full list is in `docs/adding-a-theme.md`; the ones that bite hardest:
 
 **Write every typographic field on every element.** When the runtime expands a document it fills gaps with editor defaults (system font, centred, `#1E2A3A`), never with `theme` values.
 
