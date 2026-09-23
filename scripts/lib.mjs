@@ -17,6 +17,13 @@ export const COLS = {
   "60/40": { w: [624, 432], x: [96, 752], gutter: 32 },
 };
 
+// Equal columns for themes that set their own side margin. Widths are floored so
+// the last column never crosses the right margin.
+export function columns(n, { margin = MARGIN, gutter = 32 } = {}) {
+  const w = Math.floor((W - margin * 2 - gutter * (n - 1)) / n);
+  return { w, x: Array.from({ length: n }, (_, i) => margin + i * (w + gutter)), gutter };
+}
+
 const MIME = { ".woff2": "font/woff2", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg" };
 
 export function dataUri(path) {
@@ -55,8 +62,9 @@ export function factory(t) {
 }
 
 // Layout text that may keep literal html: numerals and glyphs that are not user copy.
+// shot-cn/shot-kn are screenshot callout numerals and the keys that match them.
 // Everything else in a layout is either a {{token}} or an empty html with a placeholder.
-const LAYOUT_LITERALS = /^(q-mark|ag-n\d+|pr-n\d+)$/;
+const LAYOUT_LITERALS = /^(q-mark|ag-n\d+|pr-n\d+|shot-[ck]n\d+)$/;
 
 // Sanity checks that the runtime would otherwise fail silently on.
 export function assertDoc(doc) {

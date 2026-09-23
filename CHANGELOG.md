@@ -4,6 +4,8 @@
 
 ## 2026-09-23
 
+- Added Assertion, Bento Grid (light and dark) and Schematic themes with 64px or 40px margins
+- `assertDoc` now allows literal screenshot callout numerals (`shot-cn`, `shot-kn`) in layouts
 - Decks now open with live sharing off; `template: true` dropped because it forced key minting
 - Added CLAUDE.md and CHANGELOG.md for future contributors
 

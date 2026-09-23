@@ -22,7 +22,8 @@ When adding a theme: run `make check`, commit the generated `preview/` PNGs, and
 - Every theme carries the same layout set with the same slide ids and element id prefixes, so a deck can swap themes without renaming elements. New layouts go into every theme.
 - Templates are static by choice: no transitions, entrances, loops, step reveals or count-ups.
 - Colour variants share one builder: `themes/mono-dark/theme.mjs` exports `makeMono(palette, opts)` and `themes/mono-light/theme.mjs` is 20 lines. Layout ids carry the variant slug.
-- Craft floor: one accent colour, one or two typefaces, 96px side margins, body 22px sans or 26px serif, text contrast 4.5:1 and large text 3:1 (compute the ratios, do not eyeball them), content filling the band rather than pooling slack at the bottom.
+- Side margins default to 96px. A theme may set its own in its header comment (Assertion and Schematic 64, Bento Grid 40) and use `columns()` from `scripts/lib.mjs`, since `COLS` assumes 96. `render_check` then reports `past-margin` infos, which are expected.
+- Craft floor: one accent colour, one or two typefaces, body 22px sans or 26px serif, text contrast 4.5:1 and large text 3:1 (compute the ratios, do not eyeball them), content filling the band rather than pooling slack at the bottom.
 
 ## Gotchas
 
@@ -37,6 +38,10 @@ These cost a build-render cycle each to find. The full list is in the README und
 **charts-lite ignores most option keys silently.** `splitLine.show` and `axisLine.show` do nothing and the lines still draw; paint them in the ground colour instead.
 
 **`measure()` returns the box width, not the text width,** and a trailing `<p>` adds its margin to the measured height.
+
+**`render_check` does not capture `stateOf` slides.** To see the process detail state, render a throwaway one-slide copy of the deck.
+
+**`validate()` measures the raw `{{page:2}}` token, not the rendered number,** so a tight page-number box gets a false `text-overflow`.
 
 ## Update CHANGELOG.md after changes
 
